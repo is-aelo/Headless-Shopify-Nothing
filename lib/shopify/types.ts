@@ -68,9 +68,18 @@ export type Page = {
   updatedAt: string;
 };
 
+/**
+ * The Product type used by the frontend.
+ * Explicitly ensuring options and compareAtPriceRange are mapped correctly.
+ */
 export type Product = Omit<ShopifyProduct, "variants" | "images"> & {
   variants: ProductVariant[];
   images: Image[];
+  options: ProductOption[];
+  compareAtPriceRange?: {
+    maxVariantPrice: Money;
+    minVariantPrice: Money;
+  };
 };
 
 export type ProductOption = {

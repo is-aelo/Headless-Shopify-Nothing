@@ -27,11 +27,7 @@ export default function FilterList({
     <>
       <nav>
         {title ? (
-          /* Removed 'hidden md:block'. 
-             Now the title shows on mobile too. 
-             Added 'mb-2' for mobile spacing.
-          */
-          <h3 className="mb-2 text-[10px] uppercase tracking-[0.2em] text-primary/40 md:mb-0">
+          <h3 className="mb-4 text-[10px] uppercase tracking-[0.2em] text-primary/40 md:mb-2">
             {title}
           </h3>
         ) : null}

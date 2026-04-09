@@ -141,7 +141,7 @@ const reshapeCart = (cart: ShopifyCart): Cart => {
 };
 
 const reshapeCollection = (
-  collection: ShopifyCollection
+  collection: ShopifyCollection,
 ): Collection | undefined => {
   if (!collection) {
     return undefined;
@@ -183,7 +183,7 @@ const reshapeImages = (images: Connection<Image>, productTitle: string) => {
 
 const reshapeProduct = (
   product: ShopifyProduct,
-  filterHiddenProducts: boolean = true
+  filterHiddenProducts: boolean = true,
 ) => {
   if (
     !product ||
@@ -192,10 +192,11 @@ const reshapeProduct = (
     return undefined;
   }
 
-  const { images, variants, ...rest } = product;
+  const { images, variants, options, ...rest } = product;
 
   return {
     ...rest,
+    options: options || [],
     images: reshapeImages(images, product.title),
     variants: removeEdgesAndNodes(variants),
   };
@@ -226,7 +227,7 @@ export async function createCart(): Promise<Cart> {
 }
 
 export async function addToCart(
-  lines: { merchandiseId: string; quantity: number }[]
+  lines: { merchandiseId: string; quantity: number }[],
 ): Promise<Cart> {
   const cartId = (await cookies()).get("cartId")?.value!;
   const res = await shopifyFetch<ShopifyAddToCartOperation>({
@@ -253,7 +254,7 @@ export async function removeFromCart(lineIds: string[]): Promise<Cart> {
 }
 
 export async function updateCart(
-  lines: { id: string; merchandiseId: string; quantity: number }[]
+  lines: { id: string; merchandiseId: string; quantity: number }[],
 ): Promise<Cart> {
   const cartId = (await cookies()).get("cartId")?.value!;
   const res = await shopifyFetch<ShopifyUpdateCartOperation>({
@@ -283,7 +284,6 @@ export async function getCart(): Promise<Cart | undefined> {
     variables: { cartId },
   });
 
-  // Old carts becomes `null` when you checkout.
   if (!res.body.data.cart) {
     return undefined;
   }
@@ -292,7 +292,7 @@ export async function getCart(): Promise<Cart | undefined> {
 }
 
 export async function getCollection(
-  handle: string
+  handle: string,
 ): Promise<Collection | undefined> {
   "use cache";
   cacheTag(TAGS.collections);
@@ -323,7 +323,7 @@ export async function getCollectionProducts({
 
   if (!endpoint) {
     console.log(
-      `Skipping getCollectionProducts for '${collection}' - Shopify not configured`
+      `Skipping getCollectionProducts for '${collection}' - Shopify not configured`,
     );
     return [];
   }
@@ -343,7 +343,7 @@ export async function getCollectionProducts({
   }
 
   return reshapeProducts(
-    removeEdgesAndNodes(res.body.data.collection.products)
+    removeEdgesAndNodes(res.body.data.collection.products),
   );
 }
 
@@ -385,10 +385,8 @@ export async function getCollections(): Promise<Collection[]> {
       path: "/search",
       updatedAt: new Date().toISOString(),
     },
-    // Filter out the `hidden` collections.
-    // Collections that start with `hidden-*` need to be hidden on the search page.
     ...reshapeCollections(shopifyCollections).filter(
-      (collection) => !collection.handle.startsWith("hidden")
+      (collection) => !collection.handle.startsWith("hidden"),
     ),
   ];
 
@@ -404,14 +402,10 @@ export async function getMenu(handle: string): Promise<Menu[]> {
     console.log(`Skipping getMenu for '${handle}' - Shopify not configured`);
     return [];
   }
-
   const res = await shopifyFetch<ShopifyMenuOperation>({
     query: getMenuQuery,
-    variables: {
-      handle,
-    },
+    variables: { handle },
   });
-
   return (
     res.body?.data?.menu?.items.map((item: { title: string; url: string }) => ({
       title: item.title,
@@ -422,61 +416,45 @@ export async function getMenu(handle: string): Promise<Menu[]> {
     })) || []
   );
 }
-
 export async function getPage(handle: string): Promise<Page> {
   const res = await shopifyFetch<ShopifyPageOperation>({
     query: getPageQuery,
     variables: { handle },
   });
-
   return res.body.data.pageByHandle;
 }
-
 export async function getPages(): Promise<Page[]> {
   const res = await shopifyFetch<ShopifyPagesOperation>({
     query: getPagesQuery,
   });
-
   return removeEdgesAndNodes(res.body.data.pages);
 }
-
 export async function getProduct(handle: string): Promise<Product | undefined> {
   "use cache";
   cacheTag(TAGS.products);
   cacheLife("days");
-
   if (!endpoint) {
     console.log(`Skipping getProduct for '${handle}' - Shopify not configured`);
     return undefined;
   }
-
   const res = await shopifyFetch<ShopifyProductOperation>({
     query: getProductQuery,
-    variables: {
-      handle,
-    },
+    variables: { handle },
   });
-
   return reshapeProduct(res.body.data.product, false);
 }
-
 export async function getProductRecommendations(
-  productId: string
+  productId: string,
 ): Promise<Product[]> {
   "use cache";
   cacheTag(TAGS.products);
   cacheLife("days");
-
   const res = await shopifyFetch<ShopifyProductRecommendationsOperation>({
     query: getProductRecommendationsQuery,
-    variables: {
-      productId,
-    },
+    variables: { productId },
   });
-
   return reshapeProducts(res.body.data.productRecommendations);
 }
-
 export async function getProducts({
   query,
   reverse,
@@ -489,23 +467,13 @@ export async function getProducts({
   "use cache";
   cacheTag(TAGS.products);
   cacheLife("days");
-
   const res = await shopifyFetch<ShopifyProductsOperation>({
     query: getProductsQuery,
-    variables: {
-      query,
-      reverse,
-      sortKey,
-    },
+    variables: { query, reverse, sortKey },
   });
-
   return reshapeProducts(removeEdgesAndNodes(res.body.data.products));
 }
-
-// This is called from `app/api/revalidate.ts` so providers can control revalidation logic.
 export async function revalidate(req: NextRequest): Promise<NextResponse> {
-  // We always need to respond with a 200 status code to Shopify,
-  // otherwise it will continue to retry the request.
   const collectionWebhooks = [
     "collections/create",
     "collections/delete",
@@ -520,24 +488,18 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
   const secret = req.nextUrl.searchParams.get("secret");
   const isCollectionUpdate = collectionWebhooks.includes(topic);
   const isProductUpdate = productWebhooks.includes(topic);
-
   if (!secret || secret !== process.env.SHOPIFY_REVALIDATION_SECRET) {
     console.error("Invalid revalidation secret.");
     return NextResponse.json({ status: 401 });
   }
-
   if (!isCollectionUpdate && !isProductUpdate) {
-    // We don't need to revalidate anything for any other topics.
     return NextResponse.json({ status: 200 });
   }
-
   if (isCollectionUpdate) {
-    revalidateTag(TAGS.collections, "seconds");
+    revalidateTag(TAGS.collections);
   }
-
   if (isProductUpdate) {
-    revalidateTag(TAGS.products, "seconds");
+    revalidateTag(TAGS.products);
   }
-
   return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
 }

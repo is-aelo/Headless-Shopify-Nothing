@@ -1,7 +1,26 @@
 import Grid from "components/grid";
 import { GridTileImage } from "components/grid/tile";
+import { COLOR_MAP } from "lib/constants";
 import { Product } from "lib/shopify/types";
 import Link from "next/link";
+
+/**
+ * Enhanced hex mapper.
+ * Scans the string for any known color keywords from our COLOR_MAP.
+ */
+const getHexColor = (colorName: string): string => {
+  const normalizedName = colorName.toLowerCase().trim();
+
+  // 1. Check for exact match
+  if (COLOR_MAP[normalizedName]) return COLOR_MAP[normalizedName];
+
+  // 2. Check if the string contains any of our known keys
+  const keyMatch = Object.keys(COLOR_MAP).find((key) =>
+    normalizedName.includes(key),
+  );
+
+  return keyMatch ? COLOR_MAP[keyMatch] : "#FFFFFF";
+};
 
 export default function ProductGridItems({
   products,
@@ -10,29 +29,61 @@ export default function ProductGridItems({
 }) {
   return (
     <>
-      {products.map((product) => (
-        <Grid.Item key={product.handle} className="animate-fadeIn">
-          <Link
-            className="relative inline-block h-full w-full"
-            href={`/product/${product.handle}`}
-            prefetch={true}
-          >
-            <GridTileImage
-              alt={product.title}
-              label={{
-                title: product.title,
-                amount: product.priceRange.minVariantPrice.amount,
-                currencyCode: product.priceRange.minVariantPrice.currencyCode,
-                compareAtPrice:
-                  product.compareAtPriceRange?.minVariantPrice.amount,
-              }}
-              src={product.featuredImage?.url}
-              fill
-              sizes="(min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
-            />
-          </Link>
-        </Grid.Item>
-      ))}
+      {products.map((product) => {
+        // 1. Collect all possible values from all options (Color, Style, Material, etc.)
+        // This ensures we don't miss anything regardless of how the Shopify admin named it.
+        const allOptionValues = product.options.flatMap((opt) => opt.values);
+
+        // 2. Filter these values based on whether we actually have a hex code for them
+        // This prevents showing swatches for "Large", "128GB", etc.
+        const colorValues = allOptionValues.filter((val) => {
+          const normalized = val.toLowerCase().trim();
+          return Object.keys(COLOR_MAP).some((key) => normalized.includes(key));
+        });
+
+        // 3. Fallback: If options are weirdly nested, grab from variants
+        if (colorValues.length === 0) {
+          const variantValues = product.variants.flatMap((v) =>
+            v.selectedOptions.map((o) => o.value),
+          );
+          const matchedVariants = variantValues.filter((val) => {
+            const normalized = val.toLowerCase().trim();
+            return Object.keys(COLOR_MAP).some((key) =>
+              normalized.includes(key),
+            );
+          });
+          colorValues.push(...matchedVariants);
+        }
+
+        // Deduplicate and map
+        const uniqueColors = Array.from(new Set(colorValues));
+        const colorOptions = uniqueColors.map((val) => getHexColor(val));
+
+        return (
+          <Grid.Item key={product.handle} className="animate-fadeIn">
+            <Link
+              className="relative inline-block h-full w-full"
+              href={`/product/${product.handle}`}
+              prefetch={true}
+            >
+              <GridTileImage
+                alt={product.title}
+                label={{
+                  title: product.title,
+                  amount: product.priceRange.minVariantPrice.amount,
+                  currencyCode: product.priceRange.minVariantPrice.currencyCode,
+                  compareAtPrice:
+                    product.compareAtPriceRange?.minVariantPrice.amount,
+                }}
+                src={product.featuredImage?.url}
+                fill
+                sizes="(min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
+                colorOptions={colorOptions}
+              />
+            </Link>
+          </Grid.Item>
+        );
+      })}
     </>
   );
 }
