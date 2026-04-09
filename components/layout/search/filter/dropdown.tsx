@@ -42,17 +42,25 @@ export default function FilterItemDropdown({ list }: { list: ListItem[] }) {
         onClick={() => {
           setOpenSelect(!openSelect);
         }}
-        className="flex w-full items-center justify-between rounded-sm border border-black/30 px-4 py-2 text-sm dark:border-white/30"
+        /* Updated to use your theme: bg-off-white and text-primary */
+        className="flex w-full items-center justify-between border border-black/10 bg-off-white px-4 py-3 font-body text-[11px] uppercase tracking-[0.2em] text-primary transition-all active:scale-[0.98]"
       >
-        <div>{active}</div>
-        <ChevronDownIcon className="h-4" />
+        <div className="flex items-center gap-2">
+          <span className="opacity-40">SELECT:</span>
+          <span className="font-bold">{active}</span>
+        </div>
+        <ChevronDownIcon
+          className={`h-4 w-4 text-primary transition-transform duration-300 ${openSelect ? "rotate-180" : ""}`}
+        />
       </div>
+
       {openSelect && (
         <div
           onClick={() => {
             setOpenSelect(false);
           }}
-          className="absolute z-40 w-full rounded-b-md bg-white p-4 shadow-md dark:bg-black"
+          /* Dropdown menu matches the off-white surface */
+          className="absolute z-40 mt-1 w-full border border-black/10 bg-off-white p-2 shadow-xl"
         >
           {list.map((item: ListItem, i) => (
             <FilterItem key={i} item={item} />

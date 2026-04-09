@@ -1,6 +1,8 @@
 "use client";
 
 import clsx from "clsx";
+import StatusDot from "components/status-dot";
+import { AnimatePresence, motion } from "framer-motion";
 import type { SortFilterItem } from "lib/constants";
 import { createUrl } from "lib/utils";
 import Link from "next/link";
@@ -17,19 +19,50 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
   newParams.delete("q");
 
   return (
-    <li className="mt-2 flex text-black dark:text-white" key={item.title}>
-      <DynamicTag
-        href={createUrl(item.path, newParams)}
-        className={clsx(
-          "w-full text-sm underline-offset-4 hover:underline dark:hover:text-neutral-100",
-          {
-            "underline underline-offset-4": active,
-          },
-        )}
-      >
-        {item.title}
-      </DynamicTag>
-    </li>
+    <motion.li
+      initial={{ opacity: 0, x: -4 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3, ease: [0.19, 1, 0.22, 1] }}
+      className="mt-2 flex items-center tracking-tighter h-6"
+      key={item.title}
+    >
+      <div className="flex items-center w-full group">
+        <div className="w-4 flex-shrink-0 flex items-center justify-start">
+          <AnimatePresence mode="popLayout">
+            {active && (
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+              >
+                <StatusDot />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <DynamicTag
+          href={createUrl(item.path, newParams)}
+          className={clsx(
+            "font-mono text-sm uppercase transition-colors duration-300 whitespace-nowrap",
+            {
+              "text-primary font-bold": active,
+              "text-primary opacity-60 group-hover:opacity-100": !active,
+            },
+          )}
+        >
+          <motion.span
+            layout="position"
+            className="inline-block"
+            whileHover={!active ? { x: 2 } : {}}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
+            {active ? `[ ${item.title} ]` : item.title}
+          </motion.span>
+        </DynamicTag>
+      </div>
+    </motion.li>
   );
 }
 
@@ -48,20 +81,51 @@ function SortFilterItem({ item }: { item: SortFilterItem }) {
   const DynamicTag = active ? "p" : Link;
 
   return (
-    <li
-      className="mt-2 flex text-sm text-black dark:text-white"
+    <motion.li
+      initial={{ opacity: 0, x: -4 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3, ease: [0.19, 1, 0.22, 1] }}
+      className="mt-2 flex items-center tracking-tighter h-6"
       key={item.title}
     >
-      <DynamicTag
-        prefetch={!active ? false : undefined}
-        href={href}
-        className={clsx("w-full hover:underline hover:underline-offset-4", {
-          "underline underline-offset-4": active,
-        })}
-      >
-        {item.title}
-      </DynamicTag>
-    </li>
+      <div className="flex items-center w-full group">
+        <div className="w-4 flex-shrink-0 flex items-center justify-start">
+          <AnimatePresence mode="popLayout">
+            {active && (
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+              >
+                <StatusDot />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <DynamicTag
+          prefetch={!active ? false : undefined}
+          href={href}
+          className={clsx(
+            "font-mono text-sm uppercase transition-colors duration-300 whitespace-nowrap",
+            {
+              "text-primary font-bold": active,
+              "text-primary opacity-60 group-hover:opacity-100": !active,
+            },
+          )}
+        >
+          <motion.span
+            layout="position"
+            className="inline-block"
+            whileHover={!active ? { x: 2 } : {}}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
+            {active ? `> ${item.title}` : item.title}
+          </motion.span>
+        </DynamicTag>
+      </div>
+    </motion.li>
   );
 }
 

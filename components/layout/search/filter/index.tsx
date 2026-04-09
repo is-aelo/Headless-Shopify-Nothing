@@ -27,15 +27,23 @@ export default function FilterList({
     <>
       <nav>
         {title ? (
-          <h3 className="hidden text-xs text-neutral-500 md:block dark:text-neutral-400">
+          /* Removed 'hidden md:block'. 
+             Now the title shows on mobile too. 
+             Added 'mb-2' for mobile spacing.
+          */
+          <h3 className="mb-2 text-[10px] uppercase tracking-[0.2em] text-primary/40 md:mb-0">
             {title}
           </h3>
         ) : null}
+
+        {/* Desktop List */}
         <ul className="hidden md:block">
           <Suspense fallback={null}>
             <FilterItemList list={list} />
           </Suspense>
         </ul>
+
+        {/* Mobile Dropdown */}
         <ul className="md:hidden">
           <Suspense fallback={null}>
             <FilterItemDropdown list={list} />

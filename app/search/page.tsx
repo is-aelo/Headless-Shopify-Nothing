@@ -22,7 +22,7 @@ export default async function SearchPage(props: {
   return (
     <>
       {searchValue ? (
-        <p className="mb-4">
+        <p className="mb-4 text-surface">
           {products.length === 0
             ? "There are no products that match "
             : `Showing ${products.length} ${resultsText} for `}

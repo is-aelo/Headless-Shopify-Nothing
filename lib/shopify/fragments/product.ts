@@ -1,3 +1,4 @@
+// lib/shopify/fragments/product.ts
 import imageFragment from "./image";
 import seoFragment from "./seo";
 
@@ -15,6 +16,17 @@ const productFragment = /* GraphQL */ `
       values
     }
     priceRange {
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    # ENSURE THIS SECTION IS PRESENT
+    compareAtPriceRange {
       maxVariantPrice {
         amount
         currencyCode
