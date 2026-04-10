@@ -198,7 +198,17 @@ const reshapeProduct = (
     ...rest,
     options: options || [],
     images: reshapeImages(images, product.title),
-    variants: removeEdgesAndNodes(variants),
+    variants: removeEdgesAndNodes(variants).map((variant) => ({
+      ...variant,
+      // Ensure variant images are processed with alt text like main images
+      image: variant.image
+        ? {
+            ...variant.image,
+            altText:
+              variant.image.altText || `${product.title} - ${variant.title}`,
+          }
+        : null,
+    })),
   };
 };
 

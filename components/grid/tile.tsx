@@ -26,27 +26,31 @@ export function GridTileImage({
       ? Math.round(((compareAtAmount - amount) / compareAtAmount) * 100)
       : 0;
 
-  const formatCurrency = (val: string) => {
+  const formatNumber = (val: string) => {
     return new Intl.NumberFormat("en-PH", {
-      style: "currency",
-      currency: label?.currencyCode || "PHP",
       minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     }).format(parseFloat(val));
+  };
+
+  const truncateTitle = (str: string, limit: number) => {
+    if (!str) return "";
+    return str.length > limit ? str.substring(0, limit) + "..." : str;
   };
 
   return (
     <div
       className={clsx(
-        "group flex flex-col h-full w-full bg-white overflow-hidden border border-[#6e6e6e] rounded-md transition-shadow duration-300",
+        "group flex flex-col h-full w-full bg-white overflow-hidden border border-surface/10 rounded-md transition-shadow duration-300",
         {
-          "ring-1 ring-inset ring-black": active,
+          "ring-1 ring-inset ring-primary": active,
         },
       )}
     >
-      <div className="relative aspect-square w-full overflow-hidden flex items-center justify-center border-b border-[#6e6e6e]">
+      <div className="relative aspect-[4/3] w-full overflow-hidden flex items-center justify-center border-b border-surface/10">
         {discountPercent > 0 && (
-          <div className="absolute left-4 top-4 z-10">
-            <span className="bg-[#FF0000] px-2 py-0.5 text-[11px] font-bold tracking-tighter text-white uppercase">
+          <div className="absolute left-2 top-2 z-10 md:left-3 md:top-3">
+            <span className="bg-accent-red px-1 py-0.5 text-[8px] md:text-[10px] font-bold tracking-tighter text-white uppercase">
               {discountPercent}% OFF
             </span>
           </div>
@@ -65,49 +69,51 @@ export function GridTileImage({
         ) : null}
       </div>
 
-      <div className="flex flex-col justify-between h-[140px] p-5 bg-[#FAFAFA]">
-        <div className="space-y-1">
-          <h3 className="font-mono text-[13px] uppercase leading-snug tracking-tight text-black line-clamp-2 min-h-[40px]">
-            {label?.title}
+      <div className="flex flex-col justify-between h-[85px] md:h-[90px] px-2.5 py-2 md:px-3 md:py-2.5 bg-white">
+        <div>
+          <h3 className="font-product text-[11px] md:text-[13px] uppercase leading-tight tracking-[0.03em] text-primary">
+            {truncateTitle(label?.title || "", 55)}
           </h3>
         </div>
 
         <div className="flex items-end justify-between">
           <div className="flex flex-col">
-            <span className="font-mono text-[10px] uppercase text-neutral-500">
+            <span className="font-body text-[6px] md:text-[7px] uppercase tracking-widest text-muted leading-none mb-0.5 md:mb-1">
               From
             </span>
-            <div className="flex items-baseline gap-2">
-              <span className="font-mono text-base font-bold text-black">
-                {formatCurrency(label?.amount || "0")}
+            <div className="flex items-baseline gap-1">
+              <span className="font-body text-[13px] md:text-[15px] font-bold text-primary tracking-tighter leading-none flex items-baseline">
+                <span className="text-[0.9em] font-medium mr-1">PHP</span>
+                {formatNumber(label?.amount || "0")}
               </span>
+
               {compareAtAmount > amount && (
-                <span className="font-mono text-xs text-neutral-400 line-through decoration-[#6e6e6e]">
-                  {formatCurrency(label?.compareAtPrice || "0")}
+                <span className="hidden sm:inline font-body text-[9px] text-muted line-through decoration-surface/20 ml-1">
+                  PHP {formatNumber(label?.compareAtPrice || "0")}
                 </span>
               )}
             </div>
           </div>
 
-          <div className="flex gap-1.5 pb-1">
+          <div className="flex gap-1 pb-0.5">
             {colorOptions && colorOptions.length > 0 ? (
               colorOptions
-                .slice(0, 4)
+                .slice(0, 3)
                 .map((hex, index) => (
                   <div
                     key={index}
                     className={clsx(
-                      "h-3.5 w-3.5 rounded-full border shadow-sm",
+                      "h-1.5 w-1.5 md:h-2 md:w-2 rounded-full border shadow-sm",
                       hex.toUpperCase() === "#FFFFFF" ||
                         hex.toUpperCase() === "#FAFAFA"
-                        ? "border-neutral-300"
+                        ? "border-border-l"
                         : "border-transparent",
                     )}
                     style={{ backgroundColor: hex }}
                   />
                 ))
             ) : (
-              <div className="h-3.5 w-3.5 rounded-full border border-dashed border-neutral-300 bg-transparent" />
+              <div className="h-1.5 w-1.5 md:h-2 md:w-2 rounded-full border border-dashed border-border-l bg-transparent" />
             )}
           </div>
         </div>

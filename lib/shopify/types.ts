@@ -98,6 +98,7 @@ export type ProductVariant = {
   }[];
   price: Money;
   compareAtPrice: Maybe<Money>;
+  image?: Image;
 };
 
 export type SEO = {

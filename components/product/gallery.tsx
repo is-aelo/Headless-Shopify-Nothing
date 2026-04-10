@@ -1,96 +1,107 @@
 "use client";
 
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
-import { GridTileImage } from "components/grid/tile";
+import clsx from "clsx";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export function Gallery({
   images,
+  selectedVariantImage,
 }: {
   images: { src: string; altText: string }[];
+  selectedVariantImage?: string | null;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const imageIndex = searchParams.has("image")
-    ? parseInt(searchParams.get("image")!)
-    : 0;
 
-  const updateImage = (index: string) => {
+  const imageSearchParam = searchParams.get("image");
+  const activeIndex = imageSearchParam ? parseInt(imageSearchParam) : 0;
+
+  // KEY FIX: Variant image overrides everything
+  const displayImage = selectedVariantImage
+    ? { src: selectedVariantImage, altText: "Variant image" }
+    : images[activeIndex] || images[0];
+
+  const updateImage = (index: number) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set("image", index);
-    router.replace(`?${params.toString()}`, { scroll: false });
+    params.set("image", index.toString());
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
-  const nextImageIndex = imageIndex + 1 < images.length ? imageIndex + 1 : 0;
+  const nextImageIndex = activeIndex + 1 < images.length ? activeIndex + 1 : 0;
   const previousImageIndex =
-    imageIndex === 0 ? images.length - 1 : imageIndex - 1;
-
-  const buttonClassName =
-    "h-full px-6 transition-all ease-in-out hover:scale-110 hover:text-black dark:hover:text-white flex items-center justify-center";
+    activeIndex === 0 ? images.length - 1 : activeIndex - 1;
 
   return (
-    <form>
-      <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden">
-        {images[imageIndex] && (
+    <div className="flex flex-col">
+      <div className="relative aspect-square h-full max-h-[600px] w-full overflow-hidden rounded-[12px] border border-border-l bg-white">
+        {displayImage && (
           <Image
-            className="h-full w-full object-contain"
+            className="h-full w-full object-contain p-8 transition-opacity duration-300"
             fill
             sizes="(min-width: 1024px) 66vw, 100vw"
-            alt={images[imageIndex]?.altText as string}
-            src={images[imageIndex]?.src as string}
+            alt={displayImage.altText}
+            src={displayImage.src}
             priority={true}
           />
         )}
 
-        {images.length > 1 ? (
-          <div className="absolute bottom-[15%] flex w-full justify-center">
-            <div className="mx-auto flex h-11 items-center rounded-full border border-white bg-neutral-50/80 text-neutral-500 backdrop-blur-sm dark:border-black dark:bg-neutral-900/80">
+        {images.length > 1 && !selectedVariantImage && (
+          <div className="absolute bottom-6 flex w-full justify-center">
+            <div className="flex h-10 items-center overflow-hidden rounded-[10px] border border-border-l bg-off-white/90 backdrop-blur-md">
               <button
-                formAction={() => updateImage(previousImageIndex.toString())}
-                aria-label="Previous product image"
-                className={buttonClassName}
+                onClick={() => updateImage(previousImageIndex)}
+                aria-label="Previous image"
+                className="flex h-full items-center px-4 transition-colors hover:bg-white active:scale-95"
               >
-                <ArrowLeftIcon className="h-5" />
+                <ArrowLeftIcon className="h-4 w-4 stroke-[1.5]" />
               </button>
-              <div className="mx-1 h-6 w-px bg-neutral-500"></div>
+              <div className="h-4 w-px bg-border-l"></div>
               <button
-                formAction={() => updateImage(nextImageIndex.toString())}
-                aria-label="Next product image"
-                className={buttonClassName}
+                onClick={() => updateImage(nextImageIndex)}
+                aria-label="Next image"
+                className="flex h-full items-center px-4 transition-colors hover:bg-white active:scale-95"
               >
-                <ArrowRightIcon className="h-5" />
+                <ArrowRightIcon className="h-4 w-4 stroke-[1.5]" />
               </button>
             </div>
           </div>
-        ) : null}
+        )}
       </div>
 
-      {images.length > 1 ? (
-        <ul className="my-12 flex items-center flex-wrap justify-center gap-2 overflow-auto py-1 lg:mb-0">
-          {images.map((image, index) => {
-            const isActive = index === imageIndex;
+      <ul className="mt-6 flex flex-wrap items-center justify-start gap-3">
+        {images.map((image, index) => {
+          const isActive = !selectedVariantImage && index === activeIndex;
 
-            return (
-              <li key={image.src} className="h-20 w-20">
-                <button
-                  formAction={() => updateImage(index.toString())}
-                  aria-label="Select product image"
-                  className="h-full w-full"
-                >
-                  <GridTileImage
-                    alt={image.altText}
-                    src={image.src}
-                    width={80}
-                    height={80}
-                    active={isActive}
-                  />
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      ) : null}
-    </form>
+          return (
+            <li
+              key={`${image.src}-${index}`}
+              className="h-16 w-16 md:h-20 md:w-20"
+            >
+              <button
+                onClick={() => updateImage(index)}
+                aria-label={`Select image ${index + 1}`}
+                className={clsx(
+                  "relative h-full w-full overflow-hidden rounded-[8px] border transition-all duration-200 bg-white",
+                  isActive
+                    ? "border-primary ring-1 ring-primary shadow-sm"
+                    : "border-border-l hover:border-muted",
+                )}
+              >
+                <Image
+                  src={image.src}
+                  alt={image.altText}
+                  width={80}
+                  height={80}
+                  className="h-full w-full object-cover p-1"
+                />
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }

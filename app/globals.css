@@ -42,14 +42,12 @@
     line-height: var(--line-height-body-base);
     -webkit-font-smoothing: antialiased;
 
-    /* ── DEFAULT: Large Precision Reticle ── */
     cursor:
       url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="4" x2="12" y2="9"></line><line x1="12" y1="15" x2="12" y2="20"></line><line x1="4" y1="12" x2="9" y2="12"></line><line x1="15" y1="12" x2="20" y2="12"></line></svg>')
         16 16,
       auto;
   }
 
-  /* ── INTERACTIVE: The Red Viewfinder ── */
   a,
   button,
   [role="button"],
@@ -66,14 +64,78 @@
   }
 }
 
+/* ── TAILWIND V4 CUSTOM UTILITIES ── */
+@utility btn-nothing-primary {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-surface);
+  color: var(--color-white);
+  padding: 1.1rem 1.5rem; /* Slightly taller for the larger logo font */
+  border-radius: 10px;
+  font-family: var(--font-logo);
+  text-transform: uppercase;
+  letter-spacing: 0.05em; /* Spaced out slightly for readability in dot-matrix caps */
+  transition-property: all;
+  transition-duration: 200ms;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+@utility btn-nothing-outline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border-l);
+  background-color: transparent;
+  color: var(--color-surface);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  transition-property: all;
+  transition-duration: 200ms;
+
+  &:hover {
+    background-color: var(--color-off-white);
+    border-color: var(--color-surface);
+  }
+
+  &[aria-selected="true"] {
+    background-color: var(--color-surface);
+    color: var(--color-white);
+  }
+}
+
+@utility btn-nothing-accent {
+  @apply btn-nothing-primary;
+  background-color: var(--color-cmf-orange);
+
+  &:hover {
+    background-color: rgba(255, 107, 0, 0.9);
+  }
+}
+
 @layer utilities {
-  /* ── LOGO WEIGHT: Sharp, non-blurry thickness ── */
   .font-logo-heavy {
     -webkit-text-stroke: 0.5px currentColor;
     paint-order: stroke fill;
   }
 
-  /* ── SIMPLE REVEAL: No glitch, just a clean fade ── */
   .logo-reveal {
     transition: opacity 0.3s ease;
   }

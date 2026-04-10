@@ -49,11 +49,37 @@ export async function generateMetadata(props: {
 
 export default async function ProductPage(props: {
   params: Promise<{ handle: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const params = await props.params;
+  const searchParams = await props.searchParams;
   const product = await getProduct(params.handle);
 
   if (!product) return notFound();
+
+  const variant = product.variants.find((variant) =>
+    variant.selectedOptions.every((option) => {
+      const optionName = option.name.toLowerCase();
+
+      // Handle potential URL encoding where spaces become '+'
+      const paramValue =
+        searchParams[optionName] || searchParams[optionName.replace(/ /g, "+")];
+
+      if (!paramValue) return false;
+
+      const currentParam = Array.isArray(paramValue)
+        ? paramValue[0]
+        : paramValue;
+
+      // Decode the parameter (handles %20 or +) and compare
+      return (
+        decodeURIComponent(currentParam.toLowerCase().replace(/\+/g, " ")) ===
+        option.value.toLowerCase()
+      );
+    }),
+  );
+
+  const selectedVariantImage = variant?.image?.url ?? null;
 
   const productJsonLd = {
     "@context": "https://schema.org",
@@ -81,18 +107,19 @@ export default async function ProductPage(props: {
         }}
       />
       <div className="mx-auto max-w-(--breakpoint-2xl) px-4">
-        <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 md:p-12 lg:flex-row lg:gap-8 dark:border-neutral-800 dark:bg-black">
+        <div className="flex flex-col rounded-[12px] border border-border-l bg-off-white p-8 md:p-12 lg:flex-row lg:gap-8">
           <div className="h-full w-full basis-full lg:basis-4/6">
             <Suspense
               fallback={
-                <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden" />
+                <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden rounded-[12px] border border-border-l bg-white" />
               }
             >
               <Gallery
-                images={product.images.slice(0, 5).map((image: Image) => ({
+                images={product.images.map((image: Image) => ({
                   src: image.url,
                   altText: image.altText,
                 }))}
+                selectedVariantImage={selectedVariantImage}
               />
             </Suspense>
           </div>
@@ -117,8 +144,10 @@ async function RelatedProducts({ id }: { id: string }) {
 
   return (
     <div className="py-8">
-      <h2 className="mb-4 text-2xl font-bold">Related Products</h2>
-      <ul className="flex w-full gap-4 overflow-x-auto pt-1">
+      <h2 className="mb-4 font-logo text-2xl uppercase tracking-widest text-primary">
+        Related Products
+      </h2>
+      <ul className="flex w-full gap-4 overflow-x-auto pt-1 scrollbar-hide">
         {relatedProducts.map((product) => (
           <li
             key={product.handle}
