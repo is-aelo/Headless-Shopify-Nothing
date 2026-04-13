@@ -40,14 +40,10 @@ export default async function RootLayout({
         ${spaceMono.variable}
       `}
     >
-      {/* REMOVED: bg-white, text-black, dark:bg-black 
-          The background and text colors are now handled by globals.css 
-          using the --color-off-white and --color-primary tokens.
-      */}
       <body className="antialiased">
         <CartProvider cartPromise={cart}>
           <Navbar />
-          <main>
+          <main className="pt-12 md:pt-24">
             {children}
             <Toaster closeButton />
             <WelcomeToast />

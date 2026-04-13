@@ -17,6 +17,7 @@ export type CartProduct = {
   handle: string;
   title: string;
   featuredImage: Image;
+  variants: ProductVariant[];
 };
 
 export type CartItem = {
@@ -32,6 +33,7 @@ export type CartItem = {
       name: string;
       value: string;
     }[];
+    image?: Image;
     product: CartProduct;
   };
 };
@@ -68,10 +70,6 @@ export type Page = {
   updatedAt: string;
 };
 
-/**
- * The Product type used by the frontend.
- * Explicitly ensuring options and compareAtPriceRange are mapped correctly.
- */
 export type Product = Omit<ShopifyProduct, "variants" | "images"> & {
   variants: ProductVariant[];
   images: Image[];

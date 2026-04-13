@@ -14,6 +14,7 @@ import { createCartAndSetCookie, redirectToCheckout } from "./actions";
 import { useCart } from "./cart-context";
 import { DeleteItemButton } from "./delete-item-button";
 import { EditItemQuantityButton } from "./edit-item-quantity-button";
+import { EditItemVariantSelector } from "./edit-item-variant-selector";
 import OpenCart from "./open-cart";
 
 type MerchandiseSearchParams = {
@@ -73,35 +74,35 @@ export default function CartModal() {
             leaveFrom="translate-x-0"
             leaveTo="translate-x-full"
           >
-            <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-border-l bg-off-white p-6 text-primary md:w-[420px]">
-              <div className="flex items-center justify-between border-b border-border-l pb-6">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-[8px] border border-border-l bg-white">
-                    <ShoppingBag size={16} strokeWidth={1.5} />
-                  </div>
-                  <p className="font-logo text-xl tracking-widest">BAG</p>
-                </div>
-                <button
-                  aria-label="Close Bag"
-                  onClick={closeCart}
-                  className="group"
-                >
-                  <CloseCart />
+            <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-border-l bg-off-white p-6 text-primary md:w-[400px]">
+              {/* Header */}
+              <div className="flex items-center justify-between pb-5 border-b border-border-l">
+                <p className="font-logo text-xl tracking-widest">BAG</p>
+                <button aria-label="Close Bag" onClick={closeCart}>
+                  <X
+                    size={18}
+                    strokeWidth={1.5}
+                    className="text-muted hover:text-primary transition-colors"
+                  />
                 </button>
               </div>
 
+              {/* Empty state */}
               {!cart || cart.lines.length === 0 ? (
-                <div className="mt-20 flex w-full flex-col items-center justify-center">
-                  <div className="mb-6 opacity-20">
-                    <ShoppingBag size={64} strokeWidth={1} />
-                  </div>
-                  <p className="font-nav text-center text-xl uppercase tracking-tighter opacity-50">
-                    Bag is empty.
+                <div className="mt-20 flex w-full flex-col items-center justify-center gap-4">
+                  <ShoppingBag
+                    size={48}
+                    strokeWidth={1}
+                    className="opacity-20"
+                  />
+                  <p className="font-nav text-[11px] uppercase tracking-[0.2em] text-muted">
+                    Your bag is empty
                   </p>
                 </div>
               ) : (
                 <div className="flex h-full flex-col justify-between overflow-hidden">
-                  <ul className="grow overflow-auto py-4 scrollbar-hide">
+                  {/* Cart items */}
+                  <ul className="grow overflow-auto py-2 scrollbar-hide">
                     {cart.lines
                       .sort((a, b) =>
                         a.merchandise.product.title.localeCompare(
@@ -125,69 +126,85 @@ export default function CartModal() {
                           new URLSearchParams(merchandiseSearchParams),
                         );
 
+                        const thumbnailSrc =
+                          item.merchandise.image?.url ||
+                          item.merchandise.product.featuredImage.url;
+
+                        const thumbnailAlt =
+                          item.merchandise.image?.altText ||
+                          item.merchandise.product.featuredImage.altText ||
+                          item.merchandise.product.title;
+
+                        const hasMultipleVariants =
+                          item.merchandise.product.variants?.length > 1;
+
                         return (
                           <li
                             key={i}
-                            className="group flex w-full flex-col border-b border-border-l/50 last:border-0"
+                            className="flex w-full flex-row items-start gap-4 border-b border-border-l/50 py-5 last:border-0"
                           >
-                            <div className="relative flex w-full flex-row justify-between py-6">
-                              <div className="absolute z-40 -left-2 -top-1 opacity-0 transition-opacity group-hover:opacity-100">
+                            {/* Square thumbnail with Skeleton */}
+                            <Link
+                              href={merchandiseUrl}
+                              onClick={closeCart}
+                              className="shrink-0"
+                            >
+                              <ThumbnailWithSkeleton
+                                src={thumbnailSrc}
+                                alt={thumbnailAlt}
+                              />
+                            </Link>
+
+                            {/* Info */}
+                            <div className="flex flex-1 flex-col gap-1 min-w-0">
+                              <div className="flex items-start justify-between gap-2">
+                                <Link
+                                  href={merchandiseUrl}
+                                  onClick={closeCart}
+                                  className="font-product text-sm leading-snug hover:underline line-clamp-2"
+                                >
+                                  {item.merchandise.product.title}
+                                </Link>
                                 <DeleteItemButton
                                   item={item}
                                   optimisticUpdate={updateCartItem}
                                 />
                               </div>
 
-                              <div className="flex flex-row gap-4">
-                                <div className="relative h-20 w-20 overflow-hidden rounded-[10px] border border-border-l bg-white">
-                                  <Image
-                                    className="h-full w-full object-cover grayscale transition-all group-hover:grayscale-0"
-                                    width={80}
-                                    height={80}
-                                    alt={
-                                      item.merchandise.product.featuredImage
-                                        .altText ||
-                                      item.merchandise.product.title
-                                    }
-                                    src={
-                                      item.merchandise.product.featuredImage.url
-                                    }
+                              {/* Variant selector */}
+                              {hasMultipleVariants && (
+                                <EditItemVariantSelector
+                                  item={item}
+                                  variants={item.merchandise.product.variants}
+                                  optimisticUpdate={updateCartItem}
+                                />
+                              )}
+
+                              {/* Fallback: show title if only one variant */}
+                              {!hasMultipleVariants &&
+                                item.merchandise.title !== DEFAULT_OPTION && (
+                                  <p className="font-ui text-[11px] uppercase tracking-wider text-muted">
+                                    {item.merchandise.title}
+                                  </p>
+                                )}
+
+                              <div className="mt-2 flex items-center justify-between">
+                                <div className="flex h-7 w-fit items-center rounded-[6px] border border-border-l bg-white">
+                                  <EditItemQuantityButton
+                                    item={item}
+                                    type="minus"
+                                    optimisticUpdate={updateCartItem}
+                                  />
+                                  <span className="w-7 text-center font-ui text-[12px]">
+                                    {item.quantity}
+                                  </span>
+                                  <EditItemQuantityButton
+                                    item={item}
+                                    type="plus"
+                                    optimisticUpdate={updateCartItem}
                                   />
                                 </div>
 
-                                <div className="flex flex-col justify-center">
-                                  <Link
-                                    href={merchandiseUrl}
-                                    onClick={closeCart}
-                                    className="font-product text-sm leading-none hover:underline"
-                                  >
-                                    {item.merchandise.product.title}
-                                  </Link>
-                                  {item.merchandise.title !==
-                                    DEFAULT_OPTION && (
-                                    <p className="mt-1 font-ui text-[11px] uppercase tracking-wider text-muted">
-                                      {item.merchandise.title}
-                                    </p>
-                                  )}
-                                  <div className="mt-3 flex h-7 w-fit items-center rounded-[6px] border border-border-l bg-white">
-                                    <EditItemQuantityButton
-                                      item={item}
-                                      type="minus"
-                                      optimisticUpdate={updateCartItem}
-                                    />
-                                    <span className="w-8 text-center font-ui text-[12px]">
-                                      {item.quantity}
-                                    </span>
-                                    <EditItemQuantityButton
-                                      item={item}
-                                      type="plus"
-                                      optimisticUpdate={updateCartItem}
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="flex flex-col items-end justify-center">
                                 <Price
                                   className="font-nav text-sm"
                                   amount={item.cost.totalAmount.amount}
@@ -202,13 +219,14 @@ export default function CartModal() {
                       })}
                   </ul>
 
-                  <div className="border-t border-primary/10 pt-6 pb-2">
-                    <div className="font-ui text-[11px] uppercase tracking-[0.2em] text-muted space-y-2">
+                  {/* Footer */}
+                  <div className="pt-4 border-t border-border-l">
+                    <div className="space-y-2 font-ui text-[11px] uppercase tracking-[0.15em] text-muted">
                       <div className="flex justify-between">
                         <span>Subtotal</span>
                         <Price
-                          amount={cart.cost.totalAmount.amount}
-                          currencyCode={cart.cost.totalAmount.currencyCode}
+                          amount={cart.cost.subtotalAmount.amount}
+                          currencyCode={cart.cost.subtotalAmount.currencyCode}
                         />
                       </div>
                       <div className="flex justify-between">
@@ -221,21 +239,21 @@ export default function CartModal() {
                     </div>
 
                     <div className="my-4 flex items-center justify-between border-t border-border-l pt-4">
-                      <span className="font-logo text-lg tracking-widest">
+                      <span className="font-logo text-base tracking-widest">
                         TOTAL
                       </span>
                       <Price
-                        className="font-nav text-xl"
+                        className="font-nav text-lg"
                         amount={cart.cost.totalAmount.amount}
                         currencyCode={cart.cost.totalAmount.currencyCode}
                       />
                     </div>
 
-                    <form action={redirectToCheckout} className="mt-4">
+                    <form action={redirectToCheckout}>
                       <CheckoutButton />
                     </form>
 
-                    <p className="mt-4 text-center font-body text-[10px] text-muted uppercase tracking-tighter">
+                    <p className="mt-3 text-center font-body text-[10px] uppercase tracking-tighter text-muted">
                       Shipping and discounts calculated at checkout.
                     </p>
                   </div>
@@ -249,10 +267,33 @@ export default function CartModal() {
   );
 }
 
-function CloseCart() {
+function ThumbnailWithSkeleton({ src, alt }: { src: string; alt: string }) {
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Re-trigger loading state if src changes (variant change)
+  useEffect(() => {
+    setIsLoading(true);
+  }, [src]);
+
   return (
-    <div className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-border-l bg-white transition-all hover:bg-primary hover:text-white">
-      <X size={20} strokeWidth={1.5} />
+    <div className="relative h-[72px] w-[72px] overflow-hidden rounded-[8px] border border-border-l bg-white">
+      {isLoading && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-off-white">
+          <div className="h-full w-full animate-pulse bg-neutral-200" />
+          {/* Subtle accent dot to match Nothing UI */}
+          <div className="absolute h-1 w-1 bg-accent-red rounded-full" />
+        </div>
+      )}
+      <Image
+        className={`h-full w-full object-contain p-1.5 transition-opacity duration-300 ${
+          isLoading ? "opacity-0" : "opacity-100"
+        }`}
+        width={72}
+        height={72}
+        alt={alt}
+        src={src}
+        onLoad={() => setIsLoading(false)}
+      />
     </div>
   );
 }

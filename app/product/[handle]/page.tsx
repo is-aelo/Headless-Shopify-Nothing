@@ -61,7 +61,6 @@ export default async function ProductPage(props: {
     variant.selectedOptions.every((option) => {
       const optionName = option.name.toLowerCase();
 
-      // Handle potential URL encoding where spaces become '+'
       const paramValue =
         searchParams[optionName] || searchParams[optionName.replace(/ /g, "+")];
 
@@ -71,7 +70,6 @@ export default async function ProductPage(props: {
         ? paramValue[0]
         : paramValue;
 
-      // Decode the parameter (handles %20 or +) and compare
       return (
         decodeURIComponent(currentParam.toLowerCase().replace(/\+/g, " ")) ===
         option.value.toLowerCase()
@@ -80,6 +78,7 @@ export default async function ProductPage(props: {
   );
 
   const selectedVariantImage = variant?.image?.url ?? null;
+  const isVariantSoldOut = variant ? !variant.availableForSale : false;
 
   const productJsonLd = {
     "@context": "https://schema.org",
@@ -107,11 +106,11 @@ export default async function ProductPage(props: {
         }}
       />
       <div className="mx-auto max-w-(--breakpoint-2xl) px-4">
-        <div className="flex flex-col rounded-[12px] border border-border-l bg-off-white p-8 md:p-12 lg:flex-row lg:gap-8">
-          <div className="h-full w-full basis-full lg:basis-4/6">
+        <div className="flex flex-col p-8 md:p-12 lg:flex-row lg:gap-8">
+          <div className="h-full w-full basis-full lg:basis-[55%]">
             <Suspense
               fallback={
-                <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden rounded-[12px] border border-border-l bg-white" />
+                <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden bg-white" />
               }
             >
               <Gallery
@@ -120,11 +119,12 @@ export default async function ProductPage(props: {
                   altText: image.altText,
                 }))}
                 selectedVariantImage={selectedVariantImage}
+                isSoldOut={isVariantSoldOut}
               />
             </Suspense>
           </div>
 
-          <div className="basis-full lg:basis-2/6">
+          <div className="basis-full lg:basis-[45%]">
             <Suspense fallback={null}>
               <ProductDescription product={product} />
             </Suspense>

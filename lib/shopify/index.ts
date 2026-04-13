@@ -136,7 +136,13 @@ const reshapeCart = (cart: ShopifyCart): Cart => {
 
   return {
     ...cart,
-    lines: removeEdgesAndNodes(cart.lines),
+    lines: removeEdgesAndNodes(cart.lines).map((line) => ({
+      ...line,
+      merchandise: {
+        ...line.merchandise,
+        product: reshapeProduct(line.merchandise.product, false) as Product,
+      },
+    })),
   };
 };
 
@@ -200,7 +206,6 @@ const reshapeProduct = (
     images: reshapeImages(images, product.title),
     variants: removeEdgesAndNodes(variants).map((variant) => ({
       ...variant,
-      // Ensure variant images are processed with alt text like main images
       image: variant.image
         ? {
             ...variant.image,

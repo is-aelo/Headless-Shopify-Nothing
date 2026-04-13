@@ -14,12 +14,17 @@ import React, {
   useOptimistic,
 } from "react";
 
-type UpdateType = "plus" | "minus" | "delete";
+// Added 'update' to support variant switching without deletion
+type UpdateType = "plus" | "minus" | "delete" | "update";
 
 type CartAction =
   | {
       type: "UPDATE_ITEM";
-      payload: { merchandiseId: string; updateType: UpdateType };
+      payload: {
+        merchandiseId: string;
+        updateType: UpdateType;
+        newMerchandiseId?: string;
+      };
     }
   | {
       type: "ADD_ITEM";
@@ -39,8 +44,20 @@ function calculateItemCost(quantity: number, price: string): string {
 function updateCartItem(
   item: CartItem,
   updateType: UpdateType,
+  newMerchandiseId?: string,
 ): CartItem | null {
   if (updateType === "delete") return null;
+
+  // Handle variant switching
+  if (updateType === "update" && newMerchandiseId) {
+    return {
+      ...item,
+      merchandise: {
+        ...item.merchandise,
+        id: newMerchandiseId,
+      },
+    };
+  }
 
   const newQuantity =
     updateType === "plus" ? item.quantity + 1 : item.quantity - 1;
@@ -90,7 +107,7 @@ function createOrUpdateCartItem(
         id: product.id,
         handle: product.handle,
         title: product.title,
-        featuredImage: product.featuredImage,
+        featuredImage: variant.image ?? product.featuredImage,
       },
     },
   };
@@ -135,11 +152,11 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
 
   switch (action.type) {
     case "UPDATE_ITEM": {
-      const { merchandiseId, updateType } = action.payload;
+      const { merchandiseId, updateType, newMerchandiseId } = action.payload;
       const updatedLines = currentCart.lines
         .map((item) =>
           item.merchandise.id === merchandiseId
-            ? updateCartItem(item, updateType)
+            ? updateCartItem(item, updateType, newMerchandiseId)
             : item,
         )
         .filter(Boolean) as CartItem[];
@@ -216,10 +233,14 @@ export function useCart() {
     cartReducer,
   );
 
-  const updateCartItem = (merchandiseId: string, updateType: UpdateType) => {
+  const updateCartItem = (
+    merchandiseId: string,
+    updateType: UpdateType,
+    newMerchandiseId?: string,
+  ) => {
     updateOptimisticCart({
       type: "UPDATE_ITEM",
-      payload: { merchandiseId, updateType },
+      payload: { merchandiseId, updateType, newMerchandiseId },
     });
   };
 

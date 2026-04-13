@@ -1,4 +1,3 @@
-
 const cartFragment = /* GraphQL */ `
   fragment cart on Cart {
     id
@@ -36,6 +35,12 @@ const cartFragment = /* GraphQL */ `
                 name
                 value
               }
+              image {
+                url
+                altText
+                width
+                height
+              }
               product {
                 id
                 handle
@@ -66,6 +71,33 @@ const cartFragment = /* GraphQL */ `
                       altText
                       width
                       height
+                    }
+                  }
+                }
+                variants(first: 250) {
+                  edges {
+                    node {
+                      id
+                      title
+                      availableForSale
+                      selectedOptions {
+                        name
+                        value
+                      }
+                      price {
+                        amount
+                        currencyCode
+                      }
+                      compareAtPrice {
+                        amount
+                        currencyCode
+                      }
+                      image {
+                        url
+                        altText
+                        width
+                        height
+                      }
                     }
                   }
                 }

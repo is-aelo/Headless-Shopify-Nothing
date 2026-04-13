@@ -12,7 +12,7 @@ export default function SearchLayout({
 }) {
   return (
     <>
-      <div className="mx-auto flex max-w-(--breakpoint-2xl) flex-col gap-4 px-4 pb-4 pt-12 text-primary md:flex-row md:gap-12 md:pt-24">
+      <div className="mx-auto flex max-w-(--breakpoint-2xl) flex-col gap-4 px-4 pb-4 text-primary md:flex-row md:gap-12">
         {/* Left Sidebar: Contains both Collections and Sorting */}
         <aside className="sticky top-[64px] z-30 order-first w-full flex-none bg-off-white pb-2 pt-4 md:static md:top-24 md:z-auto md:h-fit md:w-[150px] md:bg-transparent md:py-0 md:self-start md:sticky">
           <div className="flex flex-col gap-8">

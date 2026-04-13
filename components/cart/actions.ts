@@ -14,7 +14,7 @@ import { redirect } from "next/navigation";
 
 export async function addItem(
   prevState: any,
-  selectedVariantId: string | undefined
+  selectedVariantId: string | undefined,
 ) {
   if (!selectedVariantId) {
     return "Error adding item to cart";
@@ -37,7 +37,7 @@ export async function removeItem(prevState: any, merchandiseId: string) {
     }
 
     const lineItem = cart.lines.find(
-      (line) => line.merchandise.id === merchandiseId
+      (line) => line.merchandise.id === merchandiseId,
     );
 
     if (lineItem && lineItem.id) {
@@ -56,7 +56,7 @@ export async function updateItemQuantity(
   payload: {
     merchandiseId: string;
     quantity: number;
-  }
+  },
 ) {
   const { merchandiseId, quantity } = payload;
 
@@ -68,7 +68,7 @@ export async function updateItemQuantity(
     }
 
     const lineItem = cart.lines.find(
-      (line) => line.merchandise.id === merchandiseId
+      (line) => line.merchandise.id === merchandiseId,
     );
 
     if (lineItem && lineItem.id) {
@@ -84,7 +84,6 @@ export async function updateItemQuantity(
         ]);
       }
     } else if (quantity > 0) {
-      // If the item doesn't exist in the cart and quantity > 0, add it
       await addToCart([{ merchandiseId, quantity }]);
     }
 
@@ -92,6 +91,49 @@ export async function updateItemQuantity(
   } catch (e) {
     console.error(e);
     return "Error updating item quantity";
+  }
+}
+
+export async function updateItemVariant(
+  prevState: any,
+  payload: {
+    lineId: string;
+    oldMerchandiseId: string;
+    newMerchandiseId: string;
+    quantity: number;
+  },
+) {
+  const { lineId, oldMerchandiseId, newMerchandiseId, quantity } = payload;
+
+  try {
+    const cart = await getCart();
+    if (!cart) return "Error fetching cart";
+
+    // Check if the new variant already exists in the cart
+    const existingLine = cart.lines.find(
+      (line) => line.merchandise.id === newMerchandiseId,
+    );
+
+    if (existingLine && existingLine.id) {
+      // Merge quantities into existing line and remove old line
+      await updateCart([
+        {
+          id: existingLine.id,
+          merchandiseId: newMerchandiseId,
+          quantity: existingLine.quantity + quantity,
+        },
+      ]);
+      await removeFromCart([lineId]);
+    } else {
+      // Remove old variant line and add new variant
+      await removeFromCart([lineId]);
+      await addToCart([{ merchandiseId: newMerchandiseId, quantity }]);
+    }
+
+    updateTag(TAGS.cart);
+  } catch (e) {
+    console.error(e);
+    return "Error updating variant";
   }
 }
 
