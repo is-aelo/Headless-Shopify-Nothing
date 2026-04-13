@@ -7,6 +7,8 @@ import { ReactNode } from "react";
 import { Toaster } from "sonner";
 import { ndot57, ndot57Caps, nType82, shareTechMono, spaceMono } from "./fonts";
 import "./globals.css";
+// 1. Import the wrapper
+import { MainWrapper } from "components/layout/main-wrapper";
 
 const { SITE_NAME } = process.env;
 
@@ -43,11 +45,12 @@ export default async function RootLayout({
       <body className="antialiased">
         <CartProvider cartPromise={cart}>
           <Navbar />
-          <main className="pt-12 md:pt-24">
+          {/* 2. Use MainWrapper instead of <main className="pt-12 md:pt-24"> */}
+          <MainWrapper>
             {children}
             <Toaster closeButton />
             <WelcomeToast />
-          </main>
+          </MainWrapper>
         </CartProvider>
       </body>
     </html>
