@@ -2,6 +2,7 @@ import { GridTileImage } from "components/grid/tile";
 import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
 import { ProductDescription } from "components/product/product-description";
+import ToastDemo from "components/toast-demo";
 import { HIDDEN_PRODUCT_TAG } from "lib/constants";
 import { getProduct, getProductRecommendations } from "lib/shopify";
 import type { Image } from "lib/shopify/types";
@@ -60,12 +61,9 @@ export default async function ProductPage(props: {
   const variant = product.variants.find((variant) =>
     variant.selectedOptions.every((option) => {
       const optionName = option.name.toLowerCase();
-
       const paramValue =
         searchParams[optionName] || searchParams[optionName.replace(/ /g, "+")];
-
       if (!paramValue) return false;
-
       const currentParam = Array.isArray(paramValue)
         ? paramValue[0]
         : paramValue;
@@ -110,7 +108,7 @@ export default async function ProductPage(props: {
           <div className="h-full w-full basis-full lg:basis-[55%]">
             <Suspense
               fallback={
-                <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden bg-white" />
+                <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden bg-surface" />
               }
             >
               <Gallery
@@ -128,6 +126,10 @@ export default async function ProductPage(props: {
             <Suspense fallback={null}>
               <ProductDescription product={product} />
             </Suspense>
+            {/* The trigger for the toast - position is handled by Toast Viewport */}
+            <div className="mt-8">
+              <ToastDemo />
+            </div>
           </div>
         </div>
         <RelatedProducts id={product.id} />
@@ -144,14 +146,14 @@ async function RelatedProducts({ id }: { id: string }) {
 
   return (
     <div className="py-8">
-      <h2 className="mb-4 font-logo text-2xl uppercase tracking-widest text-primary">
+      <h2 className="mb-8 font-logo text-2xl uppercase tracking-widest text-off-white border-l border-border-l pl-4">
         Related Products
       </h2>
       <ul className="flex w-full gap-4 overflow-x-auto pt-1 scrollbar-hide">
         {relatedProducts.map((product) => (
           <li
             key={product.handle}
-            className="aspect-square w-full flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5"
+            className="aspect-square w-full flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 border border-white/5 hover:border-white/20 transition-colors"
           >
             <Link
               className="relative h-full w-full"

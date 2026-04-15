@@ -1,5 +1,4 @@
 import { CartProvider } from "components/cart/cart-context";
-import Footer from "components/layout/footer"; // [1] Import the Footer
 import { MainWrapper } from "components/layout/main-wrapper";
 import { Navbar } from "components/layout/navbar";
 import { WelcomeToast } from "components/welcome-toast";
@@ -49,9 +48,7 @@ export default async function RootLayout({
           <MainWrapper>
             {children}
             {/* [3] Call Footer inside MainWrapper */}
-            <Suspense>
-              <Footer />
-            </Suspense>
+            <Suspense>{/* <Footer /> */}</Suspense>
             <Toaster closeButton />
             <WelcomeToast />
           </MainWrapper>

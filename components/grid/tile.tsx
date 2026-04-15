@@ -1,4 +1,7 @@
+"use client";
+
 import clsx from "clsx";
+import { getHexColor } from "lib/constants";
 import Image from "next/image";
 
 export function GridTileImage({
@@ -6,6 +9,7 @@ export function GridTileImage({
   active,
   label,
   colorOptions,
+  variantId,
   ...props
 }: {
   isInteractive?: boolean;
@@ -15,9 +19,10 @@ export function GridTileImage({
     amount: string;
     currencyCode: string;
     compareAtPrice?: string;
-    position?: "bottom" | "center";
   };
   colorOptions?: string[];
+  variantId?: string;
+  handle?: string;
 } & React.ComponentProps<typeof Image>) {
   const amount = parseFloat(label?.amount || "0");
   const compareAtAmount = parseFloat(label?.compareAtPrice || "0");
@@ -33,28 +38,35 @@ export function GridTileImage({
     }).format(parseFloat(val));
   };
 
-  const truncateTitle = (str: string, limit: number) => {
-    if (!str) return "";
-    return str.length > limit ? str.substring(0, limit) + "..." : str;
-  };
-
   return (
     <div
       className={clsx(
-        "group flex flex-col h-full w-full bg-white overflow-hidden border border-surface/10 rounded-md transition-shadow duration-300",
+        "group flex flex-col h-full w-full bg-white overflow-hidden border border-border-l transition-all duration-300",
         {
           "ring-1 ring-inset ring-primary": active,
         },
       )}
     >
-      <div className="relative aspect-[4/3] w-full overflow-hidden flex items-center justify-center border-b border-surface/10">
+      <div className="relative aspect-square w-full overflow-hidden flex items-center justify-center bg-white">
         {discountPercent > 0 && (
-          <div className="absolute left-2 top-2 z-10 md:left-3 md:top-3">
-            <span className="bg-accent-red px-1 py-0.5 text-[8px] md:text-[10px] font-bold tracking-tighter text-white uppercase">
+          <div className="absolute left-0 top-3 z-10">
+            <span className="bg-accent-red px-2 py-0.5 text-[8px] md:text-[10px] font-bold tracking-[0.1em] text-white uppercase">
               {discountPercent}% OFF
             </span>
           </div>
         )}
+
+        <div className="absolute right-2 top-2 flex flex-col gap-1 z-10">
+          {colorOptions
+            ?.slice(0, 3)
+            .map((color, index) => (
+              <div
+                key={index}
+                className="h-1.5 w-1.5 md:h-2 md:w-2 rounded-full border border-border-l shadow-sm"
+                style={{ backgroundColor: getHexColor(color) }}
+              />
+            ))}
+        </div>
 
         {props.src ? (
           <Image
@@ -69,51 +81,19 @@ export function GridTileImage({
         ) : null}
       </div>
 
-      <div className="flex flex-col justify-between h-[85px] md:h-[90px] px-2.5 py-2 md:px-3 md:py-2.5 bg-white">
-        <div>
-          <h3 className="font-product text-[11px] md:text-[13px] uppercase leading-tight tracking-[0.03em] text-primary">
-            {truncateTitle(label?.title || "", 55)}
-          </h3>
-        </div>
-
-        <div className="flex items-end justify-between">
-          <div className="flex flex-col">
-            <span className="font-body text-[6px] md:text-[7px] uppercase tracking-widest text-muted leading-none mb-0.5 md:mb-1">
-              From
+      <div className="flex border-t border-border-l items-stretch bg-white relative">
+        <div className="flex-1 flex flex-col p-3 md:p-4 min-w-0 justify-center">
+          <h4 className="font-product text-[10px] md:text-[11px] uppercase tracking-wider mb-0.5 text-primary font-bold line-clamp-1">
+            {label?.title}
+          </h4>
+          <div className="flex items-center gap-1.5">
+            <span className="font-nav text-[9px] md:text-[10px] text-primary font-medium">
+              PHP {formatNumber(label?.amount || "0")}
             </span>
-            <div className="flex items-baseline gap-1">
-              <span className="font-body text-[13px] md:text-[15px] font-bold text-primary tracking-tighter leading-none flex items-baseline">
-                <span className="text-[0.9em] font-medium mr-1">PHP</span>
-                {formatNumber(label?.amount || "0")}
+            {compareAtAmount > amount && (
+              <span className="font-nav text-[8px] text-muted line-through opacity-60">
+                {formatNumber(label?.compareAtPrice || "0")}
               </span>
-
-              {compareAtAmount > amount && (
-                <span className="hidden sm:inline font-body text-[9px] text-muted line-through decoration-surface/20 ml-1">
-                  PHP {formatNumber(label?.compareAtPrice || "0")}
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className="flex gap-1 pb-0.5">
-            {colorOptions && colorOptions.length > 0 ? (
-              colorOptions
-                .slice(0, 3)
-                .map((hex, index) => (
-                  <div
-                    key={index}
-                    className={clsx(
-                      "h-1.5 w-1.5 md:h-2 md:w-2 rounded-full border shadow-sm",
-                      hex.toUpperCase() === "#FFFFFF" ||
-                        hex.toUpperCase() === "#FAFAFA"
-                        ? "border-border-l"
-                        : "border-transparent",
-                    )}
-                    style={{ backgroundColor: hex }}
-                  />
-                ))
-            ) : (
-              <div className="h-1.5 w-1.5 md:h-2 md:w-2 rounded-full border border-dashed border-border-l bg-transparent" />
             )}
           </div>
         </div>

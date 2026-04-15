@@ -45,7 +45,7 @@ export function InfoBlock({ variant, title, description }: InfoBlockProps) {
           >
             <span className="w-1 h-1 rounded-full bg-accent-red animate-pulse" />
             <span className="font-nav text-[9px] uppercase tracking-[0.3em] text-muted">
-              Interface
+              Signature Interface
             </span>
           </motion.div>
 

@@ -1,4 +1,5 @@
 import { addItem } from "components/cart/actions";
+import { getHexColor } from "lib/constants";
 import { getCollectionProducts } from "lib/shopify";
 import Image from "next/image";
 import Link from "next/link";
@@ -81,11 +82,12 @@ async function CollectionSection({
               {title}
             </span>
           </div>
+
           <Link
-            href={`/collections/${handle}`}
+            href={`/search/${handle}`}
             className="font-nav text-[9px] uppercase tracking-[0.3em] text-muted hover:text-primary transition-colors border-b border-transparent hover:border-primary pb-1"
           >
-            See All
+            See All {title}
           </Link>
         </div>
 
@@ -145,14 +147,30 @@ async function CollectionSection({
           </div>
         </div>
 
+        {/* Small Grid Row */}
         {products.length > 1 && (
           <div className="border-t border-border-l">
             <div className="grid grid-cols-2 lg:grid-cols-4">
               {products.slice(1, 5).map((p, index) => {
-                const currentPrice = parseFloat(
-                  p.priceRange.minVariantPrice.amount,
+                const amount = parseFloat(p.priceRange.minVariantPrice.amount);
+                const compareAtAmount = parseFloat(
+                  p.variants[0]?.compareAtPrice?.amount || "0",
                 );
+                const discountPercent =
+                  compareAtAmount > amount
+                    ? Math.round(
+                        ((compareAtAmount - amount) / compareAtAmount) * 100,
+                      )
+                    : 0;
+
                 const gridVariantId = p.variants[0]?.id;
+                const colorOptions = p.options
+                  ?.find(
+                    (opt) =>
+                      opt.name.toLowerCase() === "color" ||
+                      opt.name.toLowerCase() === "colour",
+                  )
+                  ?.values.slice(0, 3);
 
                 return (
                   <div
@@ -161,6 +179,24 @@ async function CollectionSection({
                     ${index >= 2 ? "border-t lg:border-t-0" : ""}`}
                   >
                     <div className="relative aspect-square flex items-center justify-center overflow-hidden bg-white">
+                      {discountPercent > 0 && (
+                        <div className="absolute left-0 top-3 z-10">
+                          <span className="bg-accent-red px-2 py-0.5 text-[8px] md:text-[9px] font-bold tracking-[0.1em] text-white uppercase">
+                            {discountPercent}% OFF
+                          </span>
+                        </div>
+                      )}
+
+                      <div className="absolute right-2 top-2 flex flex-col gap-1 z-10">
+                        {colorOptions?.map((color, i) => (
+                          <div
+                            key={i}
+                            className="h-1.5 w-1.5 rounded-full border border-border-l shadow-sm"
+                            style={{ backgroundColor: getHexColor(color) }}
+                          />
+                        ))}
+                      </div>
+
                       <Link
                         href={`/product/${p.handle}`}
                         className="relative w-full h-full"
@@ -184,7 +220,7 @@ async function CollectionSection({
                         />
                         <button
                           type="submit"
-                          className="w-full bg-primary text-white font-nav text-[10px] py-5 uppercase tracking-[0.3em] font-bold"
+                          className="w-full bg-primary text-white font-nav text-[10px] py-5 uppercase tracking-[0.3em] font-bold hover:bg-black/90"
                         >
                           + Add to Bag
                         </button>
@@ -194,14 +230,21 @@ async function CollectionSection({
                     <div className="flex border-t border-border-l items-stretch bg-white relative z-20">
                       <Link
                         href={`/product/${p.handle}`}
-                        className="flex-1 flex flex-col p-4 lg:p-6 min-w-0 min-h-[80px] lg:min-h-0 justify-center"
+                        className="flex-1 flex flex-col p-3 lg:p-6 min-w-0 justify-center"
                       >
-                        <h4 className="font-ui text-[10px] lg:text-[12px] uppercase tracking-wider mb-1 text-primary font-bold line-clamp-2">
+                        <h4 className="font-product text-[10px] lg:text-[12px] uppercase tracking-wider mb-0.5 text-primary font-bold line-clamp-1">
                           {p.title}
                         </h4>
-                        <span className="font-nav text-[9px] lg:text-[10px] text-muted uppercase">
-                          PHP {currentPrice.toFixed(0)}
-                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-nav text-[9px] lg:text-[10px] text-primary font-medium">
+                            PHP {amount.toFixed(0)}
+                          </span>
+                          {compareAtAmount > amount && (
+                            <span className="font-nav text-[8px] text-muted line-through opacity-60">
+                              {compareAtAmount.toFixed(0)}
+                            </span>
+                          )}
+                        </div>
                       </Link>
 
                       <form
@@ -215,7 +258,7 @@ async function CollectionSection({
                         />
                         <button
                           type="submit"
-                          className="px-6 flex items-center justify-center bg-white active:bg-off-white text-primary"
+                          className="px-5 flex items-center justify-center bg-white active:bg-off-white text-primary"
                         >
                           <span className="font-product text-2xl leading-none">
                             +

@@ -13,7 +13,7 @@ export default async function HomePage() {
   if (!products || products.length === 0) return null;
 
   return (
-    <main className="bg-white">
+    <div className="bg-white">
       {/* 1. Hero */}
       <Hero product={products[0]} />
 
@@ -33,6 +33,6 @@ export default async function HomePage() {
         title="The Glyph Matrix. New Light."
         description="Redefining how you interact with your device. 900+ individually addressable LED dots form a circular matrix that communicates notifications and status without needing the screen."
       />
-    </main>
+    </div>
   );
 }

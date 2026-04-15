@@ -1,69 +1,102 @@
-import FooterMenu from "components/layout/footer-menu";
-import LogoSquare from "components/logo-square";
-import { getMenu } from "lib/shopify";
 import Link from "next/link";
-import { Suspense } from "react";
+import { LiaBehance, LiaLinkedin } from "react-icons/lia";
+import { LuMail } from "react-icons/lu";
 
-const { COMPANY_NAME, SITE_NAME } = process.env;
-
-export default async function Footer() {
-  const currentYear = new Date().getFullYear();
-  const copyrightDate = 2023 + (currentYear > 2023 ? `-${currentYear}` : "");
-  const skeleton = "w-full h-4 animate-pulse bg-border-l";
-  const menu = await getMenu("next-js-frontend-footer-menu");
-  const copyrightName = COMPANY_NAME || SITE_NAME || "";
+export default function Footer() {
+  const LIA_SIZE = 18;
+  const LU_SIZE = 16;
 
   return (
-    <footer className="bg-white border-t border-border-l font-nav">
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-12 px-6 py-16 md:flex-row md:px-16">
-        <div className="flex flex-col gap-6">
-          <Link className="flex items-center gap-3 text-primary" href="/">
-            <LogoSquare size="sm" />
-            <span className="uppercase text-[11px] tracking-[0.4em] font-bold">
-              {SITE_NAME}
+    <footer className="w-full border-t border-border-l bg-surface px-6 py-10 md:py-8 font-body text-off-white">
+      <div className="mx-auto max-w-(--breakpoint-2xl)">
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-2 gap-y-10 md:flex md:items-end md:justify-between md:gap-x-10">
+          {/* Brand Identity */}
+          <div className="col-span-2 flex flex-col gap-2 md:col-span-1">
+            <h2 className="font-logo text-2xl tracking-tighter uppercase leading-none text-off-white">
+              Nothing{" "}
+              <span className="text-[8px] align-top opacity-30">®</span>
+            </h2>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] uppercase tracking-[0.2em]">
+              <span className="font-bold text-off-white/80">
+                UNSOLICITED CONCEPT BY Eloisa Jane Talingting
+              </span>
+              <span className="hidden h-1 w-1 rounded-full bg-border-l md:block" />
+              <span className="opacity-60 md:opacity-100">v01.2026</span>
+            </div>
+          </div>
+
+          {/* Compact Socials */}
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:gap-6">
+            <span className="text-[9px] uppercase tracking-[0.3em] text-border-l md:hidden">
+              Connect
             </span>
-          </Link>
-          <p className="text-[10px] text-muted max-w-[240px] leading-relaxed uppercase tracking-wider">
-            Building the next generation of technical design systems.
-          </p>
+            <div className="flex flex-col gap-3 md:flex-row md:gap-6">
+              <a
+                href="mailto:talingting.eloise@gmail.com"
+                className="flex items-center gap-2 hover:opacity-60 transition-opacity"
+              >
+                <LuMail size={LU_SIZE} strokeWidth={1.5} />
+                <span className="text-[10px] uppercase tracking-widest">
+                  Email
+                </span>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/eloisetalingting/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:opacity-60 transition-opacity"
+              >
+                <LiaLinkedin size={LIA_SIZE} />
+                <span className="text-[10px] uppercase tracking-widest">
+                  LinkedIn
+                </span>
+              </a>
+              <a
+                href="https://www.behance.net/is_aelo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:opacity-60 transition-opacity"
+              >
+                <LiaBehance size={LIA_SIZE} />
+                <span className="text-[10px] uppercase tracking-widest">
+                  Behance
+                </span>
+              </a>
+            </div>
+          </div>
+
+          {/* System & Disclaimer */}
+          <div className="flex flex-col gap-4 md:items-end md:gap-1">
+            <span className="text-[9px] uppercase tracking-[0.3em] text-border-l">
+              System
+            </span>
+            <div className="flex flex-col gap-1 text-[10px] uppercase tracking-tight md:flex-row md:items-center md:gap-2">
+              <Link
+                href="https://github.com/vercel/commerce"
+                className="hover:underline"
+              >
+                Vercel Commerce
+              </Link>
+              <span className="hidden text-border-l md:block">/</span>
+              <span className="opacity-70">Shopify Headless</span>
+            </div>
+            {/* Disclaimer Text */}
+            <p className="max-w-[200px] text-[8px] leading-tight uppercase tracking-tighter opacity-30 md:text-right">
+              This is a non-commercial educational project. Not affiliated with,
+              authorized, or endorsed by Nothing Technology Limited.
+            </p>
+          </div>
         </div>
 
-        <Suspense
-          fallback={
-            <div className="flex w-[200px] flex-col gap-3">
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-            </div>
-          }
-        >
-          <div className="md:ml-24">
-            <FooterMenu menu={menu} />
-          </div>
-        </Suspense>
-      </div>
-
-      <div className="border-t border-border-l py-8">
-        <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start gap-4 px-6 md:flex-row md:items-center md:px-16">
-          <p className="text-[9px] uppercase tracking-[0.2em] text-muted">
-            &copy; {copyrightDate} {copyrightName}. ALL RIGHTS RESERVED.
-          </p>
-
-          <div className="flex items-center gap-6 md:ml-auto">
-            <a
-              href="https://github.com/vercel/commerce"
-              className="text-[9px] uppercase tracking-[0.2em] text-muted hover:text-primary transition-colors"
-            >
-              Source
-            </a>
-            <span className="text-border-l">/</span>
-            <Link
-              href="/privacy-policy"
-              className="text-[9px] uppercase tracking-[0.2em] text-muted hover:text-primary transition-colors"
-            >
-              Privacy
-            </Link>
-          </div>
+        {/* Bottom Strip */}
+        <div className="mt-10 border-t border-border-l pt-6 flex flex-col gap-4 md:mt-8 md:flex-row md:justify-between md:items-center text-[9px] uppercase tracking-[0.4em]">
+          <span className="opacity-40 order-2 md:order-1">
+            © 2026 All Rights Reserved
+          </span>
+          <span className="font-logo opacity-60 order-1 md:order-2">
+            Built to be different.
+          </span>
         </div>
       </div>
     </footer>
