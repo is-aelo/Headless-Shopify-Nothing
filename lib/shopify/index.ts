@@ -140,7 +140,7 @@ const reshapeCart = (cart: ShopifyCart): Cart => {
       ...line,
       merchandise: {
         ...line.merchandise,
-        product: reshapeProduct(line.merchandise.product, false) as Product,
+        product: reshapeProduct(line.merchandise.product as any, false) as any,
       },
     })),
   };
@@ -190,7 +190,7 @@ const reshapeImages = (images: Connection<Image>, productTitle: string) => {
 const reshapeProduct = (
   product: ShopifyProduct,
   filterHiddenProducts: boolean = true,
-) => {
+): Product | undefined => {
   if (
     !product ||
     (filterHiddenProducts && product.tags.includes(HIDDEN_PRODUCT_TAG))
@@ -212,13 +212,13 @@ const reshapeProduct = (
             altText:
               variant.image.altText || `${product.title} - ${variant.title}`,
           }
-        : null,
+        : undefined, // Changed null to undefined to match Image | undefined type
     })),
-  };
+  } as Product;
 };
 
 const reshapeProducts = (products: ShopifyProduct[]) => {
-  const reshapedProducts = [];
+  const reshapedProducts: Product[] = [];
 
   for (const product of products) {
     if (product) {
@@ -511,10 +511,10 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ status: 200 });
   }
   if (isCollectionUpdate) {
-    revalidateTag(TAGS.collections);
+    revalidateTag(TAGS.collections, "profile");
   }
   if (isProductUpdate) {
-    revalidateTag(TAGS.products);
+    revalidateTag(TAGS.products, "profile");
   }
   return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
 }
