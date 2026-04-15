@@ -10,12 +10,19 @@ export default async function HomePage() {
     reverse: true,
   });
 
-  if (!products || products.length === 0) return null;
+  // Safety check: If no products found, don't crash the build/page
+  if (!products || products.length === 0) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center font-mono text-xs uppercase tracking-widest text-black">
+        No products found in "newest-release" collection.
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white">
-      {/* 1. Hero */}
-      <Hero product={products[0]} />
+      {/* 1. Hero - Added ! to tell TS products[0] is guaranteed to exist */}
+      <Hero product={products[0]!} />
 
       {/* 2. Nothing OS */}
       <InfoBlock
