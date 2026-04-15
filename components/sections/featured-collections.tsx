@@ -4,7 +4,12 @@ import { getCollectionProducts } from "lib/shopify";
 import Image from "next/image";
 import Link from "next/link";
 
-function parseProductData(htmlDescription: string) {
+function parseProductData(htmlDescription: string | undefined) {
+  // Check if htmlDescription exists, if not return empty data
+  if (!htmlDescription) {
+    return { intro: "", specs: [] };
+  }
+
   const cleanText = htmlDescription
     .replace(/<\/p>|<\/li>|<div>/gi, "\n")
     .replace(/<[^>]*>/g, "")
@@ -19,7 +24,7 @@ function parseProductData(htmlDescription: string) {
   for (const line of cleanText) {
     if (line.includes(":")) {
       const parts = line.split(":");
-      const label = parts[0].replace(/[•*]/g, "").trim();
+      const label = parts[0]?.replace(/[•*]/g, "").trim();
       const value = parts.slice(1).join(":").trim();
       if (label && value && specs.length < 4) {
         specs.push({ label: label.toUpperCase(), value });
@@ -55,9 +60,14 @@ async function CollectionSection({
   accentColor?: string;
 }) {
   const products = await getCollectionProducts({ collection: handle });
+
   if (!products || products.length === 0) return null;
 
   const product = products[0];
+
+  // Final check for product existence to satisfy TS
+  if (!product) return null;
+
   const variantId = product.variants?.[0]?.id;
   const { intro, specs } = parseProductData(
     product.descriptionHtml || product.description,
