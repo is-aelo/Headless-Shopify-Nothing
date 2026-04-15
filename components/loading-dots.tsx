@@ -1,9 +1,9 @@
 "use client";
 
 import clsx from "clsx";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
-const containerVariants = {
+const containerVariants: Variants = {
   initial: {},
   animate: {
     transition: {
@@ -12,7 +12,7 @@ const containerVariants = {
   },
 };
 
-const dotVariants = {
+const dotVariants: Variants = {
   initial: {
     opacity: 0.2,
     scale: 0.8,
