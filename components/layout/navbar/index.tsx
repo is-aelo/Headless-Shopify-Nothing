@@ -29,7 +29,14 @@ export async function Navbar() {
               <MobileMenu menu={menu} collections={collections} />
             </Suspense>
             <div className="flex h-10 w-10 md:w-full md:max-w-[200px] lg:max-w-[280px] items-center justify-center">
-              <Search />
+              {/* FIXED: Wrapped Search in Suspense to prevent build error on static pages */}
+              <Suspense
+                fallback={
+                  <div className="h-4 w-full animate-pulse bg-neutral-200" />
+                }
+              >
+                <Search />
+              </Suspense>
             </div>
           </div>
 
