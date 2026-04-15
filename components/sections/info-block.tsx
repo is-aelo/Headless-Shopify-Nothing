@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 type InfoBlockProps = {
   variant: "glyph" | "os";
@@ -34,7 +36,6 @@ export function InfoBlock({ variant, title, description }: InfoBlockProps) {
   ];
 
   if (variant === "glyph") {
-    // UPDATED: Now uses bg-off-white, standardizing the aesthetic
     return (
       <section className="relative bg-off-white py-12 md:py-20 px-6 overflow-hidden">
         <div className="relative max-w-[1200px] mx-auto flex flex-col items-center text-center">
@@ -57,7 +58,7 @@ export function InfoBlock({ variant, title, description }: InfoBlockProps) {
             {description}
           </motion.p>
 
-          <div className="relative flex justify-center items-center">
+          <div className="relative flex flex-col items-center gap-12">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -90,6 +91,26 @@ export function InfoBlock({ variant, title, description }: InfoBlockProps) {
                   })}
                 </div>
               </div>
+            </motion.div>
+
+            {/* CTA SECTION */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <Link
+                href="/search/phones"
+                className="group flex flex-col items-center gap-2"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="font-nav text-[11px] md:text-[13px] uppercase tracking-[0.2em] text-primary">
+                    Explore Nothing Phones
+                  </span>
+                  <ArrowRight className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform duration-300" />
+                </div>
+                <div className="w-0 h-[1px] bg-primary group-hover:w-full transition-all duration-500 ease-out" />
+              </Link>
             </motion.div>
           </div>
         </div>

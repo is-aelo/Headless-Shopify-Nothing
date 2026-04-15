@@ -1,11 +1,11 @@
 import { CartProvider } from "components/cart/cart-context";
+import Footer from "components/layout/footer";
 import { MainWrapper } from "components/layout/main-wrapper";
 import { Navbar } from "components/layout/navbar";
-import { WelcomeToast } from "components/welcome-toast";
 import { GeistMono } from "geist/font/mono";
 import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
-import { ReactNode, Suspense } from "react"; // [2] Added Suspense
+import { ReactNode, Suspense } from "react";
 import { Toaster } from "sonner";
 import { ndot57, ndot57Caps, nType82, shareTechMono } from "./fonts";
 import "./globals.css";
@@ -47,10 +47,10 @@ export default async function RootLayout({
           <Navbar />
           <MainWrapper>
             {children}
-            {/* [3] Call Footer inside MainWrapper */}
-            <Suspense>{/* <Footer /> */}</Suspense>
+            <Suspense fallback={<div className="h-40 w-full" />}>
+              <Footer />
+            </Suspense>
             <Toaster closeButton />
-            <WelcomeToast />
           </MainWrapper>
         </CartProvider>
       </body>

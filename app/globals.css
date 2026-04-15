@@ -5,18 +5,25 @@
 
 @theme {
   /* ── FONT FAMILY MAPPINGS ── */
+  /* Pananatilihin ang naming convention mo para hindi masira ang ibang files */
+  --font-ndot-caps: var(--font-ndot-caps);
+  --font-ndot: var(--font-ndot);
+  --font-ntype: var(--font-ntype);
+
+  /* Reference directly to existing variables in theme */
   --font-logo: var(--font-ndot-caps);
   --font-nav: var(--font-ndot);
   --font-product: var(--font-ntype);
 
-  /* Swapped Space Mono for Geist Mono */
+  /* Body is Geist Mono */
   --font-body: var(--font-geist-mono);
 
-  --font-ui: var(--font-share-tech);
+  /* Share-tech is missing, so we use Geist Mono as fallback */
+  --font-ui: var(--font-geist-mono);
 
   /* ── CUSTOM TYPOGRAPHY SCALE ── */
   --font-size-body-base: 13px;
-  --line-height-body-base: 1.6; /* Adjusted for Geist Mono readability */
+  --line-height-body-base: 1.6;
 
   /* ── BRAND COLOR PALETTE ── */
   --color-primary: #000000;
