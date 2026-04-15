@@ -63,14 +63,18 @@ export default async function ProductPage(props: {
       const optionName = option.name.toLowerCase();
       const paramValue =
         searchParams[optionName] || searchParams[optionName.replace(/ /g, "+")];
+
       if (!paramValue) return false;
+
       const currentParam = Array.isArray(paramValue)
         ? paramValue[0]
         : paramValue;
 
+      // Fixed: Added check to ensure currentParam exists before running string methods
       return (
+        currentParam &&
         decodeURIComponent(currentParam.toLowerCase().replace(/\+/g, " ")) ===
-        option.value.toLowerCase()
+          option.value.toLowerCase()
       );
     }),
   );
@@ -83,7 +87,7 @@ export default async function ProductPage(props: {
     "@type": "Product",
     name: product.title,
     description: product.description,
-    image: product.featuredImage.url,
+    image: product.featuredImage?.url || "",
     offers: {
       "@type": "AggregateOffer",
       availability: product.availableForSale
@@ -126,7 +130,6 @@ export default async function ProductPage(props: {
             <Suspense fallback={null}>
               <ProductDescription product={product} />
             </Suspense>
-            {/* The trigger for the toast - position is handled by Toast Viewport */}
             <div className="mt-8">
               <ToastDemo />
             </div>
