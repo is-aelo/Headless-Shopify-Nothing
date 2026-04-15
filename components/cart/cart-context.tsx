@@ -108,6 +108,8 @@ function createOrUpdateCartItem(
         handle: product.handle,
         title: product.title,
         featuredImage: variant.image ?? product.featuredImage,
+        // Fixed: Added variants property to satisfy CartProduct type requirements
+        variants: product.variants,
       },
     },
   };
