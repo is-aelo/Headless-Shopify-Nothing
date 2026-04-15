@@ -12,14 +12,21 @@ const getHexColor = (colorName: string): string => {
   const normalizedName = colorName.toLowerCase().trim();
 
   // 1. Check for exact match
-  if (COLOR_MAP[normalizedName]) return COLOR_MAP[normalizedName];
+  if (normalizedName in COLOR_MAP) {
+    return COLOR_MAP[normalizedName as keyof typeof COLOR_MAP] as string;
+  }
 
   // 2. Check if the string contains any of our known keys
   const keyMatch = Object.keys(COLOR_MAP).find((key) =>
     normalizedName.includes(key),
   );
 
-  return keyMatch ? COLOR_MAP[keyMatch] : "#FFFFFF";
+  // Use a fallback and ensure return type is string
+  if (keyMatch) {
+    return COLOR_MAP[keyMatch as keyof typeof COLOR_MAP] as string;
+  }
+
+  return "#FFFFFF";
 };
 
 export default function ProductGridItems({
@@ -31,11 +38,9 @@ export default function ProductGridItems({
     <>
       {products.map((product) => {
         // 1. Collect all possible values from all options (Color, Style, Material, etc.)
-        // This ensures we don't miss anything regardless of how the Shopify admin named it.
         const allOptionValues = product.options.flatMap((opt) => opt.values);
 
         // 2. Filter these values based on whether we actually have a hex code for them
-        // This prevents showing swatches for "Large", "128GB", etc.
         const colorValues = allOptionValues.filter((val) => {
           const normalized = val.toLowerCase().trim();
           return Object.keys(COLOR_MAP).some((key) => normalized.includes(key));
