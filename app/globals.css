@@ -8,12 +8,15 @@
   --font-logo: var(--font-ndot-caps);
   --font-nav: var(--font-ndot);
   --font-product: var(--font-ntype);
-  --font-body: var(--font-space-mono);
+
+  /* Swapped Space Mono for Geist Mono */
+  --font-body: var(--font-geist-mono);
+
   --font-ui: var(--font-share-tech);
 
   /* ── CUSTOM TYPOGRAPHY SCALE ── */
   --font-size-body-base: 13px;
-  --line-height-body-base: 1.7;
+  --line-height-body-base: 1.6; /* Adjusted for Geist Mono readability */
 
   /* ── BRAND COLOR PALETTE ── */
   --color-primary: #000000;
@@ -72,11 +75,11 @@
   justify-content: center;
   background-color: var(--color-surface);
   color: var(--color-white);
-  padding: 1.1rem 1.5rem; /* Slightly taller for the larger logo font */
+  padding: 1.1rem 1.5rem;
   border-radius: 10px;
   font-family: var(--font-logo);
   text-transform: uppercase;
-  letter-spacing: 0.05em; /* Spaced out slightly for readability in dot-matrix caps */
+  letter-spacing: 0.05em;
   transition-property: all;
   transition-duration: 200ms;
 

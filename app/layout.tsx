@@ -1,14 +1,15 @@
 import { CartProvider } from "components/cart/cart-context";
+import Footer from "components/layout/footer"; // [1] Import the Footer
+import { MainWrapper } from "components/layout/main-wrapper";
 import { Navbar } from "components/layout/navbar";
 import { WelcomeToast } from "components/welcome-toast";
+import { GeistMono } from "geist/font/mono";
 import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react"; // [2] Added Suspense
 import { Toaster } from "sonner";
-import { ndot57, ndot57Caps, nType82, shareTechMono, spaceMono } from "./fonts";
+import { ndot57, ndot57Caps, nType82, shareTechMono } from "./fonts";
 import "./globals.css";
-// 1. Import the wrapper
-import { MainWrapper } from "components/layout/main-wrapper";
 
 const { SITE_NAME } = process.env;
 
@@ -35,19 +36,22 @@ export default async function RootLayout({
     <html
       lang="en"
       className={`
+        ${GeistMono.variable}
         ${ndot57.variable} 
         ${ndot57Caps.variable} 
         ${nType82.variable} 
-        ${shareTechMono.variable} 
-        ${spaceMono.variable}
+        ${shareTechMono.variable}
       `}
     >
-      <body className="antialiased">
+      <body className="antialiased font-body">
         <CartProvider cartPromise={cart}>
           <Navbar />
-          {/* 2. Use MainWrapper instead of <main className="pt-12 md:pt-24"> */}
           <MainWrapper>
             {children}
+            {/* [3] Call Footer inside MainWrapper */}
+            <Suspense>
+              <Footer />
+            </Suspense>
             <Toaster closeButton />
             <WelcomeToast />
           </MainWrapper>

@@ -1,34 +1,38 @@
 import FeaturedCollections from "components/sections/featured-collections";
 import { Hero } from "components/sections/hero";
+import { InfoBlock } from "components/sections/info-block";
 import { getCollectionProducts } from "lib/shopify";
 
 export default async function HomePage() {
-  // Use the hyphenated handle 'newest-release'
   const products = await getCollectionProducts({
     collection: "newest-release",
     sortKey: "CREATED_AT",
     reverse: true,
   });
 
-  if (!products || products.length === 0) {
-    return (
-      <main className="flex h-screen items-center justify-center bg-black">
-        <p className="font-logo text-xs uppercase tracking-widest text-white">
-          Collection "newest-release" not found or empty.
-        </p>
-      </main>
-    );
-  }
+  if (!products || products.length === 0) return null;
 
   return (
     <main className="bg-white">
-      {/* 1. Hero Section: Displays the single newest flagship item */}
+      {/* 1. Hero */}
       <Hero product={products[0]} />
 
-      {/* 2. Featured Sections: Displays categorized collections with technical specs */}
+      {/* 2. Nothing OS */}
+      <InfoBlock
+        variant="os"
+        title="Nothing OS. Pure Instinct."
+        description="Fast, smooth, and distraction-free. By stripping away bloatware and focusing on intentional UI, Nothing OS provides a technical yet human experience that keeps you in the moment."
+      />
+
+      {/* 3. Products */}
       <FeaturedCollections />
 
-      {/* 3. Future Sections (Newsletter, Footer, etc.) can go here */}
+      {/* 4. Glyph Matrix */}
+      <InfoBlock
+        variant="glyph"
+        title="The Glyph Matrix. New Light."
+        description="Redefining how you interact with your device. 900+ individually addressable LED dots form a circular matrix that communicates notifications and status without needing the screen."
+      />
     </main>
   );
 }
