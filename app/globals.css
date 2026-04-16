@@ -7,7 +7,7 @@
   /* ── FONT FAMILY MAPPINGS ── */
   --font-logo: var(--font-ndot-caps);
   --font-nav: var(--font-ndot);
-  --font-product: var(--font-ntype);
+  --font-product: var(--font-ntype); /* Space Grotesk mapping */
 
   /* Body using Geist Mono */
   --font-body: var(--font-geist-mono);
@@ -50,6 +50,16 @@
       auto;
   }
 
+  /* Explicitly apply the font-product (Grotesk) to headings for better inheritance */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-product);
+  }
+
   a,
   button,
   [role="button"],
@@ -62,6 +72,12 @@
 }
 
 /* ── TAILWIND V4 CUSTOM UTILITIES ── */
+
+/* Force register font-product utility for Grotesk */
+@utility font-product {
+  font-family: var(--font-product);
+}
+
 @utility btn-nothing-primary {
   display: flex;
   width: 100%;
@@ -70,7 +86,6 @@
   background-color: var(--color-surface);
   color: var(--color-white);
   padding: 1.1rem 1.5rem;
-  /* Retaining the 8px roundedness for main actions */
   border-radius: 8px;
   font-family: var(--font-logo);
   text-transform: uppercase;
@@ -100,7 +115,6 @@
   background-color: transparent;
   color: var(--color-surface);
   padding: 0.5rem 1rem;
-  /* Matched to 8px for consistency with primary */
   border-radius: 8px;
   font-family: var(--font-ui);
   font-size: 0.875rem;
@@ -116,7 +130,7 @@
 
   &[aria-selected="true"] {
     background-color: var(--color-surface);
-    color: var(--color-white);
+    color: var(--white);
   }
 }
 
