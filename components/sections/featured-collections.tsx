@@ -117,7 +117,7 @@ async function CollectionSection({
           </div>
 
           <div className="w-full lg:w-1/2 flex flex-col justify-center">
-            <h3 className="font-product text-[clamp(2.5rem,7vw,5rem)] leading-[0.9] tracking-tighter uppercase mb-8 text-primary">
+            <h3 className="font-logo text-[clamp(2.5rem,7vw,5rem)] leading-[0.9] tracking-tighter uppercase mb-8 text-primary">
               {product.title}
             </h3>
             {intro && (

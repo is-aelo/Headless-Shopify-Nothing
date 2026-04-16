@@ -7,18 +7,18 @@ export default function Footer() {
   const LU_SIZE = 16;
 
   return (
-    <footer className="w-full border-t border-border-l bg-surface px-6 py-10 md:py-8 font-body text-off-white">
+    <footer className="w-full border-t border-border-l bg-off-white px-6 py-10 md:py-8 font-body text-surface">
       <div className="mx-auto max-w-(--breakpoint-2xl)">
         {/* Main Content Grid */}
         <div className="grid grid-cols-2 gap-y-10 md:flex md:items-end md:justify-between md:gap-x-10">
           {/* Brand Identity */}
           <div className="col-span-2 flex flex-col gap-2 md:col-span-1">
-            <h2 className="font-logo text-2xl tracking-tighter uppercase leading-none text-off-white">
+            <h2 className="font-logo text-2xl tracking-tighter uppercase leading-none text-surface">
               Nothing{" "}
               <span className="text-[8px] align-top opacity-30">®</span>
             </h2>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] uppercase tracking-[0.2em]">
-              <span className="font-bold text-off-white/80">
+              <span className="font-bold text-surface/80">
                 UNSOLICITED CONCEPT BY Eloisa Jane Talingting
               </span>
               <span className="hidden h-1 w-1 rounded-full bg-border-l md:block" />
@@ -36,7 +36,11 @@ export default function Footer() {
                 href="mailto:talingting.eloise@gmail.com"
                 className="flex items-center gap-2 hover:opacity-60 transition-opacity"
               >
-                <LuMail size={LU_SIZE} strokeWidth={1.5} />
+                <LuMail
+                  size={LU_SIZE}
+                  strokeWidth={1.5}
+                  color="var(--border-l)"
+                />
                 <span className="text-[10px] uppercase tracking-widest">
                   Email
                 </span>
@@ -47,7 +51,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 hover:opacity-60 transition-opacity"
               >
-                <LiaLinkedin size={LIA_SIZE} />
+                <LiaLinkedin size={LIA_SIZE} color="var(--border-l)" />
                 <span className="text-[10px] uppercase tracking-widest">
                   LinkedIn
                 </span>
@@ -58,7 +62,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 hover:opacity-60 transition-opacity"
               >
-                <LiaBehance size={LIA_SIZE} />
+                <LiaBehance size={LIA_SIZE} color="var(--border-l)" />
                 <span className="text-[10px] uppercase tracking-widest">
                   Behance
                 </span>

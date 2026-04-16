@@ -6,6 +6,7 @@ import Link from "next/link";
 import { GridTileImage } from "../../../components/grid/tile";
 import { Gallery } from "../../../components/product/gallery";
 import { ProductDescription } from "../../../components/product/product-description";
+import ToastDemo from "../../../components/toast-demo";
 import { HIDDEN_PRODUCT_TAG } from "../../../lib/constants";
 import { getProduct, getProductRecommendations } from "../../../lib/shopify";
 import { Image, Product } from "../../../lib/shopify/types";
@@ -80,8 +81,10 @@ export default async function ProductPage(props: {
           __html: JSON.stringify(productJsonLd),
         }}
       />
-      <div className="mx-auto max-w-screen-2xl px-4">
-        <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 md:p-12 lg:flex-row lg:gap-8 dark:border-neutral-800 dark:bg-black">
+      {/* ToastDemo moved inside the relative container to avoid root-level hydration issues */}
+      <div className="mx-auto max-w-screen-2xl px-4 relative">
+        <ToastDemo />
+        <div className="flex flex-col rounded-lg border border-border-l bg-off-white p-8 md:p-12 lg:flex-row lg:gap-8">
           <div className="h-full w-full basis-full lg:basis-4/6">
             <Suspense
               fallback={
