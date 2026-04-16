@@ -9,7 +9,7 @@ import { ProductDescription } from "../../../components/product/product-descript
 import ToastDemo from "../../../components/toast-demo";
 import { HIDDEN_PRODUCT_TAG } from "../../../lib/constants";
 import { getProduct, getProductRecommendations } from "../../../lib/shopify";
-import { Image, Product } from "../../../lib/shopify/types";
+import { Image, Product, ProductVariant } from "../../../lib/shopify/types";
 
 export async function generateMetadata(props: {
   params: Promise<{ handle: string }>;
@@ -50,11 +50,20 @@ export async function generateMetadata(props: {
 
 export default async function ProductPage(props: {
   params: Promise<{ handle: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const params = await props.params;
+  const searchParams = await props.searchParams;
   const product = await getProduct(params.handle);
 
   if (!product) return notFound();
+
+  // Find the selected variant based on URL search parameters
+  const variant = product.variants.find((variant: ProductVariant) =>
+    variant.selectedOptions.every(
+      (option) => option.value === searchParams[option.name.toLowerCase()],
+    ),
+  );
 
   const productJsonLd = {
     "@context": "https://schema.org",
@@ -81,14 +90,13 @@ export default async function ProductPage(props: {
           __html: JSON.stringify(productJsonLd),
         }}
       />
-      {/* ToastDemo moved inside the relative container to avoid root-level hydration issues */}
       <div className="mx-auto max-w-screen-2xl px-4 relative">
         <ToastDemo />
         <div className="flex flex-col rounded-lg border border-border-l bg-off-white p-8 md:p-12 lg:flex-row lg:gap-8">
           <div className="h-full w-full basis-full lg:basis-4/6">
             <Suspense
               fallback={
-                <div className="relative aspect-square h-full w-full overflow-hidden" />
+                <div className="relative aspect-square h-full w-full overflow-hidden bg-white animate-pulse" />
               }
             >
               <Gallery
@@ -96,6 +104,8 @@ export default async function ProductPage(props: {
                   src: image.url,
                   altText: image.altText,
                 }))}
+                selectedVariantImage={variant?.image?.url}
+                isSoldOut={!variant?.availableForSale}
               />
             </Suspense>
           </div>
@@ -119,7 +129,7 @@ async function RelatedProducts({ id }: { id: string }) {
 
   return (
     <div className="py-8">
-      <h2 className="mb-4 text-2xl font-bold uppercase tracking-tighter">
+      <h2 className="mb-4 text-2xl font-nav uppercase tracking-tighter text-surface">
         Related Products
       </h2>
       <ul className="flex w-full gap-4 overflow-x-auto pt-1">
