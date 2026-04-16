@@ -5,14 +5,13 @@
 
 @theme {
   /* ── FONT FAMILY MAPPINGS ── */
-  /* Explicitly mapping v4 variables to match your fonts.ts exports */
   --font-logo: var(--font-ndot-caps);
   --font-nav: var(--font-ndot);
   --font-product: var(--font-ntype);
 
-  /* Body using Share Tech Mono and UI using Space Mono as per your technical brand aesthetic */
-  --font-body: var(--font-share-tech-mono);
-  --font-ui: var(--font-space-mono);
+  /* Body using Geist Mono */
+  --font-body: var(--font-geist-mono);
+  --font-ui: var(--font-share-tech-mono);
 
   /* ── CUSTOM TYPOGRAPHY SCALE ── */
   --font-size-body-base: 13px;
@@ -34,12 +33,10 @@
   *,
   ::after,
   ::before {
-    /* Using specific brand border variable */
     border-color: var(--color-border-l);
   }
 
   body {
-    /* Enforcing bg-off-white constraint */
     background-color: var(--color-off-white);
     color: var(--color-primary);
     font-family: var(--font-body);
@@ -62,11 +59,6 @@
         16 16,
       pointer !important;
   }
-
-  input,
-  textarea {
-    cursor: text;
-  }
 }
 
 /* ── TAILWIND V4 CUSTOM UTILITIES ── */
@@ -78,7 +70,8 @@
   background-color: var(--color-surface);
   color: var(--color-white);
   padding: 1.1rem 1.5rem;
-  border-radius: 10px;
+  /* Retaining the 8px roundedness for main actions */
+  border-radius: 8px;
   font-family: var(--font-logo);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -107,6 +100,7 @@
   background-color: transparent;
   color: var(--color-surface);
   padding: 0.5rem 1rem;
+  /* Matched to 8px for consistency with primary */
   border-radius: 8px;
   font-family: var(--font-ui);
   font-size: 0.875rem;
@@ -137,18 +131,12 @@
 
 @layer utilities {
   .font-logo-heavy {
-    /* Using stroke for a tech-heavy hardware feel */
     -webkit-text-stroke: 0.5px currentColor;
     paint-order: stroke fill;
-  }
-
-  .logo-reveal {
-    transition: opacity 0.3s ease;
   }
 }
 
 @utility bg-nothing-grid {
-  /* Minimalist hardware-inspired UI grid */
   background-image: radial-gradient(circle, #333 1px, transparent 1px);
   background-size: 24px 24px;
 }

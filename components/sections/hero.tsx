@@ -37,7 +37,7 @@ export function Hero({ product }: { product: Product }) {
                 </span>
               </div>
 
-              <h2 className="font-product text-xl lg:text-3xl uppercase tracking-tighter text-black leading-tight">
+              <h2 className="font-logo text-xl lg:text-3xl uppercase tracking-tighter text-black leading-tight">
                 {product.title}
               </h2>
             </div>

@@ -1,5 +1,5 @@
 import { addItem } from "components/cart/actions";
-import { getHexColor } from "lib/constants";
+import { ProductCard } from "components/product/product-card";
 import { getCollectionProducts } from "lib/shopify";
 import Image from "next/image";
 import Link from "next/link";
@@ -127,10 +127,10 @@ async function CollectionSection({
             <div className="grid grid-cols-2 gap-x-12 gap-y-10 mb-12 border-t border-border-l pt-10">
               {specs.map((spec, i) => (
                 <div key={i} className="flex flex-col gap-1.5">
-                  <span className="font-nav text-[9px] uppercase tracking-[0.2em] text-muted">
+                  <span className="font-logo text-[9px] uppercase tracking-[0.2em] text-muted">
                     {spec.label}
                   </span>
-                  <span className="font-ui text-xs lg:text-[13px] uppercase tracking-tight text-primary font-medium">
+                  <span className="font-body text-xs lg:text-[13px] uppercase tracking-tight text-primary font-medium">
                     {spec.value}
                   </span>
                 </div>
@@ -142,7 +142,7 @@ async function CollectionSection({
                 <input type="hidden" name="variantId" value={variantId} />
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center h-[48px] w-full sm:w-auto px-12 text-[11px] uppercase tracking-[0.2em] bg-primary text-white hover:bg-black/90 transition-all rounded-[8px]"
+                  className="btn-nothing-primary px-12 text-[11px] h-[48px] rounded-[8px]"
                 >
                   Buy {product.title}
                 </button>
@@ -150,7 +150,7 @@ async function CollectionSection({
 
               <Link
                 href={`/product/${product.handle}`}
-                className="inline-flex items-center justify-center h-[48px] w-full sm:w-auto px-12 text-[11px] uppercase tracking-[0.2em] text-primary border border-primary hover:bg-primary hover:text-white transition-all rounded-[8px]"
+                className="btn-nothing-outline px-12 text-[11px] h-[48px] w-full sm:w-auto rounded-[8px]"
               >
                 Learn More
               </Link>
@@ -161,124 +161,9 @@ async function CollectionSection({
         {products.length > 1 && (
           <div className="border-t border-border-l">
             <div className="grid grid-cols-2 lg:grid-cols-4">
-              {products.slice(1, 5).map((p, index) => {
-                const amount = parseFloat(p.priceRange.minVariantPrice.amount);
-                const compareAtAmount = parseFloat(
-                  p.variants[0]?.compareAtPrice?.amount || "0",
-                );
-                const discountPercent =
-                  compareAtAmount > amount
-                    ? Math.round(
-                        ((compareAtAmount - amount) / compareAtAmount) * 100,
-                      )
-                    : 0;
-
-                const gridVariantId = p.variants[0]?.id;
-                const colorOptions = p.options
-                  ?.find(
-                    (opt) =>
-                      opt.name.toLowerCase() === "color" ||
-                      opt.name.toLowerCase() === "colour",
-                  )
-                  ?.values.slice(0, 3);
-
-                return (
-                  <div
-                    key={p.handle}
-                    className={`flex flex-col border-r border-border-l last:border-r-0 bg-white group overflow-hidden 
-                    ${index >= 2 ? "border-t lg:border-t-0" : ""}`}
-                  >
-                    <div className="relative aspect-square flex items-center justify-center overflow-hidden bg-white">
-                      {discountPercent > 0 && (
-                        <div className="absolute left-0 top-3 z-10">
-                          <span className="bg-accent-red px-2 py-0.5 text-[8px] md:text-[9px] font-bold tracking-[0.1em] text-white uppercase">
-                            {discountPercent}% OFF
-                          </span>
-                        </div>
-                      )}
-
-                      <div className="absolute right-2 top-2 flex flex-col gap-1 z-10">
-                        {colorOptions?.map((color, i) => (
-                          <div
-                            key={i}
-                            className="h-1.5 w-1.5 rounded-full border border-border-l shadow-sm"
-                            style={{ backgroundColor: getHexColor(color) }}
-                          />
-                        ))}
-                      </div>
-
-                      <Link
-                        href={`/product/${p.handle}`}
-                        className="relative w-full h-full"
-                      >
-                        <Image
-                          src={p.featuredImage?.url || ""}
-                          alt={p.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </Link>
-
-                      <form
-                        action={addItemAction}
-                        className="hidden lg:block absolute bottom-0 left-0 w-full transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-10"
-                      >
-                        <input
-                          type="hidden"
-                          name="variantId"
-                          value={gridVariantId}
-                        />
-                        <button
-                          type="submit"
-                          className="w-full bg-primary text-white font-nav text-[10px] py-5 uppercase tracking-[0.3em] hover:bg-black/90"
-                        >
-                          + Add to Bag
-                        </button>
-                      </form>
-                    </div>
-
-                    <div className="flex border-t border-border-l items-stretch bg-white relative z-20">
-                      <Link
-                        href={`/product/${p.handle}`}
-                        className="flex-1 flex flex-col p-3 lg:p-6 min-w-0 justify-center"
-                      >
-                        <h4 className="font-product text-[10px] lg:text-[12px] uppercase tracking-wider mb-0.5 text-primary line-clamp-1">
-                          {p.title}
-                        </h4>
-                        <div className="flex items-center gap-1.5">
-                          <span className="font-nav text-[9px] lg:text-[10px] text-primary font-medium">
-                            PHP {amount.toFixed(0)}
-                          </span>
-                          {compareAtAmount > amount && (
-                            <span className="font-nav text-[8px] text-muted line-through opacity-60">
-                              {compareAtAmount.toFixed(0)}
-                            </span>
-                          )}
-                        </div>
-                      </Link>
-
-                      <form
-                        action={addItemAction}
-                        className="lg:hidden border-l border-border-l flex"
-                      >
-                        <input
-                          type="hidden"
-                          name="variantId"
-                          value={gridVariantId}
-                        />
-                        <button
-                          type="submit"
-                          className="px-5 flex items-center justify-center bg-white active:bg-off-white text-primary"
-                        >
-                          <span className="font-product text-2xl leading-none">
-                            +
-                          </span>
-                        </button>
-                      </form>
-                    </div>
-                  </div>
-                );
-              })}
+              {products.slice(1, 5).map((p, index) => (
+                <ProductCard key={p.handle} product={p} index={index} />
+              ))}
             </div>
           </div>
         )}

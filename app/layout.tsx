@@ -1,5 +1,4 @@
 import { CartProvider } from "components/cart/cart-context";
-import Footer from "components/layout/footer";
 import { MainWrapper } from "components/layout/main-wrapper";
 import { Navbar } from "components/layout/navbar";
 import { GeistMono } from "geist/font/mono";
@@ -7,7 +6,7 @@ import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
 import { ReactNode, Suspense } from "react";
 import { Toaster } from "sonner";
-import { ndot57, ndot57Caps, nType82, shareTechMono, spaceMono } from "./fonts";
+import { ndot57, ndot57Caps, nType82, shareTechMono } from "./fonts";
 import "./globals.css";
 
 const { SITE_NAME } = process.env;
@@ -32,23 +31,17 @@ export default async function RootLayout({
   const cart = getCart();
 
   return (
-    <html lang="en" className={GeistMono.variable}>
-      <body
-        className={`
-          ${ndot57.variable}
-          ${ndot57Caps.variable}
-          ${nType82.variable}
-          ${shareTechMono.variable}
-          ${spaceMono.variable}
-          antialiased font-body
-        `}
-      >
+    <html
+      lang="en"
+      className={`${GeistMono.variable} ${ndot57.variable} ${ndot57Caps.variable} ${nType82.variable} ${shareTechMono.variable}`}
+    >
+      <body className="antialiased font-body selection:bg-black selection:text-white">
         <CartProvider cartPromise={cart}>
           <Navbar />
           <MainWrapper>
             {children}
             <Suspense fallback={<div className="h-40 w-full" />}>
-              <Footer />
+              {/* <Footer /> */}
             </Suspense>
             <Toaster closeButton />
           </MainWrapper>
