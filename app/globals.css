@@ -5,14 +5,14 @@
 
 @theme {
   /* ── FONT FAMILY MAPPINGS ── */
-  /* Mapping brand aliases to the Next.js font variables */
+  /* Explicitly mapping v4 variables to match your fonts.ts exports */
   --font-logo: var(--font-ndot-caps);
   --font-nav: var(--font-ndot);
   --font-product: var(--font-ntype);
 
-  /* Body and UI fallbacks */
-  --font-body: var(--font-geist-mono);
-  --font-ui: var(--font-share-tech-mono);
+  /* Body using Share Tech Mono and UI using Space Mono as per your technical brand aesthetic */
+  --font-body: var(--font-share-tech-mono);
+  --font-ui: var(--font-space-mono);
 
   /* ── CUSTOM TYPOGRAPHY SCALE ── */
   --font-size-body-base: 13px;
@@ -34,10 +34,12 @@
   *,
   ::after,
   ::before {
+    /* Using specific brand border variable */
     border-color: var(--color-border-l);
   }
 
   body {
+    /* Enforcing bg-off-white constraint */
     background-color: var(--color-off-white);
     color: var(--color-primary);
     font-family: var(--font-body);
@@ -135,6 +137,7 @@
 
 @layer utilities {
   .font-logo-heavy {
+    /* Using stroke for a tech-heavy hardware feel */
     -webkit-text-stroke: 0.5px currentColor;
     paint-order: stroke fill;
   }
@@ -145,6 +148,7 @@
 }
 
 @utility bg-nothing-grid {
+  /* Minimalist hardware-inspired UI grid */
   background-image: radial-gradient(circle, #333 1px, transparent 1px);
   background-size: 24px 24px;
 }

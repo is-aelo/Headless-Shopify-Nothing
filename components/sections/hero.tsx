@@ -25,9 +25,9 @@ export function Hero({ product }: { product: Product }) {
         )}
       </div>
 
-      {/* 3. Floating UI Card - Compact Mobile Refinements */}
+      {/* 3. Floating UI Card */}
       <div className="absolute bottom-10 lg:bottom-20 left-1/2 z-30 w-full max-w-[88%] lg:max-w-[450px] -translate-x-1/2 px-0">
-        <div className="rounded-sm bg-white/80 p-5 lg:p-8 shadow-2xl backdrop-blur-xl border border-white/40">
+        <div className="rounded-[8px] bg-white/80 p-5 lg:p-8 shadow-2xl backdrop-blur-xl border border-white/40">
           <div className="flex flex-col gap-4 lg:gap-6">
             <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
               <div className="flex items-center gap-2 mb-2 lg:mb-3">
@@ -45,7 +45,7 @@ export function Hero({ product }: { product: Product }) {
             <div className="flex flex-col w-full">
               <Link
                 href={`/product/${product.handle}`}
-                className="bg-black text-white w-full py-3.5 lg:py-4 text-center font-logo text-[9px] lg:text-[10px] uppercase tracking-widest hover:bg-neutral-800 transition-all duration-300 active:scale-[0.98]"
+                className="bg-black text-white w-full py-3.5 lg:py-4 text-center font-logo text-[9px] lg:text-[10px] uppercase tracking-widest hover:bg-neutral-800 transition-all duration-300 active:scale-[0.98] rounded-[8px]"
               >
                 Discover
               </Link>

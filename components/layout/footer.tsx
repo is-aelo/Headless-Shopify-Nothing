@@ -80,7 +80,7 @@ export default function Footer() {
                 href="https://github.com/vercel/commerce"
                 className="hover:underline"
               >
-                Vercel Commerce
+                Powered by Vercel Commerce
               </Link>
               <span className="hidden text-border-l md:block">/</span>
               <span className="opacity-70">Shopify Headless</span>

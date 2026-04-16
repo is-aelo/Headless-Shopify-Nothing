@@ -63,7 +63,6 @@ async function CollectionSection({
   if (!products || products.length === 0) return null;
 
   const product = products[0];
-
   if (!product) return null;
 
   const variantId = product.variants?.[0]?.id;
@@ -118,11 +117,13 @@ async function CollectionSection({
             <h3 className="font-logo text-[clamp(2.5rem,7vw,5rem)] leading-[0.9] tracking-tighter uppercase mb-8 text-primary">
               {product.title}
             </h3>
+
             {intro && (
               <p className="font-body text-[11px] lg:text-[13px] uppercase tracking-tight text-muted mb-10 max-w-[420px] leading-relaxed">
                 {intro}
               </p>
             )}
+
             <div className="grid grid-cols-2 gap-x-12 gap-y-10 mb-12 border-t border-border-l pt-10">
               {specs.map((spec, i) => (
                 <div key={i} className="flex flex-col gap-1.5">
@@ -135,19 +136,21 @@ async function CollectionSection({
                 </div>
               ))}
             </div>
+
             <div className="flex flex-col sm:flex-row items-center gap-4">
               <form action={addItemAction} className="w-full sm:w-auto">
                 <input type="hidden" name="variantId" value={variantId} />
                 <button
                   type="submit"
-                  className="bg-primary text-white w-full sm:w-auto px-12 py-5 text-[11px] uppercase tracking-[0.2em] hover:bg-black/90 transition-all rounded-[2px]"
+                  className="inline-flex items-center justify-center h-[48px] w-full sm:w-auto px-12 text-[11px] uppercase tracking-[0.2em] bg-primary text-white hover:bg-black/90 transition-all rounded-[8px]"
                 >
                   Buy {product.title}
                 </button>
               </form>
+
               <Link
                 href={`/product/${product.handle}`}
-                className="w-full sm:w-auto px-12 py-5 text-[11px] uppercase tracking-[0.2em] text-primary border border-primary hover:bg-primary hover:text-white transition-all rounded-[2px] text-center"
+                className="inline-flex items-center justify-center h-[48px] w-full sm:w-auto px-12 text-[11px] uppercase tracking-[0.2em] text-primary border border-primary hover:bg-primary hover:text-white transition-all rounded-[8px]"
               >
                 Learn More
               </Link>

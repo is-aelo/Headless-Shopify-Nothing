@@ -2,11 +2,12 @@ import { CartProvider } from "components/cart/cart-context";
 import Footer from "components/layout/footer";
 import { MainWrapper } from "components/layout/main-wrapper";
 import { Navbar } from "components/layout/navbar";
+import { GeistMono } from "geist/font/mono";
 import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
 import { ReactNode, Suspense } from "react";
 import { Toaster } from "sonner";
-import { ndot57, ndot57Caps, nType82, shareTechMono, spaceMono } from "./fonts"; // Use your font config
+import { ndot57, ndot57Caps, nType82, shareTechMono } from "./fonts";
 import "./globals.css";
 
 const { SITE_NAME } = process.env;
@@ -33,7 +34,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${shareTechMono.variable} ${spaceMono.variable} ${ndot57.variable} ${ndot57Caps.variable} ${nType82.variable}`}
+      className={`${GeistMono.variable} ${ndot57.variable} ${ndot57Caps.variable} ${nType82.variable} ${shareTechMono.variable}`}
     >
       <body className="antialiased font-body">
         <CartProvider cartPromise={cart}>
