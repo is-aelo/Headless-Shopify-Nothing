@@ -32,7 +32,7 @@ export function Hero({ product }: { product: Product }) {
             <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
               <div className="flex items-center gap-2 mb-2 lg:mb-3">
                 <StatusDot className="scale-75 lg:scale-100" />
-                <span className="font-body text-[9px] lg:text-[10px] uppercase tracking-[0.2em] text-surface font-bold">
+                <span className="font-body text-[9px] lg:text-[10px] uppercase tracking-[0.2em] text-surface">
                   Latest Release
                 </span>
               </div>

@@ -9,7 +9,7 @@ export function ProductDescription({ product }: { product: Product }) {
   return (
     <>
       <div className="mt-10 flex flex-col border-b border-border-l pb-8 pt-2 md:mt-0">
-        <h1 className="mb-6 font-product text-[1.85rem] font-medium uppercase leading-[0.9] tracking-tighter text-surface sm:text-3xl md:text-5xl">
+        <h1 className="mb-6 font-product text-[1.85rem] uppercase leading-[0.9] tracking-tighter text-surface sm:text-3xl md:text-5xl">
           {product.title}
         </h1>
         <div className="font-ui text-xl tracking-tight text-surface/90">

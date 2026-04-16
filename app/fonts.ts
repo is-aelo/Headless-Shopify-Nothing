@@ -21,6 +21,7 @@ export const spaceMono = Space_Mono({
 
 /**
  * LOCAL NOTHING BRAND FONTS
+ * Using explicit descriptors to prevent production resolution errors.
  */
 
 // Used for Logo (All Caps)
@@ -28,6 +29,8 @@ export const ndot57Caps = localFont({
   src: "../public/fonts/Ndot57Caps-Regular.woff2",
   variable: "--font-ndot-caps",
   display: "swap",
+  weight: "400",
+  style: "normal",
 });
 
 // Used for Nav Links (Header/Footer)
@@ -35,11 +38,15 @@ export const ndot57 = localFont({
   src: "../public/fonts/Ndot57-Regular.woff2",
   variable: "--font-ndot",
   display: "swap",
+  weight: "400",
+  style: "normal",
 });
 
-// Used for Product Titles
+// Used for Product Titles (NType82)
 export const nType82 = localFont({
   src: "../public/fonts/NType82-Headline.woff2",
   variable: "--font-ntype",
   display: "swap",
+  weight: "700", // Headline font typically uses a bolder weight
+  style: "normal",
 });

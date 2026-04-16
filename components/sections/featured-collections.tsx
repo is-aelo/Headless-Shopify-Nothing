@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 function parseProductData(htmlDescription: string | undefined) {
-  // Check if htmlDescription exists, if not return empty data
   if (!htmlDescription) {
     return { intro: "", specs: [] };
   }
@@ -65,7 +64,6 @@ async function CollectionSection({
 
   const product = products[0];
 
-  // Final check for product existence to satisfy TS
   if (!product) return null;
 
   const variantId = product.variants?.[0]?.id;
@@ -88,7 +86,7 @@ async function CollectionSection({
                 style={{ backgroundColor: accentColor }}
               />
             </div>
-            <span className="font-nav text-[10px] uppercase tracking-[0.4em] text-muted font-bold">
+            <span className="font-nav text-[10px] uppercase tracking-[0.4em] text-muted">
               {title}
             </span>
           </div>
@@ -128,7 +126,7 @@ async function CollectionSection({
             <div className="grid grid-cols-2 gap-x-12 gap-y-10 mb-12 border-t border-border-l pt-10">
               {specs.map((spec, i) => (
                 <div key={i} className="flex flex-col gap-1.5">
-                  <span className="font-nav text-[9px] uppercase tracking-[0.2em] text-muted font-bold">
+                  <span className="font-nav text-[9px] uppercase tracking-[0.2em] text-muted">
                     {spec.label}
                   </span>
                   <span className="font-ui text-xs lg:text-[13px] uppercase tracking-tight text-primary font-medium">
@@ -142,14 +140,14 @@ async function CollectionSection({
                 <input type="hidden" name="variantId" value={variantId} />
                 <button
                   type="submit"
-                  className="bg-primary text-white w-full sm:w-auto px-12 py-5 text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-black/90 transition-all rounded-[2px]"
+                  className="bg-primary text-white w-full sm:w-auto px-12 py-5 text-[11px] uppercase tracking-[0.2em] hover:bg-black/90 transition-all rounded-[2px]"
                 >
                   Buy {product.title}
                 </button>
               </form>
               <Link
                 href={`/product/${product.handle}`}
-                className="w-full sm:w-auto px-12 py-5 text-[11px] uppercase tracking-[0.2em] font-bold text-primary border border-primary hover:bg-primary hover:text-white transition-all rounded-[2px] text-center"
+                className="w-full sm:w-auto px-12 py-5 text-[11px] uppercase tracking-[0.2em] text-primary border border-primary hover:bg-primary hover:text-white transition-all rounded-[2px] text-center"
               >
                 Learn More
               </Link>
@@ -157,7 +155,6 @@ async function CollectionSection({
           </div>
         </div>
 
-        {/* Small Grid Row */}
         {products.length > 1 && (
           <div className="border-t border-border-l">
             <div className="grid grid-cols-2 lg:grid-cols-4">
@@ -230,7 +227,7 @@ async function CollectionSection({
                         />
                         <button
                           type="submit"
-                          className="w-full bg-primary text-white font-nav text-[10px] py-5 uppercase tracking-[0.3em] font-bold hover:bg-black/90"
+                          className="w-full bg-primary text-white font-nav text-[10px] py-5 uppercase tracking-[0.3em] hover:bg-black/90"
                         >
                           + Add to Bag
                         </button>
@@ -242,7 +239,7 @@ async function CollectionSection({
                         href={`/product/${p.handle}`}
                         className="flex-1 flex flex-col p-3 lg:p-6 min-w-0 justify-center"
                       >
-                        <h4 className="font-product text-[10px] lg:text-[12px] uppercase tracking-wider mb-0.5 text-primary font-bold line-clamp-1">
+                        <h4 className="font-product text-[10px] lg:text-[12px] uppercase tracking-wider mb-0.5 text-primary line-clamp-1">
                           {p.title}
                         </h4>
                         <div className="flex items-center gap-1.5">
