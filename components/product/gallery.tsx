@@ -4,6 +4,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export function Gallery({
   images,
@@ -18,6 +19,8 @@ export function Gallery({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const imageSearchParam = searchParams.get("image");
   const activeIndex = imageSearchParam ? parseInt(imageSearchParam) : 0;
 
@@ -29,6 +32,11 @@ export function Gallery({
     : images;
 
   const currentImage = displayImages[activeIndex] || displayImages[0];
+
+  // Reset loading state whenever the source image changes
+  useEffect(() => {
+    setIsLoading(true);
+  }, [currentImage?.src]);
 
   const updateImage = (index: number) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -75,11 +83,20 @@ export function Gallery({
 
       {/* Main image + dots */}
       <div className="flex flex-col gap-3 flex-1 min-w-0">
-        <div className="relative aspect-square w-full max-w-[480px] mx-auto">
+        <div className="relative aspect-square w-full max-w-[480px] mx-auto overflow-hidden rounded-[12px] border border-border-l bg-white">
+          {/* Skeleton Overlay */}
+          {isLoading && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-off-white">
+              <div className="h-full w-full animate-pulse bg-neutral-200" />
+              <div className="absolute h-1.5 w-1.5 bg-accent-red rounded-full" />
+            </div>
+          )}
+
           {currentImage && (
             <Image
               className={clsx(
-                "object-contain p-6 transition-opacity duration-300",
+                "object-contain p-6 transition-opacity duration-500",
+                isLoading ? "opacity-0" : "opacity-100",
                 showSoldOut && "opacity-30",
               )}
               fill
@@ -87,12 +104,13 @@ export function Gallery({
               alt={currentImage.altText}
               src={currentImage.src}
               priority={true}
+              onLoad={() => setIsLoading(false)}
             />
           )}
 
           {/* Sold out overlay */}
-          {showSoldOut && (
-            <div className="absolute inset-0 flex items-center justify-center rounded-[12px] bg-off-white/60 backdrop-blur-[2px]">
+          {showSoldOut && !isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-off-white/60 backdrop-blur-[2px]">
               <span className="rounded-full border border-surface/20 bg-white/90 px-4 py-1.5 font-nav text-[10px] uppercase tracking-[0.25em] text-surface">
                 Sold Out
               </span>
@@ -105,16 +123,16 @@ export function Gallery({
               <button
                 onClick={() => updateImage(prevIndex)}
                 aria-label="Previous image"
-                className="absolute left-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full border border-border-l bg-white/80 backdrop-blur-sm transition-all hover:bg-white"
+                className="absolute left-4 top-1/2 z-20 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-border-l bg-white/80 backdrop-blur-sm transition-all hover:bg-white"
               >
-                <ArrowLeftIcon className="h-3 w-3 stroke-[1.5]" />
+                <ArrowLeftIcon className="h-4 w-4 stroke-[1.5]" />
               </button>
               <button
                 onClick={() => updateImage(nextIndex)}
                 aria-label="Next image"
-                className="absolute right-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full border border-border-l bg-white/80 backdrop-blur-sm transition-all hover:bg-white"
+                className="absolute right-4 top-1/2 z-20 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-border-l bg-white/80 backdrop-blur-sm transition-all hover:bg-white"
               >
-                <ArrowRightIcon className="h-3 w-3 stroke-[1.5]" />
+                <ArrowRightIcon className="h-4 w-4 stroke-[1.5]" />
               </button>
             </>
           )}

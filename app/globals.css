@@ -5,21 +5,14 @@
 
 @theme {
   /* ── FONT FAMILY MAPPINGS ── */
-  /* Pananatilihin ang naming convention mo para hindi masira ang ibang files */
-  --font-ndot-caps: var(--font-ndot-caps);
-  --font-ndot: var(--font-ndot);
-  --font-ntype: var(--font-ntype);
-
-  /* Reference directly to existing variables in theme */
+  /* Mapping brand aliases to the Next.js font variables */
   --font-logo: var(--font-ndot-caps);
   --font-nav: var(--font-ndot);
   --font-product: var(--font-ntype);
 
-  /* Body is Geist Mono */
+  /* Body and UI fallbacks */
   --font-body: var(--font-geist-mono);
-
-  /* Share-tech is missing, so we use Geist Mono as fallback */
-  --font-ui: var(--font-geist-mono);
+  --font-ui: var(--font-share-tech-mono);
 
   /* ── CUSTOM TYPOGRAPHY SCALE ── */
   --font-size-body-base: 13px;

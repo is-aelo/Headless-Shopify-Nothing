@@ -34,13 +34,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`
-        ${GeistMono.variable}
-        ${ndot57.variable} 
-        ${ndot57Caps.variable} 
-        ${nType82.variable} 
-        ${shareTechMono.variable}
-      `}
+      className={`${GeistMono.variable} ${ndot57.variable} ${ndot57Caps.variable} ${nType82.variable} ${shareTechMono.variable}`}
     >
       <body className="antialiased font-body">
         <CartProvider cartPromise={cart}>

@@ -8,7 +8,7 @@ import localFont from "next/font/local";
 export const shareTechMono = Share_Tech_Mono({
   weight: "400",
   subsets: ["latin"],
-  variable: "--font-share-tech",
+  variable: "--font-share-tech-mono",
   display: "swap",
 });
 
@@ -21,7 +21,6 @@ export const spaceMono = Space_Mono({
 
 /**
  * LOCAL NOTHING BRAND FONTS
- * Paths are relative to this file (app/fonts.ts) to the public folder.
  */
 
 // Used for Logo (All Caps)

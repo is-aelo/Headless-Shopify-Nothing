@@ -45,8 +45,7 @@ export function VariantSelector({
     const params = new URLSearchParams(searchParams.toString());
     params.set(name, value);
 
-    // When switching variants, we clear the manual gallery index
-    // This allows the Gallery component to default back to the variant-specific image
+    // Reset gallery to index 0 so it displays the image tied to this variant
     params.delete("image");
 
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
