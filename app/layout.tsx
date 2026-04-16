@@ -7,7 +7,7 @@ import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
 import { ReactNode, Suspense } from "react";
 import { Toaster } from "sonner";
-import { ndot57, ndot57Caps, nType82, shareTechMono } from "./fonts";
+import { ndot57, ndot57Caps, nType82, shareTechMono, spaceMono } from "./fonts";
 import "./globals.css";
 
 const { SITE_NAME } = process.env;
@@ -32,11 +32,17 @@ export default async function RootLayout({
   const cart = getCart();
 
   return (
-    <html
-      lang="en"
-      className={`${GeistMono.variable} ${ndot57.variable} ${ndot57Caps.variable} ${nType82.variable} ${shareTechMono.variable}`}
-    >
-      <body className="antialiased font-body">
+    <html lang="en" className={GeistMono.variable}>
+      <body
+        className={`
+          ${ndot57.variable}
+          ${ndot57Caps.variable}
+          ${nType82.variable}
+          ${shareTechMono.variable}
+          ${spaceMono.variable}
+          antialiased font-body
+        `}
+      >
         <CartProvider cartPromise={cart}>
           <Navbar />
           <MainWrapper>
