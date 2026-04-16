@@ -116,7 +116,7 @@
   color: var(--color-surface);
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  font-family: var(--font-ui);
+  font-family: var(--font-logo);
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: -0.025em;

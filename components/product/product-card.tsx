@@ -70,6 +70,7 @@ export function ProductCard({
           />
         </Link>
 
+        {/* Desktop Add to Bag */}
         <form
           action={addItemAction}
           className="hidden lg:block absolute bottom-0 left-0 w-full transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-10"
@@ -77,7 +78,7 @@ export function ProductCard({
           <input type="hidden" name="variantId" value={gridVariantId} />
           <button
             type="submit"
-            className="w-full bg-primary text-white font-nav text-[10px] py-5 uppercase tracking-[0.3em] hover:bg-black/90"
+            className="w-full bg-primary text-white font-nav text-[10px] py-5 uppercase tracking-[0.3em] hover:bg-black/90 cursor-pointer"
           >
             + Add to Bag
           </button>
@@ -89,21 +90,25 @@ export function ProductCard({
           href={`/product/${product.handle}`}
           className="flex-1 flex flex-col p-3 lg:p-6 min-w-0 justify-center"
         >
-          <h4 className="font-product text-[10px] lg:text-[12px] uppercase tracking-wider mb-0.5 text-primary line-clamp-1">
+          {/* Title using font-logo with heavy stroke for bold effect */}
+          <h4 className="font-logo font-regular text-[11px] lg:text-[13px] uppercase tracking-wider mb-1 text-primary line-clamp-1 font-logo-heavy">
             {product.title}
           </h4>
-          <div className="flex items-center gap-1.5">
-            <span className="font-nav text-[9px] lg:text-[10px] text-primary font-medium">
+
+          <div className="flex items-center gap-2">
+            {/* Price using font-body (Geist Mono) */}
+            <span className="font-body text-[9px] lg:text-[10px] text-primary font-medium tracking-tight">
               PHP {amount.toFixed(0)}
             </span>
             {compareAtAmount > amount && (
-              <span className="font-nav text-[8px] text-muted line-through opacity-60">
+              <span className="font-body text-[8px] text-muted line-through opacity-50">
                 {compareAtAmount.toFixed(0)}
               </span>
             )}
           </div>
         </Link>
 
+        {/* Mobile Add to Bag */}
         <form
           action={addItemAction}
           className="lg:hidden border-l border-border-l flex"
@@ -111,9 +116,9 @@ export function ProductCard({
           <input type="hidden" name="variantId" value={gridVariantId} />
           <button
             type="submit"
-            className="px-5 flex items-center justify-center bg-white active:bg-off-white text-primary"
+            className="px-5 flex items-center justify-center bg-white active:bg-off-white text-primary cursor-pointer"
           >
-            <span className="font-product text-2xl leading-none">+</span>
+            <span className="font-logo text-2xl leading-none">+</span>
           </button>
         </form>
       </div>

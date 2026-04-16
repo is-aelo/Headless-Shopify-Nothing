@@ -11,7 +11,7 @@ type InfoBlockProps = {
 };
 
 export function InfoBlock({ variant, title, description }: InfoBlockProps) {
-  // Glyph Matrix Data (Wine Glass + Heart) - Centered 15x20 Matrix
+  // Glyph Matrix Data (Wine Glass + Heart)
   const glyphMatrix = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
@@ -42,17 +42,17 @@ export function InfoBlock({ variant, title, description }: InfoBlockProps) {
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            className="flex items-center gap-2 mb-6 bg-off-white border border-border-l px-3 py-1 rounded-full"
+            className="flex items-center gap-2 mb-6 bg-white border border-border-l px-3 py-1 rounded-full"
           >
             <span className="w-1 h-1 rounded-full bg-accent-red animate-pulse" />
-            <span className="font-nav text-[9px] uppercase tracking-[0.3em] text-muted">
+            <span className="font-body text-[9px] uppercase tracking-[0.3em] text-muted">
               Signature Interface
             </span>
           </motion.div>
 
-          <motion.h2 className="font-product text-[clamp(1.5rem,4vw,2.75rem)] leading-[0.9] tracking-tighter text-primary uppercase mb-4 max-w-xl">
+          <motion.h1 className="font-logo font-medium text-[clamp(1.5rem,4vw,2.75rem)] leading-[0.9] tracking-tighter text-primary uppercase mb-4 max-w-xl">
             {title}
-          </motion.h2>
+          </motion.h1>
 
           <motion.p className="font-body text-[10px] md:text-[12px] text-muted uppercase tracking-tight max-w-[360px] leading-relaxed mb-10 md:mb-12">
             {description}
@@ -63,7 +63,7 @@ export function InfoBlock({ variant, title, description }: InfoBlockProps) {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="relative flex items-center justify-center w-[180px] h-[180px] md:w-[240px] md:h-[240px] rounded-full bg-primary"
+              className="relative flex items-center justify-center w-[200px] h-[200px] md:w-[280px] md:h-[280px] rounded-full bg-primary"
             >
               <div className="relative z-10 flex items-center justify-center scale-[0.75] md:scale-100">
                 <div
@@ -73,17 +73,34 @@ export function InfoBlock({ variant, title, description }: InfoBlockProps) {
                   {glyphMatrix.flat().map((pixel, i) => {
                     const row = Math.floor(i / 15);
                     const isHeart = row >= 1 && row <= 5;
+
                     return (
                       <motion.div
                         key={i}
                         initial={{ opacity: 0.05 }}
-                        whileInView={{ opacity: pixel === 1 ? 1 : 0.04 }}
-                        transition={{ delay: 0.05 + i * 0.0005 }}
+                        whileInView={
+                          pixel === 1
+                            ? {
+                                opacity: [0.4, 1, 0.4],
+                                scale: isHeart ? [1, 1.2, 1] : [1, 1.05, 1],
+                              }
+                            : { opacity: 0.04 }
+                        }
+                        transition={
+                          pixel === 1
+                            ? {
+                                duration: isHeart ? 1.5 : 3,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                                delay: isHeart ? 0 : i * 0.002,
+                              }
+                            : {}
+                        }
                         className={`w-[4px] h-[4px] md:w-[5px] md:h-[5px] rounded-full ${
                           pixel === 1
                             ? isHeart
-                              ? "bg-accent-red shadow-[0_0_6px_rgba(255,0,0,0.4)]"
-                              : "bg-off-white"
+                              ? "bg-accent-red shadow-[0_0_8px_rgba(255,0,0,0.6)]"
+                              : "bg-off-white shadow-[0_0_4px_rgba(255,255,255,0.3)]"
                             : "bg-white/5"
                         }`}
                       />
@@ -93,7 +110,6 @@ export function InfoBlock({ variant, title, description }: InfoBlockProps) {
               </div>
             </motion.div>
 
-            {/* CTA SECTION */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -104,7 +120,7 @@ export function InfoBlock({ variant, title, description }: InfoBlockProps) {
                 className="group flex flex-col items-center gap-2"
               >
                 <div className="flex items-center gap-3">
-                  <span className="font-nav text-[11px] md:text-[13px] uppercase tracking-[0.2em] text-primary">
+                  <span className="font-logo text-[11px] md:text-[13px] uppercase tracking-[0.2em] text-primary">
                     Explore Nothing Phones
                   </span>
                   <ArrowRight className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform duration-300" />
@@ -118,17 +134,16 @@ export function InfoBlock({ variant, title, description }: InfoBlockProps) {
     );
   }
 
-  // OS VARIANT (UNCHANGED)
   return (
     <section className="relative bg-off-white py-12 md:py-20 px-6">
       <div className="relative max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-5">
           <div className="inline-block border-l-2 border-accent-red pl-4 mb-4">
-            <span className="font-nav text-[9px] md:text-[10px] uppercase tracking-[0.4em] text-accent-red block">
+            <span className="font-logo text-[9px] md:text-[10px] uppercase tracking-[0.4em] text-accent-red block">
               Nothing OS 4.0
             </span>
           </div>
-          <h2 className="font-logo text-[clamp(1.5rem,3.5vw,2.5rem)] leading-[0.95] text-primary uppercase">
+          <h2 className="font-logo text-[clamp(1.5rem,3.5vw,2.5rem)] leading-[0.95] text-surface uppercase">
             {title}
           </h2>
         </div>

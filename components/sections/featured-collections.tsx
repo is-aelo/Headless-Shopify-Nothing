@@ -152,7 +152,7 @@ async function CollectionSection({
                 href={`/product/${product.handle}`}
                 className="btn-nothing-outline px-12 text-[11px] h-[48px] w-full sm:w-auto rounded-[8px]"
               >
-                Learn More
+                Discover
               </Link>
             </div>
           </div>
