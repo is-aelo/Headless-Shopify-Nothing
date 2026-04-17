@@ -42,7 +42,7 @@ export async function Navbar() {
 
           <div className="flex w-1/3 justify-center">
             <Link href="/" className="group/logo relative flex items-center">
-              <h1 className="font-body font-body-heavy text-lg uppercase tracking-[0.3em] text-primary md:text-xl">
+              <h1 className="font-body font-black text-lg uppercase tracking-[0.3em] text-primary md:text-xl">
                 {SITE_NAME}
               </h1>
               <span className="ml-1 h-1 w-1 rounded-full bg-accent-red opacity-0 transition-opacity duration-300 group-hover/logo:opacity-100" />
