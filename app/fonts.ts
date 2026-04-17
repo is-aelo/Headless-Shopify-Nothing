@@ -15,10 +15,10 @@ export const shareTechMono = Share_Tech_Mono({
 /**
  * GEIST MONO (Body Font)
  */
-export const geistMono = GeistMono;
+export const geistMono = GeistMono; // Using the variable from the package
 
 /**
- * SPACE GROTESK
+ * REPLACEMENT FOR NTYPE82 (USING SPACE GROTESK)
  */
 export const nType82 = Space_Grotesk({
   subsets: ["latin"],
@@ -29,32 +29,19 @@ export const nType82 = Space_Grotesk({
 
 /**
  * LOCAL NOTHING BRAND FONTS
- * MATCHING FILENAMES EXACTLY: all lowercase as per your screenshot
  */
 export const ndot57Caps = localFont({
-  src: [
-    {
-      path: "../public/fonts/ndot57caps-regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-  ],
+  src: "../public/fonts/Ndot57Caps-Regular.woff2",
   variable: "--font-ndot-caps",
   display: "swap",
-  adjustFontFallback: false,
-  preload: true,
+  weight: "400",
+  style: "normal",
 });
 
 export const ndot57 = localFont({
-  src: [
-    {
-      path: "../public/fonts/ndot57-regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-  ],
+  src: "../public/fonts/Ndot57-Regular.woff2",
   variable: "--font-ndot",
   display: "swap",
-  adjustFontFallback: false,
-  preload: true,
+  weight: "400",
+  style: "normal",
 });

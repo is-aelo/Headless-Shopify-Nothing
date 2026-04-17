@@ -1,12 +1,13 @@
 import { CartProvider } from "components/cart/cart-context";
-import Footer from "components/layout/footer";
+import Footer from "components/layout/footer"; // Idagdag mo ito
 import { MainWrapper } from "components/layout/main-wrapper";
 import { Navbar } from "components/layout/navbar";
+import { GeistMono } from "geist/font/mono";
 import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
 import { ReactNode, Suspense } from "react";
 import { Toaster } from "sonner";
-import { geistMono, ndot57, ndot57Caps, nType82, shareTechMono } from "./fonts";
+import { ndot57, ndot57Caps, nType82, shareTechMono } from "./fonts";
 import "./globals.css";
 
 const { SITE_NAME } = process.env;
@@ -33,14 +34,9 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistMono.variable} ${ndot57.variable} ${ndot57Caps.variable} ${nType82.variable} ${shareTechMono.variable}`}
-      suppressHydrationWarning
+      className={`${GeistMono.variable} ${ndot57.variable} ${ndot57Caps.variable} ${nType82.variable} ${shareTechMono.variable}`}
     >
-      {/* Dito natin pilitin ang fallback. 
-          Kapag 'font-body' (Geist Mono) ay hindi nag-load, 
-          'font-mono' ng Tailwind ang susunod na priority.
-      */}
-      <body className="antialiased font-body font-mono selection:bg-black selection:text-white">
+      <body className="antialiased font-body selection:bg-black selection:text-white">
         <CartProvider cartPromise={cart}>
           <Navbar />
           <MainWrapper>
