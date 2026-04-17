@@ -50,7 +50,7 @@ export function InfoBlock({ variant, title, description }: InfoBlockProps) {
             </span>
           </motion.div>
 
-          <motion.h1 className="font-logo font-medium text-[clamp(1.5rem,4vw,2.75rem)] leading-[0.9] tracking-tighter text-primary uppercase mb-4 max-w-xl">
+          <motion.h1 className="font-logo font-black text-[clamp(1.5rem,4vw,2.75rem)] leading-[0.9] tracking-tighter text-primary uppercase mb-4 max-w-xl">
             {title}
           </motion.h1>
 
