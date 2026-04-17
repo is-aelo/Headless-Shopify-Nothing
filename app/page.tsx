@@ -10,7 +10,6 @@ export default async function HomePage() {
     reverse: true,
   });
 
-  // Safety check: If no products found, don't crash the build/page
   if (!products || products.length === 0) {
     return (
       <div className="flex h-[50vh] items-center justify-center font-mono text-xs uppercase tracking-widest text-black">
@@ -20,8 +19,9 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="bg-white">
-      {/* 1. Hero - Added ! to tell TS products[0] is guaranteed to exist */}
+    /* Adjusted gap: Mas compact na 48px sa mobile, 80px sa desktop */
+    <div className="flex flex-col gap-12 md:gap-20 pb-20">
+      {/* 1. Hero */}
       <Hero product={products[0]!} />
 
       {/* 2. Nothing OS */}

@@ -15,7 +15,7 @@ export const shareTechMono = Share_Tech_Mono({
 /**
  * GEIST MONO (Body Font)
  */
-export const geistMono = GeistMono; // Using the variable from the package
+export const geistMono = GeistMono;
 
 /**
  * REPLACEMENT FOR NTYPE82 (USING SPACE GROTESK)
@@ -29,6 +29,8 @@ export const nType82 = Space_Grotesk({
 
 /**
  * LOCAL NOTHING BRAND FONTS
+ * Path is relative to app/fonts.ts.
+ * We go up one level (../) to exit 'app', then into 'public/fonts/'.
  */
 export const ndot57Caps = localFont({
   src: "../public/fonts/Ndot57Caps-Regular.woff2",
