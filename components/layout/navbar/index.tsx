@@ -42,7 +42,10 @@ export async function Navbar() {
 
           <div className="flex w-1/3 justify-center">
             <Link href="/" className="group/logo relative flex items-center">
-              <h1 className="font-ndot font-black text-2xl tracking-tighter uppercase leading-none text-surface">
+              <h1
+                style={{ fontFamily: "var(--font-ndot)" }}
+                className="text-2xl uppercase text-surface"
+              >
                 {SITE_NAME}
               </h1>
               <span className="ml-1 h-1 w-1 rounded-full bg-accent-red opacity-0 transition-opacity duration-300 group-hover/logo:opacity-100" />
