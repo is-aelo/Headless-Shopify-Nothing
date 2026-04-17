@@ -5,12 +5,12 @@
 
 @theme {
   /* ── FONT FAMILY MAPPINGS ── */
-  /* Logo and Body now use the same Geist Mono source */
-  --font-logo: var(--font-geist-mono);
+  /* Logo now uses DotGothic16 for that authentic dotted/pixel feel */
+  --font-logo: var(--font-dotgothic);
   --font-body: var(--font-geist-mono);
 
   --font-nav: var(--font-ndot);
-  --font-product: var(--font-ntype); /* Space Grotesk mapping */
+  --font-product: var(--font-ntype);
   --font-ui: var(--font-share-tech-mono);
 
   /* ── CUSTOM TYPOGRAPHY SCALE ── */
@@ -89,7 +89,6 @@
   color: var(--color-white);
   padding: 1.1rem 1.5rem;
   border-radius: 8px;
-  /* Switched from ndot-caps to font-body (Geist Mono) */
   font-family: var(--font-body), monospace;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -119,7 +118,6 @@
   color: var(--color-surface);
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  /* Switched from ndot-caps to font-body (Geist Mono) */
   font-family: var(--font-body), monospace;
   font-size: 0.875rem;
   text-transform: uppercase;
@@ -138,22 +136,14 @@
   }
 }
 
-@utility btn-nothing-accent {
-  @apply btn-nothing-primary;
-  background-color: var(--color-cmf-orange);
-
-  &:hover {
-    background-color: rgba(255, 107, 0, 0.9);
-  }
-}
-
 @layer utilities {
   .font-logo-heavy {
-    /* Balanced boldness using Geist Mono */
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    -webkit-text-stroke: 0.2px currentColor;
-    paint-order: stroke fill;
+    /* DotGothic looks best with normal weight but tighter spacing */
+    font-family: var(--font-logo);
+    font-weight: 400;
+    letter-spacing: -0.05em;
+    /* We skip the stroke here because DotGothic is already pixelated */
+    text-transform: uppercase;
   }
 }
 
