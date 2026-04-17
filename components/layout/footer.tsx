@@ -13,8 +13,8 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-y-10 md:flex md:items-end md:justify-between md:gap-x-10">
           {/* Brand Identity */}
           <div className="col-span-2 flex flex-col gap-2 md:col-span-1">
-            <h2 className="font-logo text-2xl tracking-tighter uppercase leading-none text-surface">
-              Nothing (R)
+            <h2 className="font-body font-black text-2xl tracking-tighter uppercase leading-none text-surface">
+              Nothing
             </h2>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] uppercase tracking-[0.2em]">
               <span className="font-bold text-surface/80">

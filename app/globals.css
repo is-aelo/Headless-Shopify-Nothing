@@ -5,12 +5,12 @@
 
 @theme {
   /* ── FONT FAMILY MAPPINGS ── */
-  --font-logo: var(--font-ndot-caps);
+  /* Logo and Body now use the same Geist Mono source */
+  --font-logo: var(--font-geist-mono);
+  --font-body: var(--font-geist-mono);
+
   --font-nav: var(--font-ndot);
   --font-product: var(--font-ntype); /* Space Grotesk mapping */
-
-  /* Body using Geist Mono */
-  --font-body: var(--font-geist-mono);
   --font-ui: var(--font-share-tech-mono);
 
   /* ── CUSTOM TYPOGRAPHY SCALE ── */
@@ -39,11 +39,6 @@
   body {
     background-color: var(--color-off-white);
     color: var(--color-primary);
-    /*
-     * Fallback chain: Next.js CSS variable → GeistMono package name → monospace
-     * This covers the case where --font-geist-mono isn't injected (e.g. if
-     * GeistMono was imported from the geist package instead of localFont).
-     */
     font-family:
       var(--font-geist-mono, "GeistMono"), ui-monospace, "Cascadia Code",
       "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
@@ -57,16 +52,12 @@
       auto;
   }
 
-  /* Explicitly apply the font-product (Grotesk) to headings for better inheritance */
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    /*
-     * Fallback chain: Next.js CSS variable → Space Grotesk package name → sans-serif
-     */
     font-family:
       var(--font-ntype, "Space Grotesk"), ui-sans-serif, system-ui, sans-serif;
   }
@@ -84,7 +75,6 @@
 
 /* ── TAILWIND V4 CUSTOM UTILITIES ── */
 
-/* Force register font-product utility for Grotesk */
 @utility font-product {
   font-family:
     var(--font-ntype, "Space Grotesk"), ui-sans-serif, system-ui, sans-serif;
@@ -99,7 +89,8 @@
   color: var(--color-white);
   padding: 1.1rem 1.5rem;
   border-radius: 8px;
-  font-family: var(--font-ndot-caps, "Ndot57Caps"), monospace;
+  /* Switched from ndot-caps to font-body (Geist Mono) */
+  font-family: var(--font-body), monospace;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   transition-property: all;
@@ -128,7 +119,8 @@
   color: var(--color-surface);
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  font-family: var(--font-ndot-caps, "Ndot57Caps"), monospace;
+  /* Switched from ndot-caps to font-body (Geist Mono) */
+  font-family: var(--font-body), monospace;
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: -0.025em;
@@ -142,7 +134,7 @@
 
   &[aria-selected="true"] {
     background-color: var(--color-surface);
-    color: var(--white);
+    color: var(--color-white);
   }
 }
 
@@ -157,7 +149,10 @@
 
 @layer utilities {
   .font-logo-heavy {
-    -webkit-text-stroke: 0.5px currentColor;
+    /* Balanced boldness using Geist Mono */
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    -webkit-text-stroke: 0.2px currentColor;
     paint-order: stroke fill;
   }
 }
