@@ -1,38 +1,18 @@
-import { Share_Tech_Mono, Space_Grotesk } from "next/font/google";
+import { Geist_Mono, Share_Tech_Mono, Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
 
 /**
- * GEIST MONO (Body Font)
- * Loaded as a local font so we control the CSS variable injection.
- * The `geist` package's GeistMono object does NOT have a .variable property
- * compatible with Next.js className spreading — it must be handled separately.
+ * GEIST MONO — imported via next/font/google (official Vercel pattern)
+ * This guarantees .variable is a proper Next.js CSS variable object.
  */
-export const geistMono = localFont({
-  src: [
-    {
-      path: "../node_modules/geist/dist/fonts/geist-mono/GeistMono-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../node_modules/geist/dist/fonts/geist-mono/GeistMono-Medium.woff2",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../node_modules/geist/dist/fonts/geist-mono/GeistMono-SemiBold.woff2",
-      weight: "600",
-      style: "normal",
-    },
-  ],
+export const geistMono = Geist_Mono({
+  subsets: ["latin"],
   variable: "--font-geist-mono",
   display: "swap",
-  adjustFontFallback: false,
-  preload: true,
 });
 
 /**
- * GOOGLE FONTS
+ * SHARE TECH MONO
  */
 export const shareTechMono = Share_Tech_Mono({
   weight: "400",
@@ -42,8 +22,8 @@ export const shareTechMono = Share_Tech_Mono({
 });
 
 /**
- * SPACE GROTESK (Product/Heading Font)
- * Load the full weight range so headings render correctly at any weight.
+ * SPACE GROTESK (headings / product font)
+ * Load full weight range — not just 700.
  */
 export const nType82 = Space_Grotesk({
   subsets: ["latin"],
@@ -53,16 +33,12 @@ export const nType82 = Space_Grotesk({
 });
 
 /**
- * LOCAL NOTHING BRAND FONTS
+ * LOCAL FONTS
+ * src path is relative to THIS file (app/fonts.ts).
+ * ../public/fonts/ resolves correctly from app/.
  */
 export const ndot57Caps = localFont({
-  src: [
-    {
-      path: "../public/fonts/Ndot57Caps-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-  ],
+  src: "../public/fonts/Ndot57Caps-Regular.woff2",
   variable: "--font-ndot-caps",
   display: "swap",
   adjustFontFallback: false,
@@ -70,13 +46,7 @@ export const ndot57Caps = localFont({
 });
 
 export const ndot57 = localFont({
-  src: [
-    {
-      path: "../public/fonts/Ndot57-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-  ],
+  src: "../public/fonts/Ndot57-Regular.woff2",
   variable: "--font-ndot",
   display: "swap",
   adjustFontFallback: false,
