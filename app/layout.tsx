@@ -36,12 +36,11 @@ export default async function RootLayout({
       className={`${geistMono.variable} ${ndot57.variable} ${ndot57Caps.variable} ${nType82.variable} ${shareTechMono.variable}`}
       suppressHydrationWarning
     >
-      {/* 
-          Ensure 'font-body' is defined in your tailwind.config.js 
-          to use one of the variables above, e.g.: 
-          body: ['var(--font-ndot)', 'sans-serif'] 
+      {/* Dito natin pilitin ang fallback. 
+          Kapag 'font-body' (Geist Mono) ay hindi nag-load, 
+          'font-mono' ng Tailwind ang susunod na priority.
       */}
-      <body className="antialiased font-body selection:bg-black selection:text-white">
+      <body className="antialiased font-body font-mono selection:bg-black selection:text-white">
         <CartProvider cartPromise={cart}>
           <Navbar />
           <MainWrapper>

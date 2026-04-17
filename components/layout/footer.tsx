@@ -27,7 +27,7 @@ export default function Footer() {
 
           {/* Compact Socials */}
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:gap-6">
-            <span className="text-[9px] uppercase tracking-[0.3em] text-border-l md:hidden">
+            <span className="text-[9px] uppercase tracking-[0.3em] text-muted md:hidden">
               Connect
             </span>
             <div className="flex flex-col gap-3 md:flex-row md:gap-6">
@@ -71,7 +71,7 @@ export default function Footer() {
 
           {/* System & Disclaimer */}
           <div className="flex flex-col gap-4 md:items-end md:gap-1">
-            <span className="text-[9px] uppercase tracking-[0.3em] text-border-l">
+            <span className="text-[9px] uppercase tracking-[0.3em] text-muted">
               System
             </span>
             <div className="flex flex-col gap-1 text-[10px] uppercase tracking-tight md:flex-row md:items-center md:gap-2">
