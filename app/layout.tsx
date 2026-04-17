@@ -36,6 +36,11 @@ export default async function RootLayout({
       className={`${geistMono.variable} ${ndot57.variable} ${ndot57Caps.variable} ${nType82.variable} ${shareTechMono.variable}`}
       suppressHydrationWarning
     >
+      {/* 
+          Ensure 'font-body' is defined in your tailwind.config.js 
+          to use one of the variables above, e.g.: 
+          body: ['var(--font-ndot)', 'sans-serif'] 
+      */}
       <body className="antialiased font-body selection:bg-black selection:text-white">
         <CartProvider cartPromise={cart}>
           <Navbar />
