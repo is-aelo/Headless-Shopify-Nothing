@@ -4,14 +4,15 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  /* ── FONT FAMILY MAPPINGS ── */
-  /* Logo now uses DotGothic16 for that authentic dotted/pixel feel */
-  --font-logo: var(--font-dotgothic);
+  /* ── FONT FAMILY MAPPINGS (ALL GEIST BASED) ── */
+  /* Logo and Body now share Geist Mono */
+  --font-logo: var(--font-geist-mono);
   --font-body: var(--font-geist-mono);
 
-  --font-nav: var(--font-ndot);
-  --font-product: var(--font-ntype);
-  --font-ui: var(--font-share-tech-mono);
+  /* Nav, Product, and UI now also point to Geist Mono for a unified tech look */
+  --font-nav: var(--font-geist-mono);
+  --font-product: var(--font-geist-mono);
+  --font-ui: var(--font-geist-mono);
 
   /* ── CUSTOM TYPOGRAPHY SCALE ── */
   --font-size-body-base: 13px;
@@ -39,6 +40,7 @@
   body {
     background-color: var(--color-off-white);
     color: var(--color-primary);
+    /* Primary font stack using Geist Mono */
     font-family:
       var(--font-geist-mono, "GeistMono"), ui-monospace, "Cascadia Code",
       "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
@@ -52,14 +54,15 @@
       auto;
   }
 
+  /* Headings now follow Geist Mono as well for that consistent technical vibe */
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    font-family:
-      var(--font-ntype, "Space Grotesk"), ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-geist-mono, "GeistMono"), ui-monospace, monospace;
+    font-weight: 600;
   }
 
   a,
@@ -76,8 +79,7 @@
 /* ── TAILWIND V4 CUSTOM UTILITIES ── */
 
 @utility font-product {
-  font-family:
-    var(--font-ntype, "Space Grotesk"), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-geist-mono, "GeistMono"), ui-monospace, monospace;
 }
 
 @utility btn-nothing-primary {
@@ -138,12 +140,12 @@
 
 @layer utilities {
   .font-logo-heavy {
-    /* DotGothic looks best with normal weight but tighter spacing */
+    /* Geist Mono Logo Styling */
     font-family: var(--font-logo);
-    font-weight: 400;
-    letter-spacing: -0.05em;
-    /* We skip the stroke here because DotGothic is already pixelated */
+    font-weight: 700;
+    letter-spacing: -0.04em;
     text-transform: uppercase;
+    -webkit-text-stroke: 0.2px currentColor;
   }
 }
 
