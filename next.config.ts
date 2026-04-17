@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
     ppr: true,
     inlineCss: true,
     useCache: true,
+    // Add this to tell Next.js we are okay with Turbopack
+    turbopack: {},
   },
   images: {
     formats: ["image/avif", "image/webp"],
@@ -16,13 +18,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.(woff|woff2|eot|ttf|otf)$/i,
-      type: "asset/resource",
-    });
-    return config;
-  },
+  /* REMOVED WEBPACK BLOCK: 
+     Next.js (especially with Turbopack) handles woff2, ttf, etc. 
+     automatically when using next/font/local.
+  */
 };
 
 export default nextConfig;
