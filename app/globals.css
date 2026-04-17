@@ -73,9 +73,25 @@
 
 /* ── TAILWIND V4 CUSTOM UTILITIES ── */
 
-/* Force register font-product utility for Grotesk */
+/* Force register font utilities for brand fonts */
+@utility font-logo {
+  font-family: var(--font-logo);
+}
+
+@utility font-nav {
+  font-family: var(--font-nav);
+}
+
 @utility font-product {
   font-family: var(--font-product);
+}
+
+@utility font-body {
+  font-family: var(--font-body);
+}
+
+@utility font-ui {
+  font-family: var(--font-ui);
 }
 
 @utility btn-nothing-primary {
