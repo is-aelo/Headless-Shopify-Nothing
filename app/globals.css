@@ -39,7 +39,14 @@
   body {
     background-color: var(--color-off-white);
     color: var(--color-primary);
-    font-family: var(--font-body);
+    /*
+     * Fallback chain: Next.js CSS variable → GeistMono package name → monospace
+     * This covers the case where --font-geist-mono isn't injected (e.g. if
+     * GeistMono was imported from the geist package instead of localFont).
+     */
+    font-family:
+      var(--font-geist-mono, "GeistMono"), ui-monospace, "Cascadia Code",
+      "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
     font-size: var(--font-size-body-base);
     line-height: var(--line-height-body-base);
     -webkit-font-smoothing: antialiased;
@@ -57,7 +64,11 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-product);
+    /*
+     * Fallback chain: Next.js CSS variable → Space Grotesk package name → sans-serif
+     */
+    font-family:
+      var(--font-ntype, "Space Grotesk"), ui-sans-serif, system-ui, sans-serif;
   }
 
   a,
@@ -73,25 +84,10 @@
 
 /* ── TAILWIND V4 CUSTOM UTILITIES ── */
 
-/* Force register font utilities for brand fonts */
-@utility font-logo {
-  font-family: var(--font-logo);
-}
-
-@utility font-nav {
-  font-family: var(--font-nav);
-}
-
+/* Force register font-product utility for Grotesk */
 @utility font-product {
-  font-family: var(--font-product);
-}
-
-@utility font-body {
-  font-family: var(--font-body);
-}
-
-@utility font-ui {
-  font-family: var(--font-ui);
+  font-family:
+    var(--font-ntype, "Space Grotesk"), ui-sans-serif, system-ui, sans-serif;
 }
 
 @utility btn-nothing-primary {
@@ -103,7 +99,7 @@
   color: var(--color-white);
   padding: 1.1rem 1.5rem;
   border-radius: 8px;
-  font-family: var(--font-logo);
+  font-family: var(--font-ndot-caps, "Ndot57Caps"), monospace;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   transition-property: all;
@@ -132,7 +128,7 @@
   color: var(--color-surface);
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  font-family: var(--font-logo);
+  font-family: var(--font-ndot-caps, "Ndot57Caps"), monospace;
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: -0.025em;
