@@ -30,20 +30,32 @@ export const nType82 = Space_Grotesk({
 /**
  * LOCAL NOTHING BRAND FONTS
  * Path is relative to app/fonts.ts.
- * We go up one level (../) to exit 'app', then into 'public/fonts/'.
+ * adjustFontFallback: false prevents mobile browsers from overriding your custom font.
  */
 export const ndot57Caps = localFont({
-  src: "../public/fonts/Ndot57Caps-Regular.woff2",
+  src: [
+    {
+      path: "../public/fonts/Ndot57Caps-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+  ],
   variable: "--font-ndot-caps",
   display: "swap",
-  weight: "400",
-  style: "normal",
+  adjustFontFallback: false,
+  preload: true,
 });
 
 export const ndot57 = localFont({
-  src: "../public/fonts/Ndot57-Regular.woff2",
+  src: [
+    {
+      path: "../public/fonts/Ndot57-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+  ],
   variable: "--font-ndot",
   display: "swap",
-  weight: "400",
-  style: "normal",
+  adjustFontFallback: false,
+  preload: true,
 });
