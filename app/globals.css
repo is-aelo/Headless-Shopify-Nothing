@@ -4,12 +4,16 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  /* ── FONT FAMILY MAPPINGS (ALL GEIST BASED) ── */
-  /* Logo and Body now share Geist Mono */
+  /* ── FONT FAMILY MAPPINGS ── */
+  /* Local & Google Fonts mapped to CSS Variables from app/fonts.ts */
+  --font-ndot: var(--font-ndot);
+  --font-ndot-caps: var(--font-ndot-caps);
+  --font-ntype: var(--font-ntype);
+  --font-sharetech: var(--font-share-tech-mono);
+
+  /* Primary Geist Mono Mappings */
   --font-logo: var(--font-geist-mono);
   --font-body: var(--font-geist-mono);
-
-  /* Nav, Product, and UI now also point to Geist Mono for a unified tech look */
   --font-nav: var(--font-geist-mono);
   --font-product: var(--font-geist-mono);
   --font-ui: var(--font-geist-mono);
@@ -78,6 +82,22 @@
 
 /* ── TAILWIND V4 CUSTOM UTILITIES ── */
 
+@utility font-ndot {
+  font-family: var(--font-ndot), monospace;
+}
+
+@utility font-ndot-caps {
+  font-family: var(--font-ndot-caps), monospace;
+}
+
+@utility font-ntype {
+  font-family: var(--font-ntype), sans-serif;
+}
+
+@utility font-sharetech {
+  font-family: var(--font-sharetech), monospace;
+}
+
 @utility font-product {
   font-family: var(--font-geist-mono, "GeistMono"), ui-monospace, monospace;
 }
@@ -140,7 +160,6 @@
 
 @layer utilities {
   .font-logo-heavy {
-    /* Geist Mono Logo Styling */
     font-family: var(--font-logo);
     font-weight: 700;
     letter-spacing: -0.04em;

@@ -1,5 +1,5 @@
 import { GeistMono } from "geist/font/mono";
-import { Share_Tech_Mono, Space_Grotesk } from "next/font/google";
+import { Share_Tech_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
 /**
@@ -13,23 +13,22 @@ export const shareTechMono = Share_Tech_Mono({
 });
 
 /**
- * GEIST MONO (Body Font)
+ * GEIST MONO
  */
-export const geistMono = GeistMono; // Using the variable from the package
-
-/**
- * REPLACEMENT FOR NTYPE82 (USING SPACE GROTESK)
- */
-export const nType82 = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-ntype",
-  display: "swap",
-  weight: "700",
-});
+export const geistMono = GeistMono;
 
 /**
  * LOCAL NOTHING BRAND FONTS
+ * Path: Starting from app/fonts.ts, go up one level to root, then into public/fonts
  */
+export const nType82 = localFont({
+  src: "../public/fonts/NtTpe82-Headline.woff2",
+  variable: "--font-ntype",
+  display: "swap",
+  weight: "700",
+  style: "normal",
+});
+
 export const ndot57Caps = localFont({
   src: "../public/fonts/Ndot57Caps-Regular.woff2",
   variable: "--font-ndot-caps",

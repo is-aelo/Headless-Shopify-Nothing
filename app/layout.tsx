@@ -1,5 +1,5 @@
 import { CartProvider } from "components/cart/cart-context";
-import Footer from "components/layout/footer"; // Idagdag mo ito
+import Footer from "components/layout/footer";
 import { MainWrapper } from "components/layout/main-wrapper";
 import { Navbar } from "components/layout/navbar";
 import { GeistMono } from "geist/font/mono";
@@ -36,7 +36,7 @@ export default async function RootLayout({
       lang="en"
       className={`${GeistMono.variable} ${ndot57.variable} ${ndot57Caps.variable} ${nType82.variable} ${shareTechMono.variable}`}
     >
-      <body className="antialiased font-body selection:bg-black selection:text-white">
+      <body className="antialiased selection:bg-black selection:text-white">
         <CartProvider cartPromise={cart}>
           <Navbar />
           <MainWrapper>
