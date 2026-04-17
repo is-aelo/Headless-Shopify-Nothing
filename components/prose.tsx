@@ -9,12 +9,12 @@ const Prose = ({ html, className }: { html: string; className?: string }) => {
         "prose mx-auto max-w-6xl",
 
         // --- BASE TYPOGRAPHY ---
-        // Force Geist Mono with system monospace fallback for technical consistency
-        "font-body font-mono text-[12px] md:text-[13px] leading-snug text-surface/80",
+        // Removed 'font-body' and 'font-mono' to allow inheritance from layout.tsx
+        "text-[12px] md:text-[13px] leading-snug text-surface/80",
 
         // --- HEADINGS ---
-        // Replaced undefined 'font-product' with 'font-ntype' (Space Grotesk)
-        "prose-headings:font-ntype prose-headings:font-bold prose-headings:tracking-tighter prose-headings:uppercase prose-headings:text-surface",
+        // Removed 'font-ntype'. It will now use the global heading font or body font.
+        "prose-headings:font-bold prose-headings:tracking-tighter prose-headings:uppercase prose-headings:text-surface",
         "prose-h1:text-3xl md:text-4xl prose-h2:text-2xl md:text-3xl prose-h3:text-xl md:text-2xl prose-h4:text-lg",
 
         // --- LINKS & DECOR ---
