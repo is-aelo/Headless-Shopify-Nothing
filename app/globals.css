@@ -119,7 +119,7 @@
   color: var(--color-white);
   padding: 1.1rem 1.5rem;
   border-radius: 8px;
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body), monospace;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   transition-property: all;
@@ -148,7 +148,7 @@
   color: var(--color-surface);
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body), monospace;
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: -0.025em;

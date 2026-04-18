@@ -45,7 +45,7 @@ export function Hero({ product }: { product: Product }) {
             <div className="flex flex-col w-full">
               <Link
                 href={`/product/${product.handle}`}
-                className="bg-black text-white w-full py-3.5 lg:py-4 text-center font-logo text-[9px] lg:text-[10px] uppercase tracking-widest hover:bg-neutral-800 transition-all duration-300 active:scale-[0.98] rounded-[8px]"
+                className="btn-nothing-primary px-12 text-[11px] h-[48px] w-full sm:w-auto rounded-[8px]"
               >
                 Discover
               </Link>
