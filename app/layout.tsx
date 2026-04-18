@@ -2,6 +2,7 @@ import { CartProvider } from "components/cart/cart-context";
 import Footer from "components/layout/footer";
 import { MainWrapper } from "components/layout/main-wrapper";
 import { Navbar } from "components/layout/navbar";
+import SmoothScroll from "components/SmoothScroll";
 import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
 import { ReactNode, Suspense } from "react";
@@ -47,13 +48,14 @@ export default async function RootLayout({
         ${ndot57Caps.variable} 
         ${nType82.variable} 
         ${shareTechMono.variable}
+        scroll-smooth
       `}
     >
       <body className="antialiased selection:bg-black selection:text-white">
         <CartProvider cartPromise={cart}>
           <Navbar />
           <MainWrapper>
-            {children}
+            <SmoothScroll>{children}</SmoothScroll>
             <Suspense fallback={<div className="h-40 w-full" />}>
               <Footer />
             </Suspense>
