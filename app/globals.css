@@ -5,14 +5,15 @@
 
 @theme {
   /* ── FONT FAMILY MAPPINGS ── */
-  /* Local & Google Fonts mapped to CSS Variables from app/fonts.ts */
   --font-ndot: var(--font-ndot);
   --font-ndot-caps: var(--font-ndot-caps);
   --font-ntype: var(--font-ntype);
   --font-sharetech: var(--font-share-tech-mono);
 
-  /* Primary Geist Mono Mappings */
-  --font-logo: var(--font-geist-mono);
+  /* Mapping font-logo to Geist Sans/Regular instead of Mono */
+  /* Siguraduhin na ang var(--font-geist-sans) ay defined sa iyong fonts.ts */
+  --font-logo: var(--font-geist-sans);
+
   --font-body: var(--font-geist-mono);
   --font-nav: var(--font-geist-mono);
   --font-product: var(--font-geist-mono);
@@ -44,10 +45,7 @@
   body {
     background-color: var(--color-off-white);
     color: var(--color-primary);
-    /* Primary font stack using Geist Mono */
-    font-family:
-      var(--font-geist-mono, "GeistMono"), ui-monospace, "Cascadia Code",
-      "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+    font-family: var(--font-geist-mono, "GeistMono"), ui-monospace, monospace;
     font-size: var(--font-size-body-base);
     line-height: var(--line-height-body-base);
     -webkit-font-smoothing: antialiased;
@@ -58,14 +56,19 @@
       auto;
   }
 
-  /* Headings now follow Geist Mono as well for that consistent technical vibe */
+  /* Headings now use font-logo (Geist Sans) for a cleaner, bolder look */
   h1,
   h2,
-  h3,
+  h3 {
+    font-family: var(--font-logo), sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+
   h4,
   h5,
   h6 {
-    font-family: var(--font-geist-mono, "GeistMono"), ui-monospace, monospace;
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
     font-weight: 600;
   }
 
@@ -100,6 +103,11 @@
 
 @utility font-product {
   font-family: var(--font-geist-mono, "GeistMono"), ui-monospace, monospace;
+}
+
+/* Updated font-logo utility to use the Sans version */
+@utility font-logo {
+  font-family: var(--font-logo), sans-serif;
 }
 
 @utility btn-nothing-primary {
@@ -161,10 +169,9 @@
 @layer utilities {
   .font-logo-heavy {
     font-family: var(--font-logo);
-    font-weight: 700;
-    letter-spacing: -0.04em;
+    font-weight: 800; /* Mas makapal para sa sans version */
+    letter-spacing: -0.05em;
     text-transform: uppercase;
-    -webkit-text-stroke: 0.2px currentColor;
   }
 }
 
