@@ -1,4 +1,5 @@
 import { GeistMono } from "geist/font/mono";
+import { GeistSans } from "geist/font/sans";
 import { Share_Tech_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
@@ -13,13 +14,17 @@ export const shareTechMono = Share_Tech_Mono({
 });
 
 /**
- * GEIST MONO
+ * GEIST SANS (Regular for Logo/Headlines)
+ */
+export const geistSans = GeistSans;
+
+/**
+ * GEIST MONO (For UI/Technical Specs)
  */
 export const geistMono = GeistMono;
 
 /**
  * LOCAL NOTHING BRAND FONTS
- * Path: Starting from app/fonts.ts, go up one level to root, then into public/fonts
  */
 export const nType82 = localFont({
   src: "../public/fonts/NtTpe82-Headline.woff2",
