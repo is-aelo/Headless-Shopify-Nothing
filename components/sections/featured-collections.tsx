@@ -1,6 +1,7 @@
 import { addItem } from "components/cart/actions";
 import { ProductCard } from "components/product/product-card";
 import { getCollectionProducts } from "lib/shopify";
+import { Product } from "lib/shopify/types";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -47,23 +48,33 @@ async function addItemAction(formData: FormData) {
   await addItem(null, variantId);
 }
 
+interface SectionProps {
+  title: string;
+  handle: string;
+  variant?: LayoutVariant;
+  accentColor: string;
+  usedIds: Set<string>;
+}
+
 async function CollectionSection({
   title,
   handle,
   variant = "standard",
-  accentColor = "#ff0000",
-}: {
-  title: string;
-  handle: string;
-  variant?: LayoutVariant;
-  accentColor?: string;
-}) {
-  const products = await getCollectionProducts({ collection: handle });
+  accentColor,
+  usedIds,
+}: SectionProps) {
+  const allProducts = await getCollectionProducts({ collection: handle });
+
+  // Filter out products already displayed in previous sections
+  const products = allProducts.filter((p) => !usedIds.has(p.id));
 
   if (!products || products.length === 0) return null;
 
-  const product = products[0];
-  if (!product) return null;
+  const product = products[0] as Product;
+
+  // Add product and potential grid items to the tracker
+  usedIds.add(product.id);
+  products.slice(1, 5).forEach((p) => usedIds.add(p.id));
 
   const variantId = product.variants?.[0]?.id;
   const { intro, specs } = parseProductData(
@@ -73,6 +84,7 @@ async function CollectionSection({
   return (
     <section className="relative w-full bg-off-white overflow-hidden border-b border-border-l">
       <div className="max-w-[1440px] mx-auto">
+        {/* Section Header */}
         <div className="flex items-center justify-between px-6 lg:px-16 pt-12 lg:pt-16">
           <div className="flex items-center gap-4">
             <div className="relative flex items-center justify-center">
@@ -98,8 +110,11 @@ async function CollectionSection({
           </Link>
         </div>
 
+        {/* Hero Product Layout */}
         <div
-          className={`flex flex-col ${variant === "reversed" ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-12 lg:gap-24 px-6 lg:px-16 py-16 lg:py-32`}
+          className={`flex flex-col ${
+            variant === "reversed" ? "lg:flex-row-reverse" : "lg:flex-row"
+          } items-center gap-12 lg:gap-24 px-6 lg:px-16 py-16 lg:py-32`}
         >
           <div className="w-full lg:w-1/2 relative flex items-center justify-center">
             <div className="relative w-full aspect-[4/3]">
@@ -158,6 +173,7 @@ async function CollectionSection({
           </div>
         </div>
 
+        {/* Secondary Products Grid */}
         {products.length > 1 && (
           <div className="border-t border-border-l">
             <div className="grid grid-cols-2 lg:grid-cols-4">
@@ -178,16 +194,24 @@ async function FeaturedCollections() {
       title: "Phones",
       handle: "phones",
       variant: "standard",
-      accent: "#ff0000",
+      accent: "var(--color-accent-red)",
     },
-    { title: "Audio", handle: "audio", variant: "reversed", accent: "#ff0000" },
     {
-      title: "Wearables",
-      handle: "watches",
+      title: "CMF",
+      handle: "cmf",
+      variant: "reversed",
+      accent: "var(--color-cmf-orange)",
+    },
+    {
+      title: "Audio",
+      handle: "audio",
       variant: "standard",
-      accent: "#ff6b00",
+      accent: "var(--color-accent-red)",
     },
   ];
+
+  // Set to prevent repeated products across categories
+  const usedIds = new Set<string>();
 
   return (
     <div className="w-full bg-off-white">
@@ -198,6 +222,7 @@ async function FeaturedCollections() {
           handle={cat.handle}
           variant={cat.variant as LayoutVariant}
           accentColor={cat.accent}
+          usedIds={usedIds}
         />
       ))}
     </div>
