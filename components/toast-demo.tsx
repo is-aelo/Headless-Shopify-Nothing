@@ -6,12 +6,23 @@ export default function ToastDemo() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 1000);
+    // Check if the user has already closed this toast in this browser
+    const isDismissed = localStorage.getItem("demo-toast-dismissed");
 
-    return () => clearTimeout(timer);
+    if (!isDismissed) {
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
   }, []);
+
+  const handleClose = () => {
+    setIsVisible(false);
+    // Persist the closed state so it doesn't reappear on refresh
+    localStorage.setItem("demo-toast-dismissed", "true");
+  };
 
   if (!isVisible) return null;
 
@@ -29,7 +40,7 @@ export default function ToastDemo() {
             </p>
           </div>
           <button
-            onClick={() => setIsVisible(false)}
+            onClick={handleClose}
             className="text-gray-500 hover:text-white transition-colors text-xs font-mono"
           >
             [CLOSE]

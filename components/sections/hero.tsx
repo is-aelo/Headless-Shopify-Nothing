@@ -6,6 +6,9 @@ import Link from "next/link";
 export function Hero({ product }: { product: Product }) {
   if (!product) return null;
 
+  // Attempt to grab the second image from the gallery to avoid redundancy
+  const heroImage = product.images?.[1] || product.featuredImage;
+
   return (
     <section className="relative h-screen w-full overflow-hidden bg-white">
       {/* 1. Background Grid */}
@@ -13,10 +16,10 @@ export function Hero({ product }: { product: Product }) {
 
       {/* 2. TRUE FULL SCREEN IMAGE */}
       <div className="absolute inset-0 z-0">
-        {product.featuredImage?.url && (
+        {heroImage?.url && (
           <Image
-            src={product.featuredImage.url}
-            alt={product.title}
+            src={heroImage.url}
+            alt={heroImage.altText || product.title}
             fill
             className="object-cover object-center transition-opacity duration-700"
             priority
