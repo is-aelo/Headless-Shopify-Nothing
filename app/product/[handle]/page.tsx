@@ -5,7 +5,6 @@ import Breadcrumbs from "../../../components/layout/breadcrumbs";
 import { Gallery } from "../../../components/product/gallery";
 import { ProductCard } from "../../../components/product/product-card";
 import { ProductDescription } from "../../../components/product/product-description";
-import ToastDemo from "../../../components/toast-demo";
 import { HIDDEN_PRODUCT_TAG } from "../../../lib/constants";
 import { getProduct, getProductRecommendations } from "../../../lib/shopify";
 import { Image, ProductVariant } from "../../../lib/shopify/types";
@@ -52,7 +51,6 @@ export default async function ProductPage(props: {
 
   return (
     <div className="mx-auto max-w-screen-2xl px-4 relative">
-      <ToastDemo />
       <Breadcrumbs items={breadcrumbItems} />
 
       <div className="flex flex-col rounded-lg border border-border-l bg-off-white p-8 md:p-12 lg:flex-row lg:gap-8">

@@ -75,7 +75,6 @@ export default function CartModal() {
             leaveTo="translate-x-full"
           >
             <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-border-l bg-off-white p-6 text-primary md:w-[400px]">
-              {/* Header */}
               <div className="flex items-center justify-between pb-5 border-b border-border-l">
                 <p className="font-logo text-xl tracking-widest">BAG</p>
                 <button aria-label="Close Bag" onClick={closeCart}>
@@ -87,7 +86,18 @@ export default function CartModal() {
                 </button>
               </div>
 
-              {/* Empty state */}
+              <div className="mt-4 bg-black p-4 border border-[#333]">
+                <p className="text-xs text-white font-mono leading-relaxed">
+                  THIS IS A DEMO STORE. USE CARD NUMBER{" "}
+                  <span className="bg-white text-black px-1 font-bold">1</span>{" "}
+                  AND CVV{" "}
+                  <span className="bg-white text-black px-1 font-bold">
+                    111
+                  </span>{" "}
+                  TO TEST THE CHECKOUT.
+                </p>
+              </div>
+
               {!cart || cart.lines.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center gap-4">
                   <ShoppingBag
@@ -101,7 +111,6 @@ export default function CartModal() {
                 </div>
               ) : (
                 <div className="flex h-full flex-col justify-between overflow-hidden">
-                  {/* Cart items */}
                   <ul className="grow overflow-auto py-2 scrollbar-hide">
                     {cart.lines
                       .sort((a, b) =>
@@ -143,7 +152,6 @@ export default function CartModal() {
                             key={i}
                             className="flex w-full flex-row items-start gap-4 border-b border-border-l/50 py-5 last:border-0"
                           >
-                            {/* Square thumbnail with Skeleton */}
                             <Link
                               href={merchandiseUrl}
                               onClick={closeCart}
@@ -155,7 +163,6 @@ export default function CartModal() {
                               />
                             </Link>
 
-                            {/* Info */}
                             <div className="flex flex-1 flex-col gap-1 min-w-0">
                               <div className="flex items-start justify-between gap-2">
                                 <Link
@@ -171,7 +178,6 @@ export default function CartModal() {
                                 />
                               </div>
 
-                              {/* Variant selector */}
                               {hasMultipleVariants && (
                                 <EditItemVariantSelector
                                   item={item}
@@ -180,7 +186,6 @@ export default function CartModal() {
                                 />
                               )}
 
-                              {/* Fallback: show title if only one variant */}
                               {!hasMultipleVariants &&
                                 item.merchandise.title !== DEFAULT_OPTION && (
                                   <p className="font-ui text-[11px] uppercase tracking-wider text-muted">
@@ -219,7 +224,6 @@ export default function CartModal() {
                       })}
                   </ul>
 
-                  {/* Footer */}
                   <div className="pt-4 border-t border-border-l">
                     <div className="space-y-2 font-ui text-[11px] uppercase tracking-[0.15em] text-muted">
                       <div className="flex justify-between">
@@ -270,7 +274,6 @@ export default function CartModal() {
 function ThumbnailWithSkeleton({ src, alt }: { src: string; alt: string }) {
   const [isLoading, setIsLoading] = useState(true);
 
-  // Re-trigger loading state if src changes (variant change)
   useEffect(() => {
     setIsLoading(true);
   }, [src]);
@@ -280,7 +283,6 @@ function ThumbnailWithSkeleton({ src, alt }: { src: string; alt: string }) {
       {isLoading && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-off-white">
           <div className="h-full w-full animate-pulse bg-neutral-200" />
-          {/* Subtle accent dot to match Nothing UI */}
           <div className="absolute h-1 w-1 bg-accent-red rounded-full" />
         </div>
       )}
@@ -303,7 +305,7 @@ function CheckoutButton() {
 
   return (
     <button
-      className="btn-nothing-primary py-4 text-lg"
+      className="btn-nothing-primary py-4 text-lg w-full"
       type="submit"
       disabled={pending}
     >
