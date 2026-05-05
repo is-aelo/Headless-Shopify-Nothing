@@ -1,3 +1,4 @@
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { addItem } from "components/cart/actions";
 import { getCollectionProducts } from "lib/shopify";
 import { Product } from "lib/shopify/types";
@@ -121,9 +122,10 @@ async function CollectionSection({ title, handle, accentColor, usedIds }: any) {
               </div>
               <Link
                 href={`/search/${handle}`}
-                className="font-nav text-[10px] uppercase tracking-[0.2em] text-muted hover:text-primary transition-colors bg-white/40 backdrop-blur-md px-5 py-2 rounded-full"
+                className="font-nav text-[10px] uppercase tracking-[0.2em] text-muted hover:text-primary transition-colors bg-white/40 backdrop-blur-md px-5 py-2 rounded-full flex items-center gap-2"
               >
-                All {title} &rarr;
+                All {title}
+                <ArrowRightIcon className="h-3 w-3 stroke-[3]" />
               </Link>
             </div>
 
@@ -173,7 +175,6 @@ async function CollectionSection({ title, handle, accentColor, usedIds }: any) {
         )}
       </div>
 
-      {/* COMPACT DOT SEPARATOR */}
       <div className="w-full h-[120px] relative overflow-hidden bg-[#f7f7f7]">
         <div
           className="absolute inset-0 pointer-events-none opacity-[0.8]"
