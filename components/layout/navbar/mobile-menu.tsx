@@ -40,9 +40,11 @@ export default function MobileMenu({
       <button
         onClick={openMobileMenu}
         aria-label="Open navigation"
-        className="flex h-10 w-10 items-center justify-center text-primary transition-transform active:scale-90"
+        className="flex h-10 w-10 shrink-0 items-center justify-start text-primary transition-transform active:scale-95"
       >
-        <Grip size={16} strokeWidth={1.5} className="opacity-90" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-transparent hover:border-border-l hover:bg-white/50 transition-colors">
+          <Grip size={18} strokeWidth={1.5} className="opacity-90" />
+        </div>
       </button>
 
       <Transition show={isOpen} as={Fragment}>
@@ -68,32 +70,31 @@ export default function MobileMenu({
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <Dialog.Panel className="fixed inset-y-0 left-0 flex w-full max-w-xs flex-col bg-off-white shadow-2xl">
+            <Dialog.Panel className="fixed inset-y-0 left-0 flex w-full max-w-xs flex-col bg-[#f5f5f5] shadow-2xl">
               <div className="flex flex-col h-full p-8">
-                {/* Header Section */}
                 <div className="flex items-center justify-between mb-12">
                   <button
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-border-l bg-white text-primary"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e0e0e0] bg-white text-primary"
                     onClick={closeMobileMenu}
                   >
                     <X className="h-5 w-5" strokeWidth={1.5} />
                   </button>
                 </div>
 
-                {/* Collections Navigation */}
                 <nav className="flex-1 overflow-y-auto">
                   <p className="mb-8 font-nav text-[11px] font-bold uppercase tracking-[0.5em] text-primary">
                     Collections
                   </p>
+
                   <ul className="flex flex-col gap-5">
                     {collections.map((collection) => {
                       const active = pathname === collection.path;
+
                       return (
                         <li
                           key={collection.handle}
                           className="flex items-center gap-3 group"
                         >
-                          {/* Dot is now placed BEFORE the link */}
                           <div className="w-4 flex items-center justify-center">
                             {active ? (
                               <StatusDot className="opacity-100" />
@@ -120,8 +121,7 @@ export default function MobileMenu({
                   </ul>
                 </nav>
 
-                {/* Hardware Footer */}
-                <div className="mt-auto border-t border-border-l pt-8">
+                <div className="mt-auto border-t border-[#e0e0e0] pt-8">
                   <p className="font-nav text-[10px] uppercase tracking-[0.3em] text-primary font-bold">
                     NOTHING (R) CONCEPT PROJECT
                   </p>
