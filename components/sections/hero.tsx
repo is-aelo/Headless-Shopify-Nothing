@@ -10,7 +10,7 @@ export function Hero({ product }: { product: Product }) {
   const gridImages = product.images?.slice(2, 6) || [];
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-[#FBFBFB] py-10 lg:py-0">
+    <section className="relative min-h-screen w-full overflow-hidden bg-[#FBFBFB] py-10 md:py-0">
       {/* 1. Signature Grid Background */}
       <div
         className="absolute inset-0 z-10 opacity-[0.1] pointer-events-none"
@@ -22,13 +22,13 @@ export function Hero({ product }: { product: Product }) {
       />
 
       {/* 2. Main Background Image */}
-      <div className="relative aspect-square w-full max-w-[400px] mx-auto overflow-hidden rounded-2xl bg-white border border-black/5 z-0 lg:absolute lg:inset-0 lg:max-w-none lg:rounded-none lg:bg-transparent lg:border-none lg:aspect-auto">
+      <div className="relative aspect-square w-full max-w-[400px] mx-auto overflow-hidden bg-white border border-black/5 z-0 md:absolute md:inset-0 md:max-w-none md:rounded-none md:bg-transparent md:border-none md:aspect-auto">
         {heroImage?.url && (
           <Image
             src={heroImage.url}
             alt={heroImage.altText || product.title}
             fill
-            className="object-cover lg:object-cover object-center transition-transform duration-1000 ease-in-out"
+            className="object-cover md:object-cover object-center transition-transform duration-1000 ease-in-out"
             priority
             sizes="100vw"
           />
@@ -36,11 +36,11 @@ export function Hero({ product }: { product: Product }) {
       </div>
 
       {/* 3. Editorial Elements Layer */}
-      <div className="relative z-20 flex flex-col items-center px-4 lg:absolute lg:inset-0 lg:block lg:px-0 lg:pointer-events-none">
-        {/* OTHER IMAGES - Minimal mobile spacing (mt-6) */}
-        <div className="grid grid-cols-2 gap-4 w-full max-w-[400px] mt-6 lg:mt-0 lg:absolute lg:inset-0 lg:block lg:max-w-none lg:gap-0">
+      <div className="relative z-20 flex flex-col items-center px-4 md:absolute md:inset-0 md:block md:px-0 md:pointer-events-none">
+        {/* Floating Image Grid */}
+        <div className="grid grid-cols-2 gap-4 w-full max-w-[400px] mt-6 md:mt-0 md:absolute md:inset-0 md:block md:max-w-none md:gap-0">
           {/* Square 1 */}
-          <div className="group relative aspect-square overflow-hidden rounded-2xl bg-white border border-black/5 lg:absolute lg:left-[10%] lg:top-[12%] lg:h-64 lg:w-64 lg:pointer-events-auto transition-all duration-500 hover:border-black/20">
+          <div className="group relative aspect-square overflow-hidden bg-white border border-black/5 md:absolute md:left-[10%] md:top-[12%] md:h-64 md:w-64 md:pointer-events-auto transition-all duration-500 hover:border-black/20">
             {gridImages[0] && (
               <Image
                 src={gridImages[0].url}
@@ -52,7 +52,7 @@ export function Hero({ product }: { product: Product }) {
           </div>
 
           {/* Square 2 */}
-          <div className="group relative aspect-square overflow-hidden rounded-2xl bg-white border border-black/5 lg:absolute lg:left-[15%] lg:bottom-[15%] lg:h-40 lg:w-40 lg:pointer-events-auto transition-all duration-500 hover:border-black/20">
+          <div className="group relative aspect-square overflow-hidden bg-white border border-black/5 md:absolute md:left-[15%] md:bottom-[15%] md:h-40 md:w-40 md:pointer-events-auto transition-all duration-500 hover:border-black/20">
             {gridImages[1] && (
               <Image
                 src={gridImages[1].url}
@@ -64,7 +64,7 @@ export function Hero({ product }: { product: Product }) {
           </div>
 
           {/* Square 3 */}
-          <div className="group relative aspect-square overflow-hidden rounded-2xl bg-white border border-black/5 lg:absolute lg:right-[15%] lg:top-[8%] lg:h-52 lg:w-52 lg:pointer-events-auto transition-all duration-500 hover:border-black/20">
+          <div className="group relative aspect-square overflow-hidden bg-white border border-black/5 md:absolute md:right-[15%] md:top-[8%] md:h-52 md:w-52 md:pointer-events-auto transition-all duration-500 hover:border-black/20">
             {gridImages[2] && (
               <Image
                 src={gridImages[2].url}
@@ -76,7 +76,7 @@ export function Hero({ product }: { product: Product }) {
           </div>
 
           {/* Square 4 */}
-          <div className="group relative aspect-square overflow-hidden rounded-2xl bg-white border border-black/5 lg:absolute lg:right-[8%] lg:bottom-[20%] lg:h-80 lg:w-80 lg:pointer-events-auto transition-all duration-500 hover:border-black/20">
+          <div className="group relative aspect-square overflow-hidden bg-white border border-black/5 md:absolute md:right-[8%] md:bottom-[20%] md:h-80 md:w-80 md:pointer-events-auto transition-all duration-500 hover:border-black/20">
             {gridImages[3] && (
               <Image
                 src={gridImages[3].url}
@@ -89,18 +89,18 @@ export function Hero({ product }: { product: Product }) {
         </div>
 
         {/* 4. UI Card */}
-        <div className="relative mt-6 mb-10 w-full max-w-[400px] lg:absolute lg:bottom-16 lg:left-1/2 lg:z-40 lg:max-w-[480px] lg:-translate-x-1/2 lg:mt-0 lg:mb-0 lg:pointer-events-auto">
-          <div className="rounded-[24px] lg:rounded-[12px] bg-white/70 p-6 lg:p-10 backdrop-blur-2xl border border-white/40">
-            <div className="flex flex-col gap-6 lg:gap-8">
-              <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-                <div className="flex items-center gap-3 mb-2 lg:mb-4">
-                  <StatusDot className="scale-90 lg:scale-110" />
-                  <span className="font-mono text-[10px] lg:text-[11px] uppercase tracking-[0.3em] text-black/40">
+        <div className="relative mt-6 mb-10 w-full max-w-[400px] md:absolute md:bottom-16 md:left-1/2 md:z-40 md:max-w-[480px] md:-translate-x-1/2 md:mt-0 md:mb-0 md:pointer-events-auto">
+          <div className="rounded-sm bg-white/70 p-6 md:p-10 backdrop-blur-2xl border border-white/40">
+            <div className="flex flex-col gap-6 md:gap-8">
+              <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                <div className="flex items-center gap-3 mb-2 md:mb-4">
+                  <StatusDot className="scale-90 md:scale-110" />
+                  <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-black/40">
                     Latest Edition
                   </span>
                 </div>
 
-                <h2 className="font-logo text-3xl lg:text-5xl uppercase tracking-tighter text-black leading-[0.85]">
+                <h2 className="font-logo text-3xl md:text-5xl uppercase tracking-tighter text-black leading-[0.85]">
                   {product.title}
                 </h2>
               </div>
@@ -108,7 +108,7 @@ export function Hero({ product }: { product: Product }) {
               <div className="flex flex-col w-full">
                 <Link
                   href={`/product/${product.handle}`}
-                  className="flex items-center justify-center bg-black text-white px-12 text-[12px] font-bold uppercase tracking-[0.2em] h-[56px] lg:h-[52px] w-full rounded-2xl lg:rounded-[8px] transition-all hover:bg-neutral-800 active:scale-[0.97]"
+                  className="btn-nothing-primary flex items-center justify-center h-[56px] md:h-[52px] w-full text-[12px] font-bold uppercase tracking-[0.2em] transition-all active:scale-[0.97]"
                 >
                   Discover
                 </Link>
