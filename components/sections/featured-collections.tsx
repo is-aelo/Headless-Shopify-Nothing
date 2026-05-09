@@ -56,7 +56,7 @@ function SecondaryProductCard({ product }: { product: Product }) {
       </Link>
 
       <div className="flex flex-col gap-0.5 sm:gap-1 min-w-0">
-        <h4 className="font-product text-[10px] sm:text-[11px] font-normal uppercase tracking-tight truncate">
+        <h4 className="font-product text-[10px] sm:text-[11px] font-medium uppercase tracking-tight truncate">
           {product.title}
         </h4>
         <span className="font-mono text-[9px] sm:text-[10px] font-medium text-black">
