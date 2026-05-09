@@ -56,7 +56,7 @@ function SecondaryProductCard({ product }: { product: Product }) {
       </Link>
 
       <div className="flex flex-col gap-0.5 sm:gap-1 min-w-0">
-        <h4 className="font-product text-[10px] sm:text-[11px] font-bold uppercase tracking-tight truncate">
+        <h4 className="font-product text-[10px] sm:text-[11px] font-black uppercase tracking-tight truncate">
           {product.title}
         </h4>
         <span className="font-mono text-[9px] sm:text-[10px] font-medium text-black">
@@ -108,7 +108,7 @@ async function CollectionSection({ title, handle, usedIds }: any) {
         <div className="flex items-center justify-between px-4 sm:px-6 lg:px-12 py-6 sm:py-8 border-b border-black/[0.05]">
           <div className="flex items-center gap-2 sm:gap-3">
             <StatusDot />
-            <h2 className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] font-bold text-black">
+            <h2 className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] font-black text-black">
               {title}
             </h2>
           </div>
@@ -160,7 +160,7 @@ async function CollectionSection({ title, handle, usedIds }: any) {
                 )}
               </div>
 
-              <h3 className="font-logo text-4xl sm:text-5xl lg:text-7xl uppercase tracking-tighter leading-none mb-6 sm:mb-8 text-primary">
+              <h3 className="font-logo text-4xl sm:text-5xl lg:text-7xl uppercase tracking-tighter leading-none mb-6 sm:mb-8 text-primary font-black">
                 {product.title}
               </h3>
 
