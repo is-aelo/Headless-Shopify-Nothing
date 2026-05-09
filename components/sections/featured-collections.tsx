@@ -59,12 +59,12 @@ function SecondaryProductCard({ product }: { product: Product }) {
         <h4 className="font-product text-[10px] sm:text-[11px] font-bold uppercase tracking-tight truncate">
           {product.title}
         </h4>
-        <span className="font-sharetech text-[9px] sm:text-[10px] text-muted">
+        <span className="font-mono text-[9px] sm:text-[10px] font-medium text-black">
           PHP {amount.toLocaleString()}
         </span>
         <Link
           href={`/product/${product.handle}`}
-          className="font-nav text-[8px] sm:text-[9px] uppercase tracking-[0.15em] text-muted hover:text-primary mt-1 inline-block transition-colors"
+          className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.15em] text-muted hover:text-primary mt-1 inline-block transition-colors"
         >
           View Details
         </Link>
@@ -90,10 +90,13 @@ async function CollectionSection({ title, handle, usedIds }: any) {
     product.variants[0]?.compareAtPrice?.amount || "0",
   );
 
-  const variants =
+  const allVariants =
     product.variants?.filter(
       (v) => v.title.toLowerCase() !== "default title",
     ) || [];
+
+  const displayedVariants = allVariants.slice(0, 4);
+  const remainingCount = allVariants.length - 4;
 
   const heroImage = product.featuredImage?.url
     ? `${product.featuredImage.url}${product.featuredImage.url.includes("?") ? "&" : "?"}width=1400`
@@ -105,13 +108,13 @@ async function CollectionSection({ title, handle, usedIds }: any) {
         <div className="flex items-center justify-between px-4 sm:px-6 lg:px-12 py-6 sm:py-8 border-b border-black/[0.05]">
           <div className="flex items-center gap-2 sm:gap-3">
             <StatusDot />
-            <h2 className="font-nav text-[10px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] font-bold text-primary">
+            <h2 className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] font-bold text-black">
               {title}
             </h2>
           </div>
           <Link
             href={`/search/${handle}`}
-            className="group flex items-center gap-2 font-nav text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] text-muted hover:text-primary transition-colors"
+            className="group flex items-center gap-2 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-black/50 hover:text-black transition-colors"
           >
             All Products
             <ArrowRightIcon className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
@@ -133,18 +136,25 @@ async function CollectionSection({ title, handle, usedIds }: any) {
 
           <div className="flex flex-col p-6 sm:p-10 lg:p-20 justify-center">
             <div className="max-w-[460px]">
-              <div className="flex flex-wrap gap-1.5 mb-6 sm:mb-8">
-                {variants.length > 0 ? (
-                  variants.map((v) => (
-                    <span
-                      key={v.id}
-                      className="inline-flex items-center px-2 py-0.5 rounded-sm border border-black/10 bg-black/[0.02] font-sharetech text-[9px] uppercase tracking-wider text-muted/80"
-                    >
-                      {v.title}
-                    </span>
-                  ))
+              <div className="flex flex-wrap items-center gap-2 mb-6 sm:mb-8">
+                {displayedVariants.length > 0 ? (
+                  <>
+                    {displayedVariants.map((v) => (
+                      <span
+                        key={v.id}
+                        className="inline-flex items-center px-2 py-1 rounded-sm border border-black/10 bg-black/[0.02] font-mono text-[9px] uppercase tracking-[0.2em] text-black/40"
+                      >
+                        {v.title}
+                      </span>
+                    ))}
+                    {remainingCount > 0 && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-sm border border-dashed border-black/10 bg-transparent font-mono text-[9px] uppercase tracking-[0.2em] text-black/30">
+                        +{remainingCount} MORE
+                      </span>
+                    )}
+                  </>
                 ) : (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-sm border border-dashed border-black/10 font-sharetech text-[9px] uppercase tracking-wider text-muted/40">
+                  <span className="inline-flex items-center px-2 py-1 rounded-sm border border-dashed border-black/10 font-mono text-[9px] uppercase tracking-[0.2em] text-black/20">
                     Standard Edition
                   </span>
                 )}
@@ -160,11 +170,11 @@ async function CollectionSection({ title, handle, usedIds }: any) {
 
               <div className="flex items-center justify-between mb-8 sm:mb-10 pb-6 border-b border-black/[0.05]">
                 <div className="flex items-baseline gap-3">
-                  <span className="font-sharetech text-2xl sm:text-3xl">
+                  <span className="font-mono text-2xl sm:text-3xl font-medium tracking-tight text-black">
                     PHP {amount.toFixed(0)}
                   </span>
                   {compareAtPrice > amount && (
-                    <span className="font-sharetech text-xs sm:text-sm text-muted line-through">
+                    <span className="font-mono text-xs sm:text-sm text-muted line-through">
                       {compareAtPrice.toFixed(0)}
                     </span>
                   )}

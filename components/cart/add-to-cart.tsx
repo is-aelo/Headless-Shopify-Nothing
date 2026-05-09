@@ -37,16 +37,20 @@ function SubmitButton({
     );
   }
 
+  const isButtonDisabled = !selectedVariantId || pending;
+
   return (
     <button
       type="submit"
       aria-label="Add to bag"
-      disabled={!selectedVariantId || pending}
+      disabled={isButtonDisabled}
       onClick={onOptimisticAdd}
-      className={`group relative flex h-12 w-full items-center justify-between overflow-hidden rounded-full transition-all duration-300 active:scale-[0.98] disabled:opacity-90 sm:px-6 px-4 shadow-xl ${
+      className={`group relative flex h-12 w-full items-center justify-between overflow-hidden rounded-full transition-all duration-300 active:scale-[0.98] disabled:opacity-50 sm:px-6 px-4 shadow-xl ${
         pending
           ? "bg-neutral-900 dark:bg-neutral-100 scale-[0.99] cursor-wait"
-          : "bg-black dark:bg-white hover:scale-[1.01]"
+          : isButtonDisabled
+            ? "bg-neutral-400 cursor-not-allowed"
+            : "bg-black dark:bg-white hover:scale-[1.01]"
       }`}
     >
       {pending && (
@@ -69,7 +73,11 @@ function SubmitButton({
           </div>
         )}
         <span className="truncate font-nav text-[11px] font-bold uppercase tracking-[0.2em] text-white dark:text-black">
-          {pending ? "Processing..." : "Bag"}
+          {pending
+            ? "Processing..."
+            : !selectedVariantId
+              ? "Select Option"
+              : "Bag"}
         </span>
       </div>
 
@@ -112,9 +120,8 @@ export function AddToCart({ product }: { product: Product }) {
     ),
   );
 
-  const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined;
-  const selectedVariantId = variant?.id || defaultVariantId;
-  const finalVariant = variants.find((v) => v.id === selectedVariantId)!;
+  const selectedVariantId = variant?.id;
+  const finalVariant = variant || variants[0];
 
   const price =
     finalVariant?.price?.amount || product.priceRange.minVariantPrice.amount;
@@ -126,11 +133,11 @@ export function AddToCart({ product }: { product: Product }) {
   };
 
   const handleOptimisticAdd = () => {
-    if (!selectedVariantId) return;
+    if (!selectedVariantId || !variant) return;
 
     startTransition(() => {
       for (let i = 0; i < quantity; i++) {
-        addCartItem(finalVariant, product);
+        addCartItem(variant, product);
       }
     });
   };
@@ -163,7 +170,11 @@ export function AddToCart({ product }: { product: Product }) {
           </div>
 
           <form action={formAction} className="min-w-0 flex-1 ml-1">
-            <input type="hidden" name="variantId" value={selectedVariantId} />
+            <input
+              type="hidden"
+              name="variantId"
+              value={selectedVariantId ?? ""}
+            />
             <input type="hidden" name="quantity" value={quantity} />
 
             <SubmitButton
