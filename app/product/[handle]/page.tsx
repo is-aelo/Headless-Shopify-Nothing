@@ -50,11 +50,11 @@ export default async function ProductPage(props: {
   ];
 
   return (
-    <div className="mx-auto max-w-screen-2xl px-4 relative">
+    <div className="relative mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
       <Breadcrumbs items={breadcrumbItems} />
 
-      <div className="flex flex-col rounded-lg border border-border-l bg-off-white p-8 md:p-12 lg:flex-row lg:gap-8">
-        <div className="h-full w-full basis-full lg:basis-4/6">
+      <div className="grid grid-cols-1 gap-10 py-8 lg:grid-cols-12 lg:gap-16 lg:py-14">
+        <div className="lg:col-span-7">
           <Suspense
             fallback={
               <div className="relative aspect-square h-full w-full overflow-hidden bg-white animate-pulse" />
@@ -70,7 +70,7 @@ export default async function ProductPage(props: {
             />
           </Suspense>
         </div>
-        <div className="basis-full lg:basis-2/6">
+        <div className="lg:col-span-5 lg:border-l lg:border-black/[0.06] lg:pl-14">
           <ProductDescription product={product} />
         </div>
       </div>
@@ -87,7 +87,7 @@ async function RelatedProducts({ id }: { id: string }) {
   if (!relatedProducts.length) return null;
 
   return (
-    <div className="py-24 lg:py-32">
+    <div className="border-t border-black/[0.06] py-16 lg:py-24">
       <div className="flex items-center justify-between mb-10">
         <h2 className="font-logo text-[24px] lg:text-[32px] uppercase tracking-tighter text-primary">
           Related Products

@@ -10,150 +10,99 @@ type InfoBlockProps = {
   description: string;
 };
 
-export function InfoBlock({ variant, title, description }: InfoBlockProps) {
-  // Glyph Matrix Data (Wine Glass + Heart)
-  const glyphMatrix = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-    [0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-    [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-    [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-    [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ];
+const GLYPH_HEART = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+  [0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0],
+  [0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
 
+export function InfoBlock({ variant, title, description }: InfoBlockProps) {
   if (variant === "glyph") {
+    const dots = GLYPH_HEART.flat();
+
     return (
-      <section className="relative bg-off-white py-12 md:py-20 px-6 overflow-hidden">
-        <div className="relative max-w-[1200px] mx-auto flex flex-col items-center text-center">
+      <section className="relative overflow-hidden bg-primary px-6 py-20 md:py-32">
+        <div className="relative mx-auto flex max-w-[1200px] flex-col items-center text-center">
+          <span className="mb-8 font-mono text-[9px] uppercase tracking-[0.35em] text-white/50">
+            Signature Interface
+          </span>
+
+          <h1 className="font-logo max-w-3xl text-[clamp(1.75rem,4.5vw,3.25rem)] uppercase leading-[0.9] tracking-tighter text-white">
+            {title}
+          </h1>
+
+          <p className="mt-6 max-w-xl font-mono text-[10px] md:text-[11px] uppercase leading-relaxed tracking-wide text-white/50">
+            {description}
+          </p>
+
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="flex items-center gap-2 mb-6 bg-white border border-border-l px-3 py-1 rounded-full"
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true }}
+            className="mt-14 flex items-center justify-center"
           >
-            <span className="w-1 h-1 rounded-full bg-accent-red animate-pulse" />
-            <span className="font-body text-[9px] uppercase tracking-[0.3em] text-muted">
-              Signature Interface
-            </span>
+            <div className="flex h-[200px] w-[200px] items-center justify-center rounded-full border border-white/15 bg-white/[0.03] md:h-[240px] md:w-[240px]">
+              <div
+                className="grid gap-[3px]"
+                style={{
+                  gridTemplateColumns: `repeat(15, minmax(0, 1fr))`,
+                }}
+              >
+                {dots.map((pixel, i) => (
+                  <span
+                    key={i}
+                    className={`h-1 w-1 rounded-full md:h-[5px] md:w-[5px] ${
+                      pixel
+                        ? "bg-white shadow-[0_0_6px_rgba(255,255,255,0.5)]"
+                        : "bg-white/[0.08]"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
           </motion.div>
 
-          <motion.h1 className="font-logo font-black text-[clamp(1.5rem,4vw,2.75rem)] leading-[0.9] tracking-tighter text-primary uppercase mb-4 max-w-xl">
-            {title}
-          </motion.h1>
-
-          <motion.p className="font-body text-[10px] md:text-[12px] text-muted uppercase tracking-tight max-w-[360px] leading-relaxed mb-10 md:mb-12">
-            {description}
-          </motion.p>
-
-          <div className="relative flex flex-col items-center gap-12">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="relative flex items-center justify-center w-[200px] h-[200px] md:w-[280px] md:h-[280px] rounded-full bg-primary"
-            >
-              <div className="relative z-10 flex items-center justify-center scale-[0.75] md:scale-100">
-                <div
-                  className="grid gap-[2.5px] md:gap-[3px]"
-                  style={{ gridTemplateColumns: `repeat(15, minmax(0, 1fr))` }}
-                >
-                  {glyphMatrix.flat().map((pixel, i) => {
-                    const row = Math.floor(i / 15);
-                    const isHeart = row >= 1 && row <= 5;
-
-                    return (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0.05 }}
-                        whileInView={
-                          pixel === 1
-                            ? {
-                                opacity: [0.4, 1, 0.4],
-                                scale: isHeart ? [1, 1.2, 1] : [1, 1.05, 1],
-                              }
-                            : { opacity: 0.04 }
-                        }
-                        transition={
-                          pixel === 1
-                            ? {
-                                duration: isHeart ? 1.5 : 3,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                                delay: isHeart ? 0 : i * 0.002,
-                              }
-                            : {}
-                        }
-                        className={`w-[4px] h-[4px] md:w-[5px] md:h-[5px] rounded-full ${
-                          pixel === 1
-                            ? isHeart
-                              ? "bg-accent-red shadow-[0_0_8px_rgba(255,0,0,0.6)]"
-                              : "bg-off-white shadow-[0_0_4px_rgba(255,255,255,0.3)]"
-                            : "bg-white/5"
-                        }`}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-            >
-              <Link
-                href="/search/phones"
-                className="group flex flex-col items-center gap-2"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="font-logo text-[11px] md:text-[13px] uppercase tracking-[0.2em] text-primary">
-                    Explore Nothing Phones
-                  </span>
-                  <ArrowRight className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform duration-300" />
-                </div>
-                <div className="w-0 h-[1px] bg-primary group-hover:w-full transition-all duration-500 ease-out" />
-              </Link>
-            </motion.div>
-          </div>
+          <Link
+            href="/search/phones"
+            className="group mt-14 inline-flex items-center gap-3"
+          >
+            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white underline-offset-4 transition-colors group-hover:underline">
+              Explore Nothing Phones
+            </span>
+            <ArrowRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
         </div>
       </section>
     );
   }
 
   return (
-    <section className="relative bg-off-white py-12 md:py-20 px-6">
-      <div className="relative max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-5">
-          <div className="inline-block border-l-2 border-accent-red pl-4 mb-4">
-            <span className="font-logo text-[9px] md:text-[10px] uppercase tracking-[0.4em] text-accent-red block">
-              Nothing OS 4.0
-            </span>
-          </div>
-          <h2 className="font-logo text-[clamp(1.5rem,3.5vw,2.5rem)] leading-[0.95] text-surface uppercase">
-            {title}
-          </h2>
-        </div>
-        <div className="lg:col-span-7 flex flex-col justify-end">
-          <div className="border-l border-border-l pl-6">
-            <p className="font-body text-[10px] md:text-[13px] text-primary uppercase leading-snug max-w-lg">
-              {description}
-            </p>
-          </div>
-        </div>
+    <section className="relative border-y border-black/[0.06] bg-off-white px-6 py-24 md:py-40">
+      <div className="mx-auto flex max-w-[1100px] flex-col items-center text-center">
+        <span className="mb-8 font-mono text-[9px] uppercase tracking-[0.35em] text-muted">
+          Nothing OS 4.0
+        </span>
+
+        <h2 className="font-logo max-w-3xl text-[clamp(1.75rem,4.5vw,3.5rem)] uppercase leading-[0.9] tracking-tighter text-primary">
+          {title}
+        </h2>
+
+        <p className="mt-8 max-w-xl font-mono text-[10px] md:text-[12px] uppercase leading-relaxed tracking-wide text-muted">
+          {description}
+        </p>
       </div>
     </section>
   );

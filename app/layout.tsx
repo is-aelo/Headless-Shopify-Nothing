@@ -6,14 +6,7 @@ import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
 import { ReactNode, Suspense } from "react";
 import { Toaster } from "sonner";
-import {
-  geistMono,
-  geistSans,
-  ndot57,
-  ndot57Caps,
-  nType82,
-  shareTechMono,
-} from "./fonts";
+import { jetbrainsMono, pressStart2p, spaceGrotesk } from "./fonts";
 import "./globals.css";
 
 const { SITE_NAME } = process.env;
@@ -41,12 +34,9 @@ export default async function RootLayout({
     <html
       lang="en"
       className={`
-        ${geistSans.variable} 
-        ${geistMono.variable} 
-        ${ndot57.variable} 
-        ${ndot57Caps.variable} 
-        ${nType82.variable} 
-        ${shareTechMono.variable}
+        ${spaceGrotesk.variable} 
+        ${jetbrainsMono.variable} 
+        ${pressStart2p.variable}
       `}
     >
       <body className="antialiased selection:bg-black selection:text-white">

@@ -1,51 +1,37 @@
-import { GeistMono } from "geist/font/mono";
-import { GeistSans } from "geist/font/sans";
-import { Share_Tech_Mono } from "next/font/google";
-import localFont from "next/font/local";
+import {
+  JetBrains_Mono,
+  Press_Start_2P,
+  Space_Grotesk,
+} from "next/font/google";
 
 /**
- * GOOGLE FONTS
+ * GOOGLE FONTS ONLY
  */
-export const shareTechMono = Share_Tech_Mono({
+
+/**
+ * SPACE GROTESK (Squared/technical Sans for logos + headlines)
+ */
+export const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+
+/**
+ * JETBRAINS MONO (Tech/UI/mono body copy)
+ */
+export const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
+
+/**
+ * PRESS START 2P (Retro pixel accents — sparse usage only)
+ */
+export const pressStart2p = Press_Start_2P({
   weight: "400",
   subsets: ["latin"],
-  variable: "--font-share-tech-mono",
+  variable: "--font-press-start",
   display: "swap",
-});
-
-/**
- * GEIST SANS (Regular for Logo/Headlines)
- */
-export const geistSans = GeistSans;
-
-/**
- * GEIST MONO (For UI/Technical Specs)
- */
-export const geistMono = GeistMono;
-
-/**
- * LOCAL NOTHING BRAND FONTS
- */
-export const nType82 = localFont({
-  src: "../public/fonts/NtTpe82-Headline.woff2",
-  variable: "--font-ntype",
-  display: "swap",
-  weight: "700",
-  style: "normal",
-});
-
-export const ndot57Caps = localFont({
-  src: "../public/fonts/Ndot57Caps-Regular.woff2",
-  variable: "--font-ndot-caps",
-  display: "swap",
-  weight: "400",
-  style: "normal",
-});
-
-export const ndot57 = localFont({
-  src: "../public/fonts/Ndot57-Regular.woff2",
-  variable: "--font-ndot",
-  display: "swap",
-  weight: "400",
-  style: "normal",
 });

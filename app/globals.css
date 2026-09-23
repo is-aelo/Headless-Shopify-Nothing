@@ -5,19 +5,15 @@
 
 @theme {
   /* ── FONT FAMILY MAPPINGS ── */
-  --font-ndot: var(--font-ndot);
-  --font-ndot-caps: var(--font-ndot-caps);
-  --font-ntype: var(--font-ntype);
-  --font-sharetech: var(--font-share-tech-mono);
+  --font-logo: var(--font-space-grotesk);
+  --font-body: var(--font-jetbrains-mono);
+  --font-nav: var(--font-jetbrains-mono);
+  --font-product: var(--font-jetbrains-mono);
+  --font-ui: var(--font-jetbrains-mono);
+  --font-pixel: var(--font-press-start);
 
-  /* Mapping font-logo to Geist Sans/Regular instead of Mono */
-  /* Siguraduhin na ang var(--font-geist-sans) ay defined sa iyong fonts.ts */
-  --font-logo: var(--font-geist-sans);
-
-  --font-body: var(--font-geist-mono);
-  --font-nav: var(--font-geist-mono);
-  --font-product: var(--font-geist-mono);
-  --font-ui: var(--font-geist-mono);
+  /* Make the default `font-mono` utility use JetBrains Mono too */
+  --font-mono: var(--font-jetbrains-mono);
 
   /* ── CUSTOM TYPOGRAPHY SCALE ── */
   --font-size-body-base: 13px;
@@ -45,7 +41,8 @@
   body {
     background-color: var(--color-off-white);
     color: var(--color-primary);
-    font-family: var(--font-geist-mono, "GeistMono"), ui-monospace, monospace;
+    font-family:
+      var(--font-jetbrains-mono, "JetBrains Mono"), ui-monospace, monospace;
     font-size: var(--font-size-body-base);
     line-height: var(--line-height-body-base);
     -webkit-font-smoothing: antialiased;
@@ -56,7 +53,7 @@
       auto;
   }
 
-  /* Headings now use font-logo (Geist Sans) for a cleaner, bolder look */
+  /* Headings now use font-logo (Space Grotesk) for a cleaner, bolder look */
   h1,
   h2,
   h3 {
@@ -68,7 +65,7 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
     font-weight: 600;
   }
 
@@ -85,24 +82,13 @@
 
 /* ── TAILWIND V4 CUSTOM UTILITIES ── */
 
-@utility font-ndot {
-  font-family: var(--font-ndot), monospace;
-}
-
-@utility font-ndot-caps {
-  font-family: var(--font-ndot-caps), monospace;
-}
-
-@utility font-ntype {
-  font-family: var(--font-ntype), sans-serif;
-}
-
-@utility font-sharetech {
-  font-family: var(--font-sharetech), monospace;
+@utility font-pixel {
+  font-family: var(--font-pixel, "Press Start 2P"), monospace;
 }
 
 @utility font-product {
-  font-family: var(--font-geist-mono, "GeistMono"), ui-monospace, monospace;
+  font-family:
+    var(--font-jetbrains-mono, "JetBrains Mono"), ui-monospace, monospace;
 }
 
 /* Updated font-logo utility to use the Sans version */

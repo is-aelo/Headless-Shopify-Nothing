@@ -96,7 +96,7 @@ export function ProductCard({
           </h4>
 
           <div className="flex items-center gap-2">
-            {/* Price using font-body (Geist Mono) */}
+            {/* Price using font-body (JetBrains Mono) */}
             <span className="font-body text-[9px] lg:text-[10px] text-primary font-medium tracking-tight">
               PHP {amount.toFixed(0)}
             </span>

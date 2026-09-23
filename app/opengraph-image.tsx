@@ -1,9 +1,12 @@
 import { ImageResponse } from "next/og";
+import { getGoogleFont } from "lib/og-font";
 
 export default async function OpengraphImage(props?: {
   title?: string;
 }): Promise<ImageResponse> {
   const { title } = props || {};
+
+  const font = await getGoogleFont("Space Grotesk", 700);
 
   return new ImageResponse(
     (
@@ -21,43 +24,23 @@ export default async function OpengraphImage(props?: {
           flexWrap: "nowrap",
         }}
       >
-        <div
+        <p
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            justifyItems: "center",
-          }}
-        >
-          {/* Logo or Icon can go here */}
-        </div>
-        <div
-          style={{
-            marginTop: 40,
-            display: "flex",
+            fontSize: 64,
             fontWeight: 700,
-            textAlign: "center",
-            justifyContent: "center",
-            alignItems: "center",
+            color: "white",
+            lineHeight: 1,
+            fontFamily: "Space Grotesk",
           }}
         >
-          <p
-            style={{
-              fontSize: 64,
-              color: "white",
-              lineHeight: 1,
-              fontFamily: "sans-serif", // Fallback to system font
-            }}
-          >
-            {title || process.env.SITE_NAME}
-          </p>
-        </div>
+          {title || process.env.SITE_NAME}
+        </p>
       </div>
     ),
     {
       width: 1200,
       height: 630,
-      // Inalis na natin ang 'fonts' array dito dahil wala na ang .ttf file
+      fonts: [font],
     },
   );
 }
