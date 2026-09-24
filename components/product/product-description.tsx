@@ -1,7 +1,8 @@
 import { AddToCart } from "components/cart/add-to-cart";
 import Price from "components/price";
-import Prose from "components/prose";
 import { Product } from "lib/shopify/types";
+import { CollapsibleDetails } from "./collapsible-details";
+import { Rating } from "./rating";
 import { VariantSelector } from "./variant-selector";
 
 function extractIntro(description?: string) {
@@ -12,7 +13,10 @@ function extractIntro(description?: string) {
     .trim();
 
   // Lead with the first two sentences — enough context, not a wall of text.
-  return cleanText.split(/(?<=[.!?])\s+/).slice(0, 2).join(" ");
+  return cleanText
+    .split(/(?<=[.!?])\s+/)
+    .slice(0, 2)
+    .join(" ");
 }
 
 export function ProductDescription({ product }: { product: Product }) {
@@ -45,6 +49,13 @@ export function ProductDescription({ product }: { product: Product }) {
             />
           )}
         </div>
+        <div className="mt-3">
+          <Rating
+            rating={product.metafields?.rating}
+            ratingCount={product.metafields?.ratingCount}
+            count={product.metafields?.count}
+          />
+        </div>
       </header>
 
       {/* Intro */}
@@ -58,25 +69,9 @@ export function ProductDescription({ product }: { product: Product }) {
       <VariantSelector options={product.options} variants={product.variants} />
 
       {/* Full description */}
-      {product.descriptionHtml ? (
-        <details className="group border-t border-black/[0.06] pt-4">
-          <summary className="flex cursor-pointer items-center justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-surface/60 transition-colors hover:text-surface [&::-webkit-details-marker]:hidden">
-            Details
-            <span className="font-mono text-lg leading-none group-open:hidden">
-              +
-            </span>
-            <span className="hidden font-mono text-lg leading-none group-open:block">
-              −
-            </span>
-          </summary>
-          <div className="mt-4 font-mono text-[12px] md:text-[13px] leading-relaxed">
-            <Prose
-              className="text-surface/80 prose-headings:text-surface prose-strong:text-surface prose-li:text-surface"
-              html={product.descriptionHtml}
-            />
-          </div>
-        </details>
-      ) : null}
+      {product.descriptionHtml && (
+        <CollapsibleDetails html={product.descriptionHtml} />
+      )}
 
       {/* CTA */}
       <AddToCart product={product} />

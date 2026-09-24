@@ -9,6 +9,48 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { ListItem, PathFilterItem } from ".";
 
+function ActiveDot({ active }: { active: boolean }) {
+  return (
+    <span className="w-3 flex-shrink-0">
+      <AnimatePresence mode="popLayout">
+        {active && (
+          <motion.span
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+            className="inline-block"
+          >
+            <StatusDot />
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </span>
+  );
+}
+
+function ItemLabel({
+  active,
+  children,
+}: {
+  active: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <span
+      className={clsx(
+        "font-mono text-xs uppercase tracking-tight transition-colors duration-300",
+        {
+          "text-primary": active,
+          "text-primary/45 group-hover:text-primary": !active,
+        },
+      )}
+    >
+      {children}
+    </span>
+  );
+}
+
 function PathFilterItem({ item }: { item: PathFilterItem }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -23,45 +65,16 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
       initial={{ opacity: 0, x: -4 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3, ease: [0.19, 1, 0.22, 1] }}
-      className="mt-2 flex items-center tracking-tighter h-6"
+      className="mt-2 h-6"
       key={item.title}
     >
-      <div className="flex items-center w-full group">
-        <div className="w-4 flex-shrink-0 flex items-center justify-start">
-          <AnimatePresence mode="popLayout">
-            {active && (
-              <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0, opacity: 0 }}
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}
-              >
-                <StatusDot />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        <DynamicTag
-          href={createUrl(item.path, newParams)}
-          className={clsx(
-            "font-mono text-sm uppercase transition-colors duration-300 whitespace-nowrap",
-            {
-              "text-primary font-bold": active,
-              "text-primary opacity-60 group-hover:opacity-100": !active,
-            },
-          )}
-        >
-          <motion.span
-            layout="position"
-            className="inline-block"
-            whileHover={!active ? { x: 2 } : {}}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          >
-            {active ? `[ ${item.title} ]` : item.title}
-          </motion.span>
-        </DynamicTag>
-      </div>
+      <DynamicTag
+        href={createUrl(item.path, newParams)}
+        className="group flex w-full items-center gap-2"
+      >
+        <ActiveDot active={active} />
+        <ItemLabel active={active}>{item.title}</ItemLabel>
+      </DynamicTag>
     </motion.li>
   );
 }
@@ -85,46 +98,17 @@ function SortFilterItem({ item }: { item: SortFilterItem }) {
       initial={{ opacity: 0, x: -4 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3, ease: [0.19, 1, 0.22, 1] }}
-      className="mt-2 flex items-center tracking-tighter h-6"
+      className="mt-2 h-6"
       key={item.title}
     >
-      <div className="flex items-center w-full group">
-        <div className="w-4 flex-shrink-0 flex items-center justify-start">
-          <AnimatePresence mode="popLayout">
-            {active && (
-              <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0, opacity: 0 }}
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}
-              >
-                <StatusDot />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        <DynamicTag
-          prefetch={!active ? false : undefined}
-          href={href}
-          className={clsx(
-            "font-mono text-sm uppercase transition-colors duration-300 whitespace-nowrap",
-            {
-              "text-primary font-bold": active,
-              "text-primary opacity-60 group-hover:opacity-100": !active,
-            },
-          )}
-        >
-          <motion.span
-            layout="position"
-            className="inline-block"
-            whileHover={!active ? { x: 2 } : {}}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          >
-            {active ? `> ${item.title}` : item.title}
-          </motion.span>
-        </DynamicTag>
-      </div>
+      <DynamicTag
+        prefetch={!active ? false : undefined}
+        href={href}
+        className="group flex w-full items-center gap-2"
+      >
+        <ActiveDot active={active} />
+        <ItemLabel active={active}>{item.title}</ItemLabel>
+      </DynamicTag>
     </motion.li>
   );
 }

@@ -6,7 +6,6 @@ import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
 import { ReactNode, Suspense } from "react";
 import { Toaster } from "sonner";
-import { jetbrainsMono, pressStart2p, spaceGrotesk } from "./fonts";
 import "./globals.css";
 
 const { SITE_NAME } = process.env;
@@ -31,14 +30,7 @@ export default async function RootLayout({
   const cart = getCart();
 
   return (
-    <html
-      lang="en"
-      className={`
-        ${spaceGrotesk.variable} 
-        ${jetbrainsMono.variable} 
-        ${pressStart2p.variable}
-      `}
-    >
+    <html lang="en">
       <body className="antialiased selection:bg-black selection:text-white">
         <CartProvider cartPromise={cart}>
           <Navbar />

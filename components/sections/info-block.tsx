@@ -33,17 +33,17 @@ export function InfoBlock({ variant, title, description }: InfoBlockProps) {
     const dots = GLYPH_HEART.flat();
 
     return (
-      <section className="relative overflow-hidden bg-primary px-6 py-20 md:py-32">
+      <section className="relative overflow-hidden border-t border-black/[0.06] bg-off-white px-6 py-20 md:py-32">
         <div className="relative mx-auto flex max-w-[1200px] flex-col items-center text-center">
-          <span className="mb-8 font-mono text-[9px] uppercase tracking-[0.35em] text-white/50">
+          <span className="mb-8 font-mono text-[9px] uppercase tracking-[0.35em] text-muted">
             Signature Interface
           </span>
 
-          <h1 className="font-logo max-w-3xl text-[clamp(1.75rem,4.5vw,3.25rem)] uppercase leading-[0.9] tracking-tighter text-white">
+          <h1 className="font-logo max-w-3xl text-[clamp(1.75rem,4.5vw,3.25rem)] uppercase leading-[0.9] tracking-tighter text-primary">
             {title}
           </h1>
 
-          <p className="mt-6 max-w-xl font-mono text-[10px] md:text-[11px] uppercase leading-relaxed tracking-wide text-white/50">
+          <p className="mt-6 max-w-xl font-mono text-[10px] md:text-[11px] uppercase leading-relaxed tracking-wide text-muted">
             {description}
           </p>
 
@@ -54,7 +54,7 @@ export function InfoBlock({ variant, title, description }: InfoBlockProps) {
             viewport={{ once: true }}
             className="mt-14 flex items-center justify-center"
           >
-            <div className="flex h-[200px] w-[200px] items-center justify-center rounded-full border border-white/15 bg-white/[0.03] md:h-[240px] md:w-[240px]">
+            <div className="flex h-[200px] w-[200px] items-center justify-center rounded-full bg-primary md:h-[240px] md:w-[240px]">
               <div
                 className="grid gap-[3px]"
                 style={{
@@ -79,10 +79,10 @@ export function InfoBlock({ variant, title, description }: InfoBlockProps) {
             href="/search/phones"
             className="group mt-14 inline-flex items-center gap-3"
           >
-            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white underline-offset-4 transition-colors group-hover:underline">
+            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-primary underline-offset-4 transition-colors group-hover:underline">
               Explore Nothing Phones
             </span>
-            <ArrowRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:translate-x-1" />
+            <ArrowRight className="h-4 w-4 text-primary transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
       </section>

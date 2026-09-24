@@ -74,6 +74,14 @@ const productFragment = /* GraphQL */ `
         }
       }
     }
+    reviewRating: metafield(namespace: "reviews", key: "rating") {
+      value
+      type
+    }
+    reviewCount: metafield(namespace: "reviews", key: "rating_count") {
+      value
+      type
+    }
     seo {
       ...seo
     }

@@ -24,28 +24,26 @@ export default function FilterList({
   title?: string;
 }) {
   return (
-    <>
-      <nav>
-        {title ? (
-          <h3 className="mb-4 text-[10px] uppercase tracking-[0.2em] text-primary/40 md:mb-2">
-            {title}
-          </h3>
-        ) : null}
+    <nav className="border-t border-black/[0.06] pt-5">
+      {title ? (
+        <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-surface/45">
+          {title}
+        </p>
+      ) : null}
 
-        {/* Desktop List */}
-        <ul className="hidden md:block">
-          <Suspense fallback={null}>
-            <FilterItemList list={list} />
-          </Suspense>
-        </ul>
+      {/* Desktop List */}
+      <ul className="hidden md:block">
+        <Suspense fallback={null}>
+          <FilterItemList list={list} />
+        </Suspense>
+      </ul>
 
-        {/* Mobile Dropdown */}
-        <ul className="md:hidden">
-          <Suspense fallback={null}>
-            <FilterItemDropdown list={list} />
-          </Suspense>
-        </ul>
-      </nav>
-    </>
+      {/* Mobile Dropdown */}
+      <ul className="md:hidden">
+        <Suspense fallback={null}>
+          <FilterItemDropdown list={list} title={title} />
+        </Suspense>
+      </ul>
+    </nav>
   );
 }

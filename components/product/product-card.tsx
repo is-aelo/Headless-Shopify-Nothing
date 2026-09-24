@@ -13,9 +13,11 @@ async function addItemAction(formData: FormData) {
 export function ProductCard({
   product,
   index = 0,
+  cell = false,
 }: {
   product: Product;
   index?: number;
+  cell?: boolean;
 }) {
   const amount = parseFloat(product.priceRange.minVariantPrice.amount);
   const compareAtAmount = parseFloat(
@@ -37,7 +39,11 @@ export function ProductCard({
 
   return (
     <div
-      className={`flex flex-col border-r border-border-l last:border-r-0 bg-white group overflow-hidden ${index >= 2 ? "border-t lg:border-t-0" : ""}`}
+      className={`flex flex-col bg-white group overflow-hidden ${
+        cell
+          ? "h-full"
+          : `border-r border-border-l last:border-r-0 ${index >= 2 ? "border-t lg:border-t-0" : ""}`
+      }`}
     >
       <div className="relative aspect-square flex items-center justify-center overflow-hidden bg-white">
         {discountPercent > 0 && (

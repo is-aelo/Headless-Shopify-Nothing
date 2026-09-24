@@ -198,10 +198,17 @@ const reshapeProduct = (
     return undefined;
   }
 
-  const { images, variants, options, ...rest } = product;
+  const { images, variants, options, reviewRating, reviewCount, ...rest } =
+    product;
+
+  const reviews = {
+    rating: reviewRating?.value,
+    ratingCount: reviewCount?.value,
+  };
 
   return {
     ...rest,
+    metafields: reviews,
     options: options || [],
     images: reshapeImages(images, product.title),
     variants: removeEdgesAndNodes(variants).map((variant) => ({
@@ -401,7 +408,14 @@ export async function getCollections(): Promise<Collection[]> {
       updatedAt: new Date().toISOString(),
     },
     ...reshapeCollections(shopifyCollections).filter(
-      (collection) => !collection.handle.startsWith("hidden"),
+      (collection) => {
+        const name = `${collection.handle} ${collection.title}`.toLowerCase();
+        return (
+          !collection.handle.startsWith("hidden") &&
+          !name.includes("homepage") &&
+          !name.includes("home page")
+        );
+      },
     ),
   ];
 

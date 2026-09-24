@@ -5,6 +5,7 @@ import Breadcrumbs from "../../../components/layout/breadcrumbs";
 import { Gallery } from "../../../components/product/gallery";
 import { ProductCard } from "../../../components/product/product-card";
 import { ProductDescription } from "../../../components/product/product-description";
+import { Rating } from "../../../components/product/rating";
 import { HIDDEN_PRODUCT_TAG } from "../../../lib/constants";
 import { getProduct, getProductRecommendations } from "../../../lib/shopify";
 import { Image, ProductVariant } from "../../../lib/shopify/types";
@@ -69,6 +70,28 @@ export default async function ProductPage(props: {
               isSoldOut={!variant?.availableForSale}
             />
           </Suspense>
+
+          <section
+            aria-label="Reviews"
+            className="mt-14 border-t border-black/[0.06] pt-8 lg:mt-20 lg:pt-10"
+          >
+            <div className="flex items-center justify-between gap-4">
+              <h2 className="font-mono text-[10px] uppercase tracking-[0.25em] text-surface/60">
+                Reviews
+              </h2>
+              {product.metafields?.rating ? (
+                <Rating
+                  rating={product.metafields.rating}
+                  ratingCount={product.metafields.ratingCount}
+                  count={product.metafields.count}
+                />
+              ) : (
+                <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-surface/40">
+                  No reviews yet
+                </span>
+              )}
+            </div>
+          </section>
         </div>
         <div className="lg:col-span-5 lg:border-l lg:border-black/[0.06] lg:pl-14">
           <ProductDescription product={product} />

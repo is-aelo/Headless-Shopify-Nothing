@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&family=Space+Grotesk:wght@300..700&display=swap");
 @import "tailwindcss";
 
 @plugin "@tailwindcss/container-queries";
@@ -5,15 +6,14 @@
 
 @theme {
   /* ── FONT FAMILY MAPPINGS ── */
-  --font-logo: var(--font-space-grotesk);
-  --font-body: var(--font-jetbrains-mono);
-  --font-nav: var(--font-jetbrains-mono);
-  --font-product: var(--font-jetbrains-mono);
-  --font-ui: var(--font-jetbrains-mono);
-  --font-pixel: var(--font-press-start);
+  --font-logo: "Space Grotesk", sans-serif;
+  --font-body: "JetBrains Mono", ui-monospace, monospace;
+  --font-nav: "JetBrains Mono", ui-monospace, monospace;
+  --font-product: "JetBrains Mono", ui-monospace, monospace;
+  --font-ui: "JetBrains Mono", ui-monospace, monospace;
 
   /* Make the default `font-mono` utility use JetBrains Mono too */
-  --font-mono: var(--font-jetbrains-mono);
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   /* ── CUSTOM TYPOGRAPHY SCALE ── */
   --font-size-body-base: 13px;
@@ -41,8 +41,7 @@
   body {
     background-color: var(--color-off-white);
     color: var(--color-primary);
-    font-family:
-      var(--font-jetbrains-mono, "JetBrains Mono"), ui-monospace, monospace;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: var(--font-size-body-base);
     line-height: var(--line-height-body-base);
     -webkit-font-smoothing: antialiased;
@@ -65,7 +64,7 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
     font-weight: 600;
   }
 
@@ -82,13 +81,8 @@
 
 /* ── TAILWIND V4 CUSTOM UTILITIES ── */
 
-@utility font-pixel {
-  font-family: var(--font-pixel, "Press Start 2P"), monospace;
-}
-
 @utility font-product {
-  font-family:
-    var(--font-jetbrains-mono, "JetBrains Mono"), ui-monospace, monospace;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
 }
 
 /* Updated font-logo utility to use the Sans version */

@@ -78,6 +78,11 @@ export type Product = Omit<ShopifyProduct, "variants" | "images"> & {
     maxVariantPrice: Money;
     minVariantPrice: Money;
   };
+  metafields?: {
+    rating?: string;
+    ratingCount?: string;
+    count?: string;
+  };
 };
 
 export type ProductOption = {
@@ -146,6 +151,12 @@ export type ShopifyProduct = {
   seo: SEO;
   tags: string[];
   updatedAt: string;
+  reviewRating?: {
+    value: string;
+  } | null;
+  reviewCount?: {
+    value: string;
+  } | null;
 };
 
 export type ShopifyCartOperation = {

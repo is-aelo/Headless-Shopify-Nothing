@@ -1,4 +1,4 @@
-import Grid from "components/grid";
+import { PageHeader } from "components/layout/page-header";
 import ProductGridItems from "components/layout/product-grid-items";
 import { defaultSort, sorting } from "lib/constants";
 import { getProducts } from "lib/shopify";
@@ -21,19 +21,35 @@ export default async function SearchPage(props: {
 
   return (
     <>
+      <PageHeader
+        kicker="Search"
+        title={searchValue ? `“${searchValue}”` : "All Products"}
+        count={products.length}
+      />
+
       {searchValue ? (
-        <p className="mb-4 text-surface">
+        <p className="mb-8 font-mono text-[12px] uppercase tracking-[0.2em] text-surface/50">
           {products.length === 0
-            ? "There are no products that match "
-            : `Showing ${products.length} ${resultsText} for `}
-          <span className="font-bold">&quot;{searchValue}&quot;</span>
+            ? `No products match “${searchValue}”`
+            : `${products.length} ${resultsText} for “${searchValue}”`}
         </p>
       ) : null}
+
       {products.length > 0 ? (
-        <Grid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          <ProductGridItems products={products} />
-        </Grid>
-      ) : null}
+        <ProductGridItems products={products} />
+      ) : (
+        <div className="border-t border-black/[0.06] pb-16 pt-14 text-center">
+          <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-surface/50">
+            Nothing found yet
+          </p>
+          <a
+            href="/search"
+            className="mt-6 inline-block border border-black/15 px-10 py-3 font-mono text-[11px] uppercase tracking-[0.3em] text-surface transition-colors hover:bg-surface hover:text-white"
+          >
+            Browse all products
+          </a>
+        </div>
+      )}
     </>
   );
 }

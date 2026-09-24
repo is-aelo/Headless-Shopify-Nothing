@@ -7,7 +7,13 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import type { ListItem } from ".";
 import { FilterItem } from "./item";
 
-export default function FilterItemDropdown({ list }: { list: ListItem[] }) {
+export default function FilterItemDropdown({
+  list,
+  title,
+}: {
+  list: ListItem[];
+  title?: string;
+}) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [active, setActive] = useState("");
@@ -38,32 +44,43 @@ export default function FilterItemDropdown({ list }: { list: ListItem[] }) {
 
   return (
     <div className="relative" ref={ref}>
-      <div
+      <button
+        type="button"
         onClick={() => {
           setOpenSelect(!openSelect);
         }}
-        /* Updated to use your theme: bg-off-white and text-primary */
-        className="flex w-full items-center justify-between border border-black/10 bg-off-white px-4 py-3 font-body text-[11px] uppercase tracking-[0.2em] text-primary transition-all active:scale-[0.98]"
+        className="flex w-full items-center justify-between gap-3 border border-black/10 bg-white px-4 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-primary transition-colors hover:bg-off-white"
       >
-        <div className="flex items-center gap-2">
-          <span className="opacity-40">SELECT:</span>
+        <span className="truncate">
+          <span className="text-surface/40">{title ? `${title} / ` : ""}</span>
           <span className="font-bold">{active}</span>
-        </div>
+        </span>
         <ChevronDownIcon
-          className={`h-4 w-4 text-primary transition-transform duration-300 ${openSelect ? "rotate-180" : ""}`}
+          className={`h-4 w-4 flex-shrink-0 text-primary transition-transform duration-300 ${
+            openSelect ? "rotate-180" : ""
+          }`}
         />
-      </div>
+      </button>
 
       {openSelect && (
         <div
           onClick={() => {
             setOpenSelect(false);
           }}
-          /* Dropdown menu matches the off-white surface */
-          className="absolute z-40 mt-1 w-full border border-black/10 bg-off-white p-2 shadow-xl"
+          className="absolute z-40 mt-1 w-full border border-black/10 bg-white px-3 pb-3"
         >
           {list.map((item: ListItem, i) => (
-            <FilterItem key={i} item={item} />
+            <div
+              key={i}
+              className={`border-t border-black/[0.06] first:border-t-0 ${
+                ("path" in item && pathname === item.path) ||
+                ("slug" in item && searchParams.get("sort") === item.slug)
+                  ? "text-primary"
+                  : ""
+              }`}
+            >
+              <FilterItem item={item} />
+            </div>
           ))}
         </div>
       )}
