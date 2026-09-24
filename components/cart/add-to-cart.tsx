@@ -2,7 +2,8 @@
 
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { addItem } from "components/cart/actions";
-import { Product, ProductVariant } from "lib/shopify/types";
+import { Product } from "lib/shopify/types";
+import { findVariantByOptions } from "lib/utils";
 import { useSearchParams } from "next/navigation";
 import { useActionState, useState, useTransition } from "react";
 import { useFormStatus } from "react-dom";
@@ -10,12 +11,14 @@ import { useCart } from "./cart-context";
 
 function SubmitButton({
   availableForSale,
+  outOfStock,
   selectedVariantId,
   price,
   quantity,
   onOptimisticAdd,
 }: {
   availableForSale: boolean;
+  outOfStock: boolean;
   selectedVariantId: string | undefined;
   price: string;
   quantity: number;
@@ -24,13 +27,13 @@ function SubmitButton({
   const { pending } = useFormStatus();
   const totalPrice = (parseFloat(price) * quantity).toLocaleString();
 
-  if (!availableForSale) {
+  if (!availableForSale || outOfStock) {
     return (
       <button
         disabled
-        className="flex h-12 w-full items-center justify-center rounded-full bg-neutral-200 dark:bg-neutral-800 px-6 opacity-50"
+        className="flex h-12 w-full items-center justify-center rounded-full bg-neutral-200 dark:bg-neutral-800 px-6"
       >
-        <span className="font-nav text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+        <span className="whitespace-nowrap font-nav text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-600 dark:text-neutral-300">
           Out Of Stock
         </span>
       </button>
@@ -38,6 +41,8 @@ function SubmitButton({
   }
 
   const isButtonDisabled = !selectedVariantId || pending;
+  const needsSelection = !selectedVariantId;
+  const showPrice = Boolean(selectedVariantId) && !pending;
 
   return (
     <button
@@ -45,11 +50,13 @@ function SubmitButton({
       aria-label="Add to bag"
       disabled={isButtonDisabled}
       onClick={onOptimisticAdd}
-      className={`group relative flex h-12 w-full items-center justify-between overflow-hidden rounded-full transition-all duration-300 active:scale-[0.98] disabled:opacity-50 sm:px-6 px-4 shadow-xl ${
+      className={`group relative flex h-12 w-full items-center overflow-hidden rounded-full transition-all duration-300 active:scale-[0.98] sm:px-6 px-4 shadow-xl ${
+        showPrice ? "justify-between" : "justify-center"
+      } ${
         pending
           ? "bg-neutral-900 dark:bg-neutral-100 scale-[0.99] cursor-wait"
-          : isButtonDisabled
-            ? "bg-neutral-400 cursor-not-allowed"
+          : needsSelection
+            ? "bg-neutral-200 dark:bg-neutral-800 cursor-not-allowed"
             : "bg-black dark:bg-white hover:scale-[1.01]"
       }`}
     >
@@ -60,7 +67,11 @@ function SubmitButton({
         </div>
       )}
 
-      <div className="relative z-10 flex min-w-0 items-center gap-2 sm:gap-3">
+      <div
+        className={`relative z-10 flex min-w-0 items-center gap-2 sm:gap-3 ${
+          showPrice ? "" : "flex-1 justify-center"
+        }`}
+      >
         {pending ? (
           <div className="flex gap-1">
             <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-white dark:bg-black [animation-delay:-0.3s]" />
@@ -68,25 +79,35 @@ function SubmitButton({
             <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-white dark:bg-black" />
           </div>
         ) : (
-          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white dark:bg-black text-black dark:text-white transition-transform group-hover:rotate-90 border border-black/10 dark:border-white/10">
+          <div
+            className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full transition-transform group-hover:rotate-90 ${
+              needsSelection
+                ? "bg-neutral-300 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300"
+                : "bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10"
+            }`}
+          >
             <PlusIcon className="h-3 w-3 stroke-[4]" />
           </div>
         )}
-        <span className="truncate font-nav text-[11px] font-bold uppercase tracking-[0.2em] text-white dark:text-black">
-          {pending
-            ? "Processing..."
-            : !selectedVariantId
-              ? "Select Option"
-              : "Bag"}
+        <span
+          className={`whitespace-nowrap font-nav text-[11px] font-bold uppercase tracking-[0.2em] ${
+            needsSelection
+              ? "text-neutral-600 dark:text-neutral-300"
+              : "text-white dark:text-black"
+          }`}
+        >
+          {pending ? "Processing..." : needsSelection ? "Select Option" : "Bag"}
         </span>
       </div>
 
-      <div className="relative z-10 flex shrink-0 items-center gap-2 sm:gap-3">
-        <span className="h-3 w-[1px] bg-white/40 dark:bg-black/40" />
-        <span className="font-mono text-[11px] font-bold tracking-tighter text-white dark:text-black">
-          PHP {totalPrice}
-        </span>
-      </div>
+      {showPrice && (
+        <div className="relative z-10 flex shrink-0 items-center gap-2 sm:gap-3">
+          <span className="h-3 w-[1px] bg-white/40 dark:bg-black/40" />
+          <span className="font-mono text-[11px] font-bold tracking-tighter text-white dark:text-black">
+            PHP {totalPrice}
+          </span>
+        </div>
+      )}
     </button>
   );
 }
@@ -114,14 +135,18 @@ export function AddToCart({ product }: { product: Product }) {
 
   const [quantity, setQuantity] = useState(1);
 
-  const variant = variants.find((variant: ProductVariant) =>
-    variant.selectedOptions.every(
-      (option) => option.value === searchParams.get(option.name.toLowerCase()),
-    ),
+  const needsOptionSelection = product.options.some(
+    (option) => option.values.length > 1,
   );
+
+  const variant = needsOptionSelection
+    ? findVariantByOptions(variants, searchParams, true)
+    : variants.find((v) => v.availableForSale) || variants[0];
 
   const selectedVariantId = variant?.id;
   const finalVariant = variant || variants[0];
+
+  const outOfStock = Boolean(variant && !variant.availableForSale);
 
   const price =
     finalVariant?.price?.amount || product.priceRange.minVariantPrice.amount;
@@ -133,7 +158,7 @@ export function AddToCart({ product }: { product: Product }) {
   };
 
   const handleOptimisticAdd = () => {
-    if (!selectedVariantId || !variant) return;
+    if (!selectedVariantId || !variant || !variant.availableForSale) return;
 
     startTransition(() => {
       for (let i = 0; i < quantity; i++) {
@@ -179,6 +204,7 @@ export function AddToCart({ product }: { product: Product }) {
 
             <SubmitButton
               availableForSale={availableForSale}
+              outOfStock={outOfStock}
               selectedVariantId={selectedVariantId}
               price={price}
               quantity={quantity}

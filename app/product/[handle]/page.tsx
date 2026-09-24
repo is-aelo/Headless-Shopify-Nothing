@@ -8,7 +8,8 @@ import { ProductDescription } from "../../../components/product/product-descript
 import { Rating } from "../../../components/product/rating";
 import { HIDDEN_PRODUCT_TAG } from "../../../lib/constants";
 import { getProduct, getProductRecommendations } from "../../../lib/shopify";
-import { Image, ProductVariant } from "../../../lib/shopify/types";
+import { Image } from "../../../lib/shopify/types";
+import { findVariantByOptions } from "../../../lib/utils";
 
 export async function generateMetadata(props: {
   params: Promise<{ handle: string }>;
@@ -36,11 +37,15 @@ export default async function ProductPage(props: {
 
   if (!product) return notFound();
 
-  const variant = product.variants.find((variant: ProductVariant) =>
-    variant.selectedOptions.every(
-      (option) => option.value === searchParams[option.name.toLowerCase()],
-    ),
+  // Resolve a variant once at least one option is chosen. A partial selection
+  // (e.g. only "Color" picked on a Color x Storage product) still resolves to
+  // the first matching variant so the gallery previews it right away.
+  const hasSelection = product.options.some(
+    (option) => searchParams[option.name.toLowerCase()] !== undefined,
   );
+  const variant = hasSelection
+    ? findVariantByOptions(product.variants, searchParams, false)
+    : undefined;
 
   const breadcrumbItems = [
     {

@@ -16,8 +16,14 @@ function extractIntro(description?: string) {
 export function Hero({ product }: { product: Product }) {
   if (!product) return null;
 
-  const image = product.featuredImage || product.images?.[0];
+  const image =
+    product.images && product.images.length > 1
+      ? product.images[1]
+      : product.featuredImage || product.images?.[0];
   const fit = getImageObjectFit(image?.width, image?.height, 4 / 5);
+  const imageUrl = image?.url
+    ? `${image.url}${image.url.includes("?") ? "&" : "?"}width=1200`
+    : "";
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-off-white">
@@ -62,21 +68,19 @@ export function Hero({ product }: { product: Product }) {
           {/* Hero object — single product image, monochrome */}
           <div className="lg:col-span-6">
             <figure className="relative ml-auto aspect-[4/5] w-full max-w-[560px] overflow-hidden border border-black/[0.06] bg-white">
-              {image?.url && (
+              {imageUrl && (
                 <Image
-                  src={image.url}
-                  alt={image.altText || product.title}
+                  src={imageUrl}
+                  alt={image?.altText || product.title}
                   fill
+                  unoptimized
                   priority
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className={fit === "cover" ? "object-cover" : "object-contain"}
+                  className={
+                    fit === "cover" ? "object-cover" : "object-contain"
+                  }
                 />
               )}
-              <figcaption className="absolute bottom-0 left-0 flex h-9 items-center bg-black px-4">
-                <span className="font-mono text-[9px] tracking-[0.3em] text-white">
-                  01
-                </span>
-              </figcaption>
             </figure>
           </div>
         </div>
@@ -86,9 +90,6 @@ export function Hero({ product }: { product: Product }) {
           <div className="flex items-center justify-between border-t border-black/10 pt-4">
             <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-black/30">
               Nothing — PH
-            </span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-black/30">
-              01 / 03 — Collections
             </span>
           </div>
         </div>

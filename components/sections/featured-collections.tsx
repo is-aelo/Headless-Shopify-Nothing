@@ -1,5 +1,4 @@
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import StatusDot from "components/status-dot";
 import { getImageObjectFit } from "lib/image-fit";
 import { getCollectionProducts } from "lib/shopify";
 import { Product } from "lib/shopify/types";
@@ -73,22 +72,10 @@ async function CollectionSection({
               }
             />
           )}
-          <span className="absolute left-0 top-0 flex h-8 items-center bg-black px-3">
-            <span className="font-mono text-[9px] tracking-[0.3em] text-white">
-              0{index + 1}
-            </span>
-          </span>
         </Link>
       </div>
 
       <div className={`lg:col-span-7 ${reversed ? "lg:order-1" : "lg:pl-8"}`}>
-        <div className="mb-5 flex items-center gap-3">
-          <StatusDot />
-          <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-muted">
-            Collection 0{index + 1}
-          </span>
-        </div>
-
         <h2 className="font-logo text-[clamp(1.75rem,4vw,3.5rem)] uppercase leading-[0.9] tracking-tighter text-primary">
           {title}
         </h2>

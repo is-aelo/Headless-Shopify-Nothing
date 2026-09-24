@@ -1,7 +1,6 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import LoadingDots from "components/loading-dots";
 import Price from "components/price";
 import { DEFAULT_OPTION } from "lib/constants";
 import { createUrl } from "lib/utils";
@@ -9,8 +8,7 @@ import { ShoppingBag, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment, useEffect, useRef, useState } from "react";
-import { useFormStatus } from "react-dom";
-import { createCartAndSetCookie, redirectToCheckout } from "./actions";
+import { createCartAndSetCookie } from "./actions";
 import { useCart } from "./cart-context";
 import { DeleteItemButton } from "./delete-item-button";
 import { EditItemQuantityButton } from "./edit-item-quantity-button";
@@ -253,9 +251,9 @@ export default function CartModal() {
                       />
                     </div>
 
-                    <form action={redirectToCheckout}>
+                    <Link href="/checkout">
                       <CheckoutButton />
-                    </form>
+                    </Link>
 
                     <p className="mt-3 text-center font-body text-[10px] uppercase tracking-tighter text-muted">
                       Shipping and discounts calculated at checkout.
@@ -301,15 +299,9 @@ function ThumbnailWithSkeleton({ src, alt }: { src: string; alt: string }) {
 }
 
 function CheckoutButton() {
-  const { pending } = useFormStatus();
-
   return (
-    <button
-      className="btn-nothing-primary py-4 text-lg w-full"
-      type="submit"
-      disabled={pending}
-    >
-      {pending ? <LoadingDots className="bg-white" /> : "PROCEED TO CHECKOUT"}
-    </button>
+    <span className="btn-nothing-primary py-4 text-lg w-full">
+      PROCEED TO CHECKOUT
+    </span>
   );
 }

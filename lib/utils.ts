@@ -1,5 +1,7 @@
 import { ReadonlyURLSearchParams } from "next/navigation";
 
+import { ProductVariant } from "./shopify/types";
+
 export const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
   : process.env.VERCEL_PROJECT_PRODUCTION_URL
@@ -66,3 +68,44 @@ export const isOptionActive = (
     searchParams.get(name.toLowerCase())?.toLowerCase() === value.toLowerCase()
   );
 };
+
+/** Search params in either client (URLSearchParams) or server (plain object) form. */
+export type OptionSearchParams =
+  | ReadonlyURLSearchParams
+  | URLSearchParams
+  | Record<string, string | string[] | undefined>;
+
+const optionValue = (
+  searchParams: OptionSearchParams,
+  name: string,
+): string | null => {
+  const key = name.toLowerCase();
+  if (searchParams instanceof URLSearchParams) {
+    return searchParams.get(key);
+  }
+  const value = searchParams[key];
+  return Array.isArray(value) ? null : (value ?? null);
+};
+
+/**
+ * Finds the variant whose selected options match the chosen URL params.
+ * Option names and values are compared case-insensitively.
+ *
+ * When `requireAll` is true, every option of the variant must be present in the
+ * URL so an incomplete selection never resolves (used before adding to cart).
+ * When false, options missing from the URL are ignored and the first matching
+ * variant wins — this lets the gallery preview a variant image as soon as the
+ * first option on a multi-option product is selected.
+ */
+export const findVariantByOptions = (
+  variants: ProductVariant[],
+  searchParams: OptionSearchParams,
+  requireAll = false,
+): ProductVariant | undefined =>
+  variants.find((variant) =>
+    variant.selectedOptions.every((option) => {
+      const urlValue = optionValue(searchParams, option.name);
+      if (urlValue === null) return !requireAll;
+      return urlValue.toLowerCase() === option.value.toLowerCase();
+    }),
+  );

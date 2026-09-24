@@ -37,7 +37,7 @@ export function Gallery({
   const displayImages = selectedVariantImage
     ? [
         { src: selectedVariantImage, altText: "Selected variant" },
-        ...images.slice(1),
+        ...images.filter((img) => img.src !== selectedVariantImage),
       ]
     : images;
 
@@ -106,7 +106,12 @@ export function Gallery({
     if (zoom <= 1) return;
     setDragging(true);
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
-    dragStartRef.current = { x: e.clientX, y: e.clientY, panX: pan.x, panY: pan.y };
+    dragStartRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      panX: pan.x,
+      panY: pan.y,
+    };
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
@@ -195,7 +200,7 @@ export function Gallery({
             {/* Image index */}
             <span className="absolute bottom-0 left-0 flex items-center bg-black px-3 py-2">
               <span className="font-mono text-[9px] tracking-[0.3em] text-white">
-                0{activeIndex + 1} / 0{displayImages.length}
+                {activeIndex + 1} / {displayImages.length}
               </span>
             </span>
 
@@ -253,7 +258,7 @@ export function Gallery({
           {/* Top bar */}
           <div className="flex items-center justify-between border-b border-white/10 px-4 py-3 sm:px-6">
             <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/60">
-              0{activeIndex + 1} / 0{displayImages.length}
+              {activeIndex + 1} / {displayImages.length}
             </span>
             <div className="flex items-center gap-3">
               <span className="font-mono text-[10px] tabular-nums tracking-[0.2em] text-white/60">
@@ -316,7 +321,9 @@ export function Gallery({
             }}
             className={clsx(
               "relative flex flex-1 select-none touch-none items-center justify-center overflow-hidden",
-              zoom > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-out",
+              zoom > 1
+                ? "cursor-grab active:cursor-grabbing"
+                : "cursor-zoom-out",
             )}
           >
             <img
